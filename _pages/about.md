@@ -110,7 +110,7 @@ North Campus, South China University of Technology, Tianhe District, Guangzhou C
 
 * Weixin: ZaychikLiu
 
-！[XRCode](../images/xrcode.png)
+![XRCode](../images/xrcode.png)
 
 * Zhihu: [Zaychik](https://www.zhihu.com/people/lfy-46-11-14)
 
