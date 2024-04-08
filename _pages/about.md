@@ -112,5 +112,5 @@ North Campus, South China University of Technology, Tianhe District, Guangzhou C
 
 * Zhihu: [Zaychik](https://www.zhihu.com/people/lfy-46-11-14)
 
-* Email: [Gmail](a160130k@gmail.com)
+* Email: [Gmail](mailto:a160130k@gmail.com)
 
