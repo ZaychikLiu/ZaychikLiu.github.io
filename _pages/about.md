@@ -108,9 +108,9 @@ North Campus, South China University of Technology, Tianhe District, Guangzhou C
 
 ## 📧Contact
 
-* Weixin: ZaychikLiu
-
-![XRCode](../images/xrcode.png)
+* Weixin: [ZaychikLiu](../images/xrcode.png)
 
 * Zhihu: [Zaychik](https://www.zhihu.com/people/lfy-46-11-14)
+
+* Email: [Gmail](a160130k@gmail.com)
 
