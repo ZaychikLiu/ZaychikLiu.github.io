@@ -6,7 +6,9 @@ author_profile: true
 redirect_from:
   - /about/
   - /about.html
+
 ---
+
 Hello, here is ZaychikLiu, welcome to my personal website! 
 
 ## 🎉Basic Infromation
@@ -17,6 +19,39 @@ My name is Feiyang Liu（刘飞扬）, I am a sophomore undergraduate majoring i
 
 * I am now searching for remote intern and summer intern, please contact me if you are interested!
 * I am going to UCSD/UT-Austin as a visiting student from 2024.9 to 2025.1. Welcome future classmates! I look forward to interacting with you all!
+
+## 📑Publications and Projects
+
+### Publication
+
+Not Publications yet, but I believe that if you are willing to cooperate with me, we can definitely produce good papers！
+
+### Projects
+
+* 2022.11 - 2023.1 **Automatic classification and pricing of canteen dishes based on machine vision.**
+
+​		![A display. ](../images/2.mp4)
+
+​		![A display.](../images/3.mp4)
+
+​		![A display.](../images/4.mp4)
+
+​		![A display.](../images/5.mp4)
+
+* 2023.1-2023.3 **WeChat chatbot using chatgpt interface**.(Unfortunately my account was banned by Tencent due to this bot.)
+* 2023.5 - 2023.6 **CS231n**
+
+​		![lecture note](../images/6.jpg)
+
+* 2023.7 - 2023.9  **Tencent Kaiwu Reinforcement Learning Competition.（preliminary round）**
+
+​		![display](../images/7.jpg)
+
+* 2024.3 - now **Gait Recognition(Outdoors Datasets)**
+
+​		![display](../images/cl.gif)
+
+​		![display](../images/probe1-After.gif)
 
 ## 📖Education
 
@@ -59,21 +94,6 @@ My name is Feiyang Liu（刘飞扬）, I am a sophomore undergraduate majoring i
 * Reinforcement Learning
 * Planning and Control Thesis
 
-## 📑Publications and Projects
-
-### Publication
-
-Not Publications yet, but I believe that if you are willing to cooperate with me, we can definitely produce good papers！
-
-### Projects
-
-* 2022.11 - 2023.1 **Automatic classification and pricing of canteen dishes based on machine vision.**
-* 2023.1-2023.3 **WeChat chatbot using chatgpt interface**.(Unfortunately my account was banned by Tencent due to this bot.)
-* 2023.5 - 2023.6 **CS231n**
-
-* 2023.7 - 2023.9  **Tencent Kaiwu Reinforcement Learning Competition.（preliminary round）**
-* 2024.3 - now **Gait Recognition(Outdoors Datasets)**
-
 ## 🥇Honors and Awards
 
 > Since I personally don’t think competitions are fun, I’ve rarely participated in them.
@@ -112,6 +132,4 @@ North Campus, South China University of Technology, Tianhe District, Guangzhou C
 
 * Zhihu: [Zaychik](https://www.zhihu.com/people/lfy-46-11-14)
 
-* Email: <a href="mailto:a160130k@gmail.com">Gmail</a>
-
-
+* Email: [Gmail](mailto:a160130k@gmail.com)
