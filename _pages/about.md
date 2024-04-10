@@ -30,13 +30,25 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 
 * 2022.11 - 2023.1 **Automatic classification and pricing of canteen dishes based on machine vision.**
 
-​		![A display. ](../images/2.mp4)
+<video width="320" height="240" controls>
+<source src="../images/2.mp4" type="video/mp4">
+</video>
 
-​		![A display.](../images/3.mp4)
 
-​		![A display.](../images/4.mp4)
+<video width="320" height="240" controls>
+<source src="../images/3.mp4" type="video/mp4">
+</video>
 
-​		![A display.](../images/5.mp4)
+
+<video width="320" height="240" controls>
+<source src="../images/4.mp4" type="video/mp4">
+</video>
+
+
+<video width="320" height="240" controls>
+<source src="../images/5.mp4" type="video/mp4">
+</video>
+
 
 * 2023.1-2023.3 **WeChat chatbot using chatgpt interface**.(Unfortunately my account was banned by Tencent due to this bot.)
 * 2023.5 - 2023.6 **CS231n**
