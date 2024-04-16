@@ -1,3 +1,4 @@
+---
 permalink: /
 title: "About me"
 excerpt: "About me"
@@ -6,117 +7,121 @@ redirect_from:
   - /about/
   - /about.html
 
-  Hello, here is ZaychikLiu, welcome to my personal website! 
+---
 
-  ## 🎉Basic Infromation
+Hello, here is ZaychikLiu, welcome to my personal website! 
 
-  My name is Feiyang Liu（刘飞扬）, I am a sophomore undergraduate majoring in Intelligent Science and Technologyat the School of Automation at South China University of Technology.
+## 🎉Basic Infromation
 
-  ## 🔥News
+My name is Feiyang Liu（刘飞扬）, I am a sophomore undergraduate majoring in Intelligent Science and Technologyat the School of Automation at South China University of Technology.
 
-  * I am now searching for remote intern and summer intern, please contact me if you are interested!
-  * I am going to UCSD/UT-Austin as a visiting student from 2024.9 to 2025.1. Welcome future classmates! I look forward to interacting with you all!
+## 🔥News
 
-  ## 📑Publications and Projects
+* I am now searching for remote intern and summer intern, please contact me if you are interested!
+* I am going to UCSD/UT-Austin as a visiting student from 2024.9 to 2025.1. Welcome future classmates! I look forward to interacting with you all!
 
-  ### Publication
+## 📑Publications and Projects
 
-  Not Publications yet, but I believe that if you are willing to cooperate with me, we can definitely produce good papers！
+### Publication
 
-  ### Projects
+Not Publications yet, but I believe that if you are willing to cooperate with me, we can definitely produce good papers！
 
-  * 2022.11 - 2023.1 **Automatic classification and pricing of canteen dishes based on machine vision.**
+### Projects
 
-  <video width="320" height="240" controls>
-  <source src="../images/2.mp4" type="video/mp4">
-  </video>
+* 2022.11 - 2023.1 **Automatic classification and pricing of canteen dishes based on machine vision.**
 
-  
+<video width="320" height="240" controls>
+<source src="../images/2.mp4" type="video/mp4">
+</video>
 
-  <video width="320" height="240" controls>
-  <source src="../images/3.mp4" type="video/mp4">
-  </video>
 
-  
+<video width="320" height="240" controls>
+<source src="../images/3.mp4" type="video/mp4">
+</video>
 
-  <video width="320" height="240" controls>
-  <source src="../images/4.mp4" type="video/mp4">
-  </video>
 
-  
+<video width="320" height="240" controls>
+<source src="../images/4.mp4" type="video/mp4">
+</video>
 
-  <video width="320" height="240" controls>
-  <source src="../images/5.mp4" type="video/mp4">
-  </video>
 
-  
+<video width="320" height="240" controls>
+<source src="../images/5.mp4" type="video/mp4">
+</video>
 
-  * 2023.1-2023.3 **WeChat chatbot using chatgpt interface**.(Unfortunately my account was banned by Tencent due to this bot.)
 
-  * 2023.5 - 2023.6 **CS231n**
+* 2023.1-2023.3 **WeChat chatbot using chatgpt interface**.(Unfortunately my account was banned by Tencent due to this bot.)
+* 2023.5 - 2023.6 **CS231n**
 
-    	![lecture note](../images/6.jpg)
+​		![lecture note](../images/6.jpg)
 
-  * 2023.7 - 2023.9  **Tencent Kaiwu Reinforcement Learning Competition.（preliminary round）**
+* 2023.7 - 2023.9  **Tencent Kaiwu Reinforcement Learning Competition.（preliminary round）**
 
-    	![display](../images/7.jpg)
+​		![display](../images/7.jpg)
 
-  * 2024.3 - now **Gait Recognition(Outdoors Datasets)**
+* 2024.3 - now **Gait Recognition(Outdoors Datasets)**
 
-    	![display](../images/cl.gif)
-    	
-    	![display](../images/probe1-After.gif)
+​		![display](../images/cl.gif)
 
-  ## 📖Education
+​		![display](../images/probe1-After.gif)
 
-  * 2022.9 - now, Undergraduate student, South China University of Technology. (Project 985, a top 25 university in Chinese mainland)
-  * Ongoing 2024.9-2025.1, UCSD.
+## 📖Education
 
-  ### Current GPA: 
+* 2022.9 - now, Undergraduate student, South China University of Technology. (Project 985, a top 25 university in Chinese mainland)
+* Ongoing 2024.9-2025.1, UCSD/UT-Austin.
 
-  3.75/4, rank 16/96 (It is a sad story👇)
+### Current GPA: 
 
-  ### Core courses:
+3.75/4, rank 16/96 (It is a sad story👇)
 
-  * Advanced Mathematics(4.0/4.0)
-  * Linear Algebra(4.0/4.0)
-  * Probability Theory and its Applications(4.0/4.0)
-  * C++ Advanced Programming(4.0/4.0)
-  * Data Structure(4.0/4.0)
-  * And so on......
+### Core courses:
 
-  > It is worth mentioning that, last semester, I was diagnosed with moderate depression due to confusion about my own value, that's why my ranking fell from 7/289 or 5/96 to 16/96(this professional diversion is more promising). However, this semester marks a turning point for me, as I refocused on pursuing subjects that genuinely interest me. This experience has not only honed my resilience but also serves as a reminder of my innate learning capabilities, as evidenced by my earlier academic successes.🎉
+* Advanced Mathematics(4.0/4.0)
+* Linear Algebra(4.0/4.0)
+* Probability Theory and its Applications(4.0/4.0)
+* C++ Advanced Programming(4.0/4.0)
+* Data Structure(4.0/4.0)
+* And so on......
 
-  
+> It is worth mentioning that, last semester, I was diagnosed with moderate depression due to confusion about my own value, that's why my ranking fell from 7/289 or 5/96 to 16/96(this professional diversion is more promising). However, this semester marks a turning point for me, as I refocused on pursuing subjects that genuinely interest me. This experience has not only honed my resilience but also serves as a reminder of my innate learning capabilities, as evidenced by my earlier academic successes.🎉
 
-  ## 🔬Research Interests
 
-  ### Computer Vision
 
-  * Mutimodal
+## 🔬Research Interests
 
-  * Gait Recognition
-  * Video Understanding
-  * AIGC
-  * 3D Construction
-  * 3D Vision
-  * Diffusion Models
-  * VLM
-  * Semantic segmentation
+### Computer Vision
 
-  ### Robotics
+* Gait Recognition
+* Video Understanding
+* AIGC
+* 3D Construction
+* 3D Vision
+* Diffusion Models
+* VLM
+* Semantic segmentation
 
-  * SLAM
-  * Reinforcement Learning
-  * Planning and Control Thesis
+### Robotics
 
-  
+* SLAM
+* Reinforcement Learning
+* Planning and Control Thesis
 
-  ## 🗒️Articles
+## 🥇Honors and Awards
 
-  > All written in Chinese
+> Since I personally don’t think competitions are fun, I’ve rarely participated in them.
 
-  ### Computer Vision
+* Members of the Visual Team of the Automation Innovation Practice Base
+* SCUT Robot Association Vision Group Officer
+
+## 💻Internships and Research Experience
+
+* 2024.3 - now **Undergraduate Research**, Gait Recognition and Video Understanding. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
+
+## 🗒️Articles
+
+> All written in Chinese
+
+### Computer Vision
 
   * [CLIP and its skewers（up to 2022）](https://zhuanlan.zhihu.com/p/692670708)
 
@@ -124,40 +129,25 @@ redirect_from:
 
   * [Video Understanding Skewers](https://zhuanlan.zhihu.com/p/691597937)
 
-  * [Two-Stream Convolutional Networks for Action Recognition in Videos 2014](https://zhuanlan.zhihu.com/p/690574091)
-  * [Learning Transferable Visual Models From Natural Language Supervision Notes](https://zhuanlan.zhihu.com/p/690389102)
-  * [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows Notes](https://zhuanlan.zhihu.com/p/689827844)
-  * [Semantic Segmentation Skewers Up to 2017](https://zhuanlan.zhihu.com/p/689545948)
-  * [Contrastive Learning Skewers](https://zhuanlan.zhihu.com/p/688908649)
-  * [Momentum Contrast for Unsupervised Visual Representation Learning Notes](https://zhuanlan.zhihu.com/p/688621472)
-  * [Masked Autoencoders Are Scalable Vision Learners Notes](https://zhuanlan.zhihu.com/p/688464941)
-  * [AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE（ViT）Notes](https://zhuanlan.zhihu.com/p/688235018)
-  * [Generative Adversarial Nets Notes](https://zhuanlan.zhihu.com/p/687966191)
-  * [Attention Is All You Need Notes](https://zhuanlan.zhihu.com/p/687710744) ("This piece is poorly written.")
+* [Two-Stream Convolutional Networks for Action Recognition in Videos 2014](https://zhuanlan.zhihu.com/p/690574091)
+* [Learning Transferable Visual Models From Natural Language Supervision Notes](https://zhuanlan.zhihu.com/p/690389102)
+* [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows Notes](https://zhuanlan.zhihu.com/p/689827844)
+* [Semantic Segmentation Skewers Up to 2017](https://zhuanlan.zhihu.com/p/689545948)
+* [Contrastive Learning Skewers](https://zhuanlan.zhihu.com/p/688908649)
+* [Momentum Contrast for Unsupervised Visual Representation Learning Notes](https://zhuanlan.zhihu.com/p/688621472)
+* [Masked Autoencoders Are Scalable Vision Learners Notes](https://zhuanlan.zhihu.com/p/688464941)
+* [AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE（ViT）Notes](https://zhuanlan.zhihu.com/p/688235018)
+* [Generative Adversarial Nets Notes](https://zhuanlan.zhihu.com/p/687966191)
+* [Attention Is All You Need Notes](https://zhuanlan.zhihu.com/p/687710744) ("This piece is poorly written.")
 
-  
+## 🏠Address
 
-  ## 🥇Honors and Awards
+North Campus, South China University of Technology, Tianhe District, Guangzhou City, Guangdong Province, China.
 
-  > Since I personally don’t think competitions are fun, I’ve rarely participated in them.
+## 📧Contact
 
-  * Members of the Visual Team of the Automation Innovation Practice Base
-  * SCUT Robot Association Vision Group Officer
+* Weixin: [ZaychikLiu](../images/xrcode.png)
 
-  ## 💻Internships and Research Experience
+* Zhihu: [Zaychik](https://www.zhihu.com/people/lfy-46-11-14)
 
-  * 2024.3 - now **Undergraduate Research**, Gait Recognition and Video Understanding. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
-
-  
-
-  ## 🏠Address
-
-  North Campus, South China University of Technology, Tianhe District, Guangzhou City, Guangdong Province, China.
-
-  ## 📧Contact
-
-  * Weixin: [ZaychikLiu](../images/xrcode.png)
-
-  * Zhihu: [Zaychik](https://www.zhihu.com/people/lfy-46-11-14)
-
-  * Email: [Gmail](mailto:a160130k@gmail.com)
+* Email: [Gmail](mailto:a160130k@gmail.com)
