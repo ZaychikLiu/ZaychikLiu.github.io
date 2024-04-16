@@ -1,17 +1,10 @@
-* 
-
-* ---
-
-  permalink: /
-  title: "About me"
-  excerpt: "About me"
-  author_profile: true
-  redirect_from:
-
-    - /about/
-    - /about.html
-
-  ---
+permalink: /
+title: "About me"
+excerpt: "About me"
+author_profile: true
+redirect_from:
+  - /about/
+  - /about.html
 
   Hello, here is ZaychikLiu, welcome to my personal website! 
 
