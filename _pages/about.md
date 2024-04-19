@@ -13,12 +13,13 @@ Hello, here is ZaychikLiu, welcome to my personal website!
 
 ## 🎉Basic Infromation
 
-My name is Feiyang Liu（刘飞扬）, I am a sophomore undergraduate majoring in Intelligent Science and Technologyat the School of Automation at South China University of Technology.
+My name is Feiyang Liu（刘飞扬）, I am a sophomore undergraduate majoring in Intelligent Science and Technologyat the School of Automation at South China University of Technology.（华南理工大学）
 
 ## 🔥News
 
-* I am now searching for remote intern and summer intern, please contact me if you are interested!
-* I am going to UCSD/UT-Austin as a visiting student from 2024.9 to 2025.1. Welcome future classmates! I look forward to interacting with you all!
+* I am now searching for summer intern, please contact me if you are interested!
+* I am going to UCSD as a visiting student from 2024.9 to 2025.1. Welcome future classmates! I look forward to interacting with you all!
+* I am searching for collaborator to springt for AAAI 2025, the areas I would like to collaborate on are physical simulation/generated gait and video understanding/multimodality.
 
 ## 📑Publications and Projects
 
@@ -65,10 +66,16 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 
 ​		![display](../images/probe1-After.gif)
 
+## 💻Internships and Research Experience
+
+* 2024.3 - now **Undergraduate Research**, Gait Recognition and Video Understanding. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
+* 2024.4-now **Remote Intern**,Generative Gait and Video Understanding. Supervisor: [Shengfeng He](http://www.shengfenghe.com),[Singapore Management University](https://www.smu.edu.sg)
+
 ## 📖Education
 
 * 2022.9 - now, Undergraduate student, South China University of Technology. (Project 985, a top 25 university in Chinese mainland)
-* Ongoing 2024.9-2025.1, UCSD/UT-Austin.
+* Ongoing 2024.9-2025.1, UCSD.(Semester Visit)
+* Ongoing 2024.7.-2024.9, No Sure Yet.(Summer Intern)
 
 ### Current GPA: 
 
@@ -98,7 +105,8 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 * 3D Vision
 * Diffusion Models
 * VLM
-* Semantic segmentation
+* Mutimodal
+* VQA
 
 ### Robotics
 
@@ -112,10 +120,6 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 
 * Members of the Visual Team of the Automation Innovation Practice Base
 * SCUT Robot Association Vision Group Officer
-
-## 💻Internships and Research Experience
-
-* 2024.3 - now **Undergraduate Research**, Gait Recognition and Video Understanding. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
 
 ## 🗒️Articles
 
