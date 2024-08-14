@@ -101,7 +101,7 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 * Gait Recognition
 * Video Understanding
 * AIGC
-* 3D Construction
+* 3D Reconstruction
 * 3D Vision
 * Diffusion Models
 * VLM
