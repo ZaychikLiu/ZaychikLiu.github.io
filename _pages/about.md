@@ -77,16 +77,16 @@ Try it [here]()!
 Try it [here]()!
 
 * **Rasterize Mavericks**(Games 101)
-![display](../images/Mavericks1.jpg)
-![display](../images/Mavericks2.jpg)
-![display](../images/Mavericks3.jpg)
+![display](../images/Mavericks1.png)
+![display](../images/Mavericks2.png)
+![display](../images/Mavericks3.png)
 ![display](../images/Mavericks4.jpg)
 
 * **Bounding Volume Hierarchy**(Games 101)
-![display](../images/BVH.jpg)
+![display](../images/BVH.png)
 
 * **Ray Tracing**(Games 101)
-![display](../images/Ray_Tracing.jpg)
+![display](../images/Ray_Tracing.png)
 
 * **Cornell Box**(Games 101)
 ![display](../images/Cornell_Box.jpg)
