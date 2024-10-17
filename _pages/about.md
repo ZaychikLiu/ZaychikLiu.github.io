@@ -29,7 +29,7 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 
 * **Real-time shadows**（Games 201）(Uploading code)
 
-<video width="320" height="240" controls>
+<video width="800" height="600" controls>
 <source src="../images/Real_time_shadows.mp4" type="video/mp4">
 </video>
 
