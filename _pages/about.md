@@ -78,23 +78,22 @@ Try it [here](https://play.unity.com/en/games/ae328e27-95a6-4d4c-9138-202887f3d5
 
 * **Rasterize Mavericks**(Games 101)
 <div style="text-align: center;">
-    <img src="../images/Mavericks1.png" style="width: 400px; height: 300px;">
+    <img src="../images/Mavericks1.png" style="width: 400px; height: 400px;">
 </div>
 <div style="text-align: center;">
-    <img src="../images/Mavericks2.png" style="width: 400px; height: 300px;">
+    <img src="../images/Mavericks2.png" style="width: 400px; height: 400px;">
 </div>
 <div style="text-align: center;">
-    <img src="../images/Mavericks3.png" style="width: 400px; height: 300px;">
+    <img src="../images/Mavericks3.png" style="width: 400px; height: 400px;">
 </div>
 <div style="text-align: center;">
-    <img src="../images/Mavericks4.jpg" style="width: 400px; height: 300px;">
+    <img src="../images/Mavericks4.jpg" style="width: 400px; height: 400px;">
 </div>
 
 * **Bounding Volume Hierarchy**(Games 101)
 <div style="text-align: center;">
     <img src="../images/BVH.png" style="width: 800px; height: 600px;">
 </div>
-![display](../images/BVH.png)
 
 * **Ray Tracing**(Games 101)
 <div style="text-align: center;">
