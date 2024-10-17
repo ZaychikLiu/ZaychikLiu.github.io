@@ -35,9 +35,7 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 
 * **Global ray tracing**(Games 201)(Yeah, my code is lost, crying.)
 
-<video width="320" height="240" controls>
-<source src="../images/Global_ray_tracing.mp4" type="video/mp4">
-</video>
+![display](../images/Global_ray_tracing.gif)
 
 * **Angry Rabbit**(Games 103)
 
@@ -79,10 +77,10 @@ Try it [here]()!
 Try it [here]()!
 
 * **Rasterize Mavericks**(Games 101)
-![display](../images/Monalisa1.jpg)
-![display](../images/Monalisa2.jpg)
-![display](../images/Monalisa1.jpg)
-![display](../images/Monalisa2.jpg)
+![display](../images/Mavericks1.jpg)
+![display](../images/Mavericks2.jpg)
+![display](../images/Mavericks3.jpg)
+![display](../images/Mavericks4.jpg)
 
 * **Bounding Volume Hierarchy**(Games 101)
 ![display](../images/BVH.jpg)
