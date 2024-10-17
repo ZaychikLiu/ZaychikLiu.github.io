@@ -70,14 +70,14 @@ Try it [here](https://play.unity.com/en/games/ae328e27-95a6-4d4c-9138-202887f3d5
 
 * **How to fit Mona Lisa with ellipses?**(Artificial Intelligence Course Design)
 
-![display](../images/Monalisa1.jpg)
-![display](../images/Monalisa2.jpg)
+![display](../images/Monalisa1.jpg){width=200%}
+![display](../images/Monalisa2.jpg){width=200%}
 
 * **Rasterize Mavericks**(Games 101)
-![display](../images/Mavericks1.png)
-![display](../images/Mavericks2.png)
-![display](../images/Mavericks3.png)
-![display](../images/Mavericks4.jpg)
+![display](../images/Mavericks1.png){width=70%}
+![display](../images/Mavericks2.png){width=70%}
+![display](../images/Mavericks3.png){width=70%}
+![display](../images/Mavericks4.jpg){width=70%}
 
 * **Bounding Volume Hierarchy**(Games 101)
 ![display](../images/BVH.png)
