@@ -69,24 +69,42 @@ Try it [here](https://play.unity.com/en/games/d9ceed03-a643-4359-b235-5de12ea80a
 Try it [here](https://play.unity.com/en/games/ae328e27-95a6-4d4c-9138-202887f3d5f6/games103-lab4)!
 
 * **How to fit Mona Lisa with ellipses?**(Artificial Intelligence Course Design)
-
-![display](../images/Monalisa1.jpg){width=200%}
-![display](../images/Monalisa2.jpg){width=200%}
+<div style="text-align: center;">
+    <img src="../images/Monalisa1.jpg" style="width: 200%;">
+</div>
+<div style="text-align: center;">
+    <img src="../images/Monalisa2.jpg" style="width: 200%;">
+</div>
 
 * **Rasterize Mavericks**(Games 101)
-![display](../images/Mavericks1.png){width=70%}
-![display](../images/Mavericks2.png){width=70%}
-![display](../images/Mavericks3.png){width=70%}
-![display](../images/Mavericks4.jpg){width=70%}
+<div style="text-align: center;">
+    <img src="../images/Mavericks1.png" style="width: 400px; height: 300px;">
+</div>
+<div style="text-align: center;">
+    <img src="../images/Mavericks2.png" style="width: 400px; height: 300px;">
+</div>
+<div style="text-align: center;">
+    <img src="../images/Mavericks3.png" style="width: 400px; height: 300px;">
+</div>
+<div style="text-align: center;">
+    <img src="../images/Mavericks4.jpg" style="width: 400px; height: 300px;">
+</div>
 
 * **Bounding Volume Hierarchy**(Games 101)
+<div style="text-align: center;">
+    <img src="../images/BVH.png" style="width: 800px; height: 600px;">
+</div>
 ![display](../images/BVH.png)
 
 * **Ray Tracing**(Games 101)
-![display](../images/Ray_Tracing.png)
+<div style="text-align: center;">
+    <img src="../images/Ray_Tracing.png" style="width: 800px; height: 600px;">
+</div>
 
 * **Cornell Box**(Games 101)
-![display](../images/Cornell_Box.jpg)
+<div style="text-align: center;">
+    <img src="../images/Cornell_Box.jpg" style="width: 800px; height: 600px;">
+</div>
 
 * 2022.11 - 2023.1 **Automatic classification and pricing of canteen dishes based on machine vision.**
 
