@@ -39,7 +39,7 @@ Not Publications yet, but I believe that if you are willing to cooperate with me
 
 * **Angry Rabbit**(Games 103)
 
-<video width="320" height="240" controls>
+<video width="800" height="600" controls>
 <source src="../images/Angry_Rabbit.mp4" type="video/mp4">
 </video>
 
@@ -47,7 +47,7 @@ Try it [here](https://play.unity.com/en/games/a47ac486-884b-4806-8b31-3a7f1e729d
 
 * **Cloth Simulation**(Games 103)
 
-<video width="320" height="240" controls>
+<video width="800" height="600" controls>
 <source src="../images/Cloth_Simulation.mp4" type="video/mp4">
 </video>
 
@@ -55,14 +55,14 @@ Try it [here](https://play.unity.com/en/games/d9ceed03-a643-4359-b235-5de12ea80a
 
 * **Finite Element Simulation**(Games 103)
 
-<video width="320" height="240" controls>
+<video width="800" height="600" controls>
 <source src="../images/Finite_Element_Simulation.mp4" type="video/mp4">
 </video>
 
 
 * **Water Wave Simulationt**(Games 103)
 
-<video width="320" height="240" controls>
+<video width="800" height="600" controls>
 <source src="../images/Water_Wave_Simulationt.mp4" type="video/mp4">
 </video>
 
