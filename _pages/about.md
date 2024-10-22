@@ -15,16 +15,67 @@ Hello, here is ZaychikLiu, welcome to my personal website!
 
 My name is Feiyang Liu（刘飞扬）, I am a junior undergraduate majoring in Intelligent Science and Technologyat the School of Automation at South China University of Technology.（华南理工大学）
 
+## 💻Internships and Research Experience
+
+* 2024.3 - 2024.9 **Undergraduate Research**, Gait Recognition. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
+* 2024.4 - 2024.9 **Remote Intern**, Multimodal and Computer Graphics. Supervisor: [Shengfeng He](http://www.shengfenghe.com),[Singapore Management University](https://www.smu.edu.sg)
+
+## 📖Education
+
+* 2022.9 - now, Undergraduate student, South China University of Technology. (Project 985, a top 20 university in Chinese mainland)
+* 2024.9 - now(I will stay for 1-2 years/ 2-4 semesters, welcome to come and communicate with me!) Visiting Student, Unibersity of California, Berkeley
+
+## 🥇Honors and Awards
+
+* Members of the Visual Team of the Automation Innovation Practice Base
+* SCUT Robot Association Vision Group Officer
+
+### Current GPA: 
+
+3.6
+
+### Self-learned Courses:
+
+* GAMES101: Introduction to Modern Computer Graphics(Online, University of California, Santa Barbara)
+* GAMES102: Geometry Modeling and Processing(Online, University of Science and Technology of China)
+* GAMES103: Introduction to Physics-Based Computer Animation(Online, Ohio State University)
+* GAMES201: Advanced Physics Engines 2020: A Hands-on Tutorial(Still studing, it is really in-depth theory)(Online, Tachi Graphics)
+* GAMES202: High-quality real-time rendering(One Part left)(Online, University of California, Santa Barbara)
+* CS231n: Deep Learning for Computer Vision(Online, Stanford University)
+* CS229: Machine Learning(Online, Stanford University)
+
+### Courses in Berkeley
+
+* CS61C: Great Ideas in Computer Architecture
+* CS294/194-196: Large Language Model Agents
+* MECENG 239/139: Robotic Locomotion
+
+### Core courses in SCUT:
+
+* Advanced Mathematics(4.0/4.0)
+* Linear Algebra(4.0/4.0)
+* Probability Theory and its Applications(4.0/4.0)
+* C++ Advanced Programming(4.0/4.0)
+* Data Structure(4.0/4.0)
+* Pattern Recognition
+* Introduction to Artificial Intelligence
+* Numerical analysis
+* Signals and Systems
+* Complex function
+* Integral Transform
+* Digital electronic circuits
+* Analog electronic circuits
+* Circuit Basics
+* Classical control theory
+* Systems Engineering Theory
+* Computer Internet
+* And so on......
+
 ## 🔥News
 
 * I am now searching for a long-term(2 semesters) internship in Berkeley, please contact me if you are interested!
 
-## 📑Publications and Projects
-
-### Publication
-
-Not Publications yet, but I believe that if you are willing to cooperate with me, we can definitely produce good papers！
-
+## 📑 Projects
 ### Projects, interesting homework and gadgets
 
 * **Real-time shadows**（Games 201）(Uploading code)
@@ -142,60 +193,6 @@ Try it [here](https://play.unity.com/en/games/ae328e27-95a6-4d4c-9138-202887f3d5
 ​		![lecture note](../images/6.jpg)
 
 
-
-
-## 💻Internships and Research Experience
-
-* 2024.3 - 2024.9 **Undergraduate Research**, Gait Recognition. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
-* 2024.4 - 2024.9 **Remote Intern**, Multimodal and Computer Graphics. Supervisor: [Shengfeng He](http://www.shengfenghe.com),[Singapore Management University](https://www.smu.edu.sg)
-* ~~2024.7 - 2024.10 **Summer Intern**, Computer Graphics / Computer Vision. Supervisor [Wenping Wang](https://scholar.google.com/citations?user=28shvv0AAAAJ&hl=en),[Texas A&M University](https://en.wikipedia.org/wiki/Texas_A%26M_University)~~ Due to the time conflict, I have to give up this opportunity.(crying)
-
-## 📖Education
-
-* 2022.9 - now, Undergraduate student, South China University of Technology. (Project 985, a top 20 university in Chinese mainland)
-* 2024.9 - now(I will stay for 1-2 years/ 2-4 semesters, welcome to come and communicate with me!) Visiting Student, Unibersity of California, Berkeley
-
-### Current GPA: 
-
-3.6
-
-### Fun Courses:
-
-* GAMES101: Introduction to Modern Computer Graphics(Online, University of California, Santa Barbara)
-* GAMES102: Geometry Modeling and Processing(Online, University of Science and Technology of China)
-* GAMES103: Introduction to Physics-Based Computer Animation(Online, Ohio State University)
-* GAMES201: Advanced Physics Engines 2020: A Hands-on Tutorial(Still studing, it is really in-depth theory)(Online, Tachi Graphics)
-* GAMES202: High-quality real-time rendering(One Part left)(Online, University of California, Santa Barbara)
-* CS231n: Deep Learning for Computer Vision(Online, Stanford University)
-* CS229: Machine Learning(Online, Stanford University)
-
-### Courses in Berkeley
-
-* CS61C: Great Ideas in Computer Architecture
-* CS294/194-196: Large Language Model Agents
-* MECENG 239/139: Robotic Locomotion
-
-### Core courses in SCUT:
-
-* Advanced Mathematics(4.0/4.0)
-* Linear Algebra(4.0/4.0)
-* Probability Theory and its Applications(4.0/4.0)
-* C++ Advanced Programming(4.0/4.0)
-* Data Structure(4.0/4.0)
-* Pattern Recognition
-* Introduction to Artificial Intelligence
-* Numerical analysis
-* Signals and Systems
-* Complex function
-* Integral Transform
-* Digital electronic circuits
-* Analog electronic circuits
-* Circuit Basics
-* Classical control theory
-* Systems Engineering Theory
-* Computer Internet
-* And so on......
-
 ### Areas of Interest
 
 * Computer Vision
@@ -207,10 +204,6 @@ Try it [here](https://play.unity.com/en/games/ae328e27-95a6-4d4c-9138-202887f3d5
 * Mutimodal
 * SLAM
 
-## 🥇Honors and Awards
-
-* Members of the Visual Team of the Automation Innovation Practice Base
-* SCUT Robot Association Vision Group Officer
 
 ## 🗒️Notes
 
