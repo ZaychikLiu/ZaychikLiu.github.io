@@ -19,6 +19,7 @@ My name is Feiyang Liu（刘飞扬）, I am a junior undergraduate majoring in I
 
 * 2024.3 - 2024.9 **Undergraduate Research**, Gait Recognition. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
 * 2024.4 - 2024.9 **Remote Intern**, Multimodal and Computer Graphics. Supervisor: [Shengfeng He](http://www.shengfenghe.com),[Singapore Management University](https://www.smu.edu.sg)
+* ~~2024.8 - 2024.10 **Summer Intern**, 3d Reconstruction. Supervisor: [Wenping Wang](https://scholar.google.com/citations?user=28shvv0AAAAJ&hl=en), [TAMU/HKU]~~(Due to time conflict, crying)
 
 ## 📖Education
 
@@ -204,6 +205,8 @@ Try it [here](https://play.unity.com/en/games/ae328e27-95a6-4d4c-9138-202887f3d5
 * Mutimodal
 * SLAM
 
+### Skills
+C++,Pytorch,Unity,webgl,glgs,javascript,html,OpenCV,OpenGL
 
 ## 🗒️Notes
 
