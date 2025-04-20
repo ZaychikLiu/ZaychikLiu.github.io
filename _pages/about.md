@@ -212,7 +212,7 @@ Try it [here](https://play.unity.com/en/games/ae328e27-95a6-4d4c-9138-202887f3d5
 * SLAM
 
 ### Skills
-C++,Pytorch,Unity,webgl,glgs,javascript,html,OpenCV,OpenGL
+C++,Pytorch,Unity,webgl,glgs,java,javascript,html,OpenCV,OpenGL
 
 ## 🗒️Notes
 
