@@ -22,10 +22,13 @@ My name is Feiyang Liu（刘飞扬）, I am a junior undergraduate majoring in I
 * ~~2024.8 - 2024.10 **Summer Intern**, 3d Reconstruction. Supervisor: [Wenping Wang](https://scholar.google.com/citations?user=28shvv0AAAAJ&hl=en), [TAMU/HKU]~~(Due to time conflict, crying)
 * 2024.3 - 2024.9 **Undergraduate Research**, Gait Recognition. Supervisor: [Wenxiong Kang](https://scholar.google.com/citations?user=meU7EOAAAAAJ&hl=en), [South China University of Techonology](https://www.scut.edu.cn/en/)
 
+## Publication
+* [HiRes-GS: Hierarchical Resolution Scaling for Sparse-View High-Resolution 3D Gaussian Splatting](https://openreview.net/pdf?id=vucL39cFWZ)
+
 ## 📖Education
 
 * 2022.9 - now, Undergraduate student, South China University of Technology. (Project 985, a top 20 university in Chinese mainland)
-* 2024.9 - now(I will stay for 1-2 years/ 2-4 semesters, welcome to come and communicate with me!) Visiting Student, Unibersity of California, Berkeley
+* 2024.9 - now Visiting Student, EECS, Unibersity of California, Berkeley
 
 ## 🥇Honors and Awards
 
@@ -51,6 +54,8 @@ My name is Feiyang Liu（刘飞扬）, I am a junior undergraduate majoring in I
 * CS61C: Great Ideas in Computer Architecture
 * CS294/194-196: Large Language Model Agents
 * MECENG 239/139: Robotic Locomotion
+* CS186 Introduction to Database
+* CS184 Computer Graphics
 
 ### Core courses in SCUT:
 
