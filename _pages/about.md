@@ -26,7 +26,7 @@ My name is Feiyang Liu（刘飞扬）, I am a junior undergraduate majoring in I
 
 ## 📖Education
 
-* 2022.9 - now, Undergraduate student, South China University of Technology. (Project 985, a top 20 university in Chinese mainland)
+* Undergraduate student, South China University of Technology. (Project 985, a top 20 university in Chinese mainland)
 * 2024.9 - now Visiting Student, EECS, Unibersity of California, Berkeley
 
 ## 🥇Honors and Awards
