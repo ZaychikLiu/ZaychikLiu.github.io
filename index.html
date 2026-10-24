@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/toc.js" defer></script>
+  <meta name="google-site-verification" content="9uan5uVzWiVjjlFHSaJjC30M5aBQpUH-4UdYbgOzNMU">
+  <title>Feiyang Liu</title>
+  <meta name="description" content="Feiyang Liu, undergraduate researcher at South China University of Technology working on multimodal foundation models.">
+  <meta property="og:title" content="Feiyang Liu">
+  <meta property="og:description" content="How multimodal foundation models learn: representations, training dynamics, and why training recipes work.">
+  <meta property="og:image" content="https://zaychikliu.github.io/assets/img/avatar.jpg">
+  <link rel="icon" href="assets/img/avatar.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="canonical" href="https://zaychikliu.github.io/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Feiyang Liu",
+    "url": "https://zaychikliu.github.io/",
+    "image": "https://zaychikliu.github.io/assets/img/avatar.jpg",
+    "jobTitle": "Undergraduate researcher",
+    "affiliation": {
+      "@type": "CollegeOrUniversity",
+      "name": "South China University of Technology"
+    },
+    "knowsAbout": [
+      "Multimodal foundation models",
+      "Representation learning",
+      "Large language models",
+      "Computer vision"
+    ],
+    "sameAs": [
+      "https://scholar.google.com/citations?user=md3YPrAAAAAJ",
+      "https://github.com/ZaychikLiu",
+      "https://x.com/ZaychikLFY",
+      "https://www.xiaohongshu.com/user/profile/62a32fde000000001b02936e"
+    ]
+  }
+  </script>
+</head>
+<body>
+<main class="page">
+  <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">Dark mode</button>
+
+
+  <nav class="toc toc-side" aria-label="Contents">
+    <ol>
+      <li><a href="#about">About</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#education">Education</a></li>
+    </ol>
+  </nav>
+
+  <header class="intro" id="about">
+    <img class="portrait" src="assets/img/avatar.jpg" alt="Abstract painting of overlapping translucent ellipses" width="168" height="168">
+    <div class="intro-text">
+      <h1>Feiyang Liu</h1>
+      <p class="role">Undergraduate researcher, South China University of Technology</p>
+      <p>I study Intelligent Science and Technology at South China University of Technology and will graduate in June 2027. In 2024–2025 I was a visiting student at UC Berkeley.</p>
+      <p>My research aims to understand how multimodal foundation models learn. In unified models that both understand and generate images, I study how visual and linguistic representations emerge and interact during training, how multimodal training reshapes the representations of a pretrained language model, and which properties of a training recipe determine its outcome. I currently lead UMP, a project on full-pipeline training of unified multimodal models on Cloud TPUs. I also work on <a href="https://haoquanzhang.github.io/pixelbench/">PixelBench</a>, which asks whether large language models can understand and generate images pixel by pixel. I work closely with <a href="https://arctanxarc.github.io/">Ruichuan An</a> (Peking University) and <a href="https://haoquanzhang.github.io/">Haoquan Zhang</a> (CUHK).</p>
+      <p>I approach these questions empirically. Benchmark scores show what a model can do but rarely why, so I combine controlled ablations with probes of internal representations to explain the behavior that training produces.</p>
+      <nav class="links" aria-label="Contact and profiles">
+        <a href="mailto:a160130k@gmail.com">Email</a>
+        <a href="assets/Feiyang_Liu_CV.pdf">CV</a>
+        <a href="https://scholar.google.com/citations?user=md3YPrAAAAAJ">Google Scholar</a>
+        <a href="https://github.com/ZaychikLiu">GitHub</a>
+        <a href="https://x.com/ZaychikLFY">X</a>
+        <a href="https://www.xiaohongshu.com/user/profile/62a32fde000000001b02936e">Xiaohongshu</a>
+        <a href="#blog">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <details class="toc toc-inline">
+    <summary>Contents</summary>
+    <ol>
+      <li><a href="#about">About</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#education">Education</a></li>
+    </ol>
+  </details>
+
+  <section aria-labelledby="news">
+    <h2 id="news">News</h2>
+    <ul class="news">
+      <li><time datetime="2026-08">Aug 2026</time><span>Started leading UMP, full-pipeline training of unified multimodal models on Cloud TPU v5p and v6e.</span></li>
+      <li><time datetime="2026-04">Apr 2026</time><span>Our paper on sparse-view high-resolution 3D Gaussian Splatting was accepted to CVPR 2026 as a Highlight.</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="research">
+    <h2 id="research">Research</h2>
+    <p>I am currently working on three questions.</p>
+    <dl class="themes">
+      <div>
+        <dt>What happens during multimodal training</dt>
+        <dd>How understanding, generation and language compete with or help each other inside one model, and how data mixtures, loss weighting and learning-rate schedules shape what the model learns. Most of this work happens in UMP.</dd>
+      </div>
+      <div>
+        <dt>Probing what a model has learned</dt>
+        <dd>Probes of a model's internal representations: whether it actually uses the image, where its language ability is lost, when generation starts to overfit, and what interpolating between checkpoints reveals. Made cheap, the same probes serve as evaluation. They track text, understanding and generation together and predict full benchmark results, so recipes can be compared early in training.</dd>
+      </div>
+      <div>
+        <dt>LLMs for vision</dt>
+        <dd>Whether language models can understand and generate images with the tools they already have, and what learning to produce pixels teaches them about seeing. This is the subject of PixelBench and GroundingBench.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="publications">
+    <h2 id="publications">Publications</h2>
+
+    <article class="paper">
+      <a href="https://haoquanzhang.github.io/pixelbench/"><img class="teaser" src="assets/img/pub/pixelbench.jpg" alt="Pixel images generated by language models at 16, 32 and 64 pixel resolution, next to a palette-indexed pixel grid for a tree" loading="lazy"></a>
+      <div>
+        <h3><a href="https://haoquanzhang.github.io/pixelbench/">PixelBench: Can LLMs Understand and Generate Images Pixel by Pixel?</a></h3>
+        <p class="authors">Haoquan Zhang, <strong>Feiyang Liu</strong>, Juanxi Tian, Wanhua Li, Haodong Duan, Weiyang Liu</p>
+        <p class="venue">2026</p>
+        <p class="summary">Language models write an RGB palette and a grid of palette indices, generating pixel images with their existing vocabulary. Pixel understanding tracks pixel generation, and training models to reconstruct pixels helps visual understanding.</p>
+        <p class="paper-links"><a href="https://haoquanzhang.github.io/pixelbench/">Project page</a></p>
+      </div>
+    </article>
+
+    <article class="paper">
+      <a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html"><img class="teaser" src="assets/img/pub/cags.jpg" alt="Poster for Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting" loading="lazy"></a>
+      <div>
+        <h3><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting</a></h3>
+        <p class="authors">Qinzheng Zhou, <strong>Feiyang Liu</strong>, Lijing Lu, Zhihang Li</p>
+        <p class="venue">CVPR 2026 <span class="award">Highlight</span></p>
+        <p class="summary">Low input resolution gives stable geometry and high resolution gives detail but also noise; a coarse-to-fine aggregation keeps both.</p>
+        <p class="paper-links"><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Paper</a><a href="https://cvpr.thecvf.com/virtual/2026/poster/36203">Poster</a></p>
+      </div>
+    </article>
+  </section>
+
+  <section aria-labelledby="experience">
+    <h2 id="experience">Experience</h2>
+    <div class="entry">
+      <h3>UMP: Unified Multimodal Models</h3>
+      <p class="meta">Project lead, research intern (remote), with UC Santa Cruz and Google DeepMind (Gemini)</p>
+      <p>Full-pipeline training of unified understanding-and-generation models on hundreds of Cloud TPU v5p and v6e chips, from pretraining to post-training. I built the multi-slice training and evaluation infrastructure, designed the data mixtures, and ran the ablations that shape the training recipe.</p>
+      <p>The evaluation stack watches text, understanding and generation together, with decontaminated generation benchmarks and image-shuffle tests of whether the model uses the image. Recipes are screened with branch-and-decay annealing and short fine-tuning probes, against seed-noise floors and thresholds set in advance. We are now testing whether cheap probes rank checkpoints the same way full evaluations do.</p>
+    </div>
+    <div class="entry">
+      <h3>PixelBench and GroundingBench</h3>
+      <p class="meta">Research collaborator (remote), ByteDance Seed and The Chinese University of Hong Kong</p>
+      <p>On <a href="https://haoquanzhang.github.io/pixelbench/">PixelBench</a>, I built the initial demo, proposed ideas, and designed part of the experiments. On GroundingBench, a benchmark for visual grounding, I contribute to the task survey and the design of detection and counting tasks.</p>
+    </div>
+    <div class="entry">
+      <h3>Sparse-view 3D Gaussian Splatting</h3>
+      <p class="meta">Co-author, with collaborators from HUST, Peking University and Alibaba</p>
+      <p>Studied how input resolution affects sparse-view reconstruction, leading to the CVPR 2026 paper.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="blog">
+    <h2 id="blog">Blog</h2>
+    <ul class="post-list-home">
+      <li>
+        <time datetime="2026-07-06">Jul 2026</time>
+        <div>
+          <h3><a href="blog/2026/beyond-vision/">Vision之外 / Beyond Vision</a></h3>
+          <p>Do ego and taste still matter for newcomers in AI research, and should one stay in academia or move to industry?</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="education">
+    <h2 id="education">Education</h2>
+    <div class="entry entry-row">
+      <div><h3>South China University of Technology</h3><p class="meta">B.Eng. in Intelligent Science and Technology</p></div>
+      <p class="when">2022 – 2027</p>
+    </div>
+    <div class="entry entry-row">
+      <div><h3>University of California, Berkeley</h3><p class="meta">Visiting student</p></div>
+      <p class="when">2024 – 2025</p>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>Last updated October 2026.</p>
+  </footer>
+</main>
+</body>
+</html>
