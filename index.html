@@ -124,8 +124,11 @@
 
   <section aria-labelledby="publications">
     <div class="section-head">
-      <h2 id="publications">Selected Publications</h2>
-      <button type="button" id="pub-toggle" class="pub-toggle" aria-pressed="false">Show full list (3)</button>
+      <h2 id="publications">Publications</h2>
+      <div class="pub-switch" role="group" aria-label="Filter publications">
+        <button type="button" class="pub-tab" data-pub-mode="selected" aria-pressed="true">Selected <span class="pub-badge">2</span></button>
+        <button type="button" class="pub-tab" data-pub-mode="all" aria-pressed="false">All <span class="pub-badge">3</span></button>
+      </div>
     </div>
 
     <div id="pub-selected">
@@ -295,21 +298,23 @@
   </footer>
 </main>
 <script>
-  // 出版物：选中卡片与完整卡片列表之间切换；?pubs=all 可直接展开完整列表
+  // 出版物：Segmented 切换 Selected (2) / All (3)；?pubs=all 可直接展开完整列表
   (function () {
-    var btn = document.getElementById('pub-toggle');
+    var tabs = document.querySelectorAll('[data-pub-mode]');
     var extra = document.getElementById('pub-extra');
-    var h2 = document.getElementById('publications');
     function show(full) {
       if (extra) extra.hidden = !full;
-      btn.setAttribute('aria-pressed', String(full));
-      btn.textContent = full ? 'Show selected (2)' : 'Show full list (3)';
-      if (h2) h2.textContent = full ? 'Publications' : 'Selected Publications';
+      tabs.forEach(function (tab) {
+        var isAll = tab.getAttribute('data-pub-mode') === 'all';
+        tab.setAttribute('aria-pressed', String(full ? isAll : !isAll));
+      });
     }
-    btn.addEventListener('click', function () {
-      var full = extra ? extra.hidden : false;
-      show(full);
-      history.replaceState(null, '', full ? '?pubs=all' : location.pathname);
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var full = tab.getAttribute('data-pub-mode') === 'all';
+        show(full);
+        history.replaceState(null, '', full ? '?pubs=all' : location.pathname);
+      });
     });
     if (new URLSearchParams(location.search).get('pubs') === 'all') show(true);
   })();

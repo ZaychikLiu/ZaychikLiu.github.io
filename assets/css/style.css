@@ -252,6 +252,75 @@ h3 a { color: var(--ink); text-decoration-color: var(--rule); }
 
 /* 经历与教育与在进行项目 */
 .paper[hidden] { display: none !important; }
+#pub-extra:not([hidden]) {
+  animation: pubReveal 0.22s ease-out;
+}
+@keyframes pubReveal {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pub-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.16rem;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.16rem;
+}
+.pub-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  cursor: pointer;
+  line-height: 1.3;
+  transition: background-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+.pub-tab:hover {
+  color: var(--ink);
+}
+.pub-tab[aria-pressed="true"] {
+  color: var(--paper);
+  background: var(--violet);
+  box-shadow: 0 1px 3px rgba(18, 14, 28, 0.18);
+}
+.pub-tab:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+.pub-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: rgba(128, 120, 148, 0.16);
+  color: inherit;
+}
+.pub-tab[aria-pressed="true"] .pub-badge {
+  background: rgba(255, 255, 255, 0.22);
+  color: var(--paper);
+}
+:root[data-theme="dark"] .pub-tab[aria-pressed="true"] .pub-badge {
+  background: rgba(23, 20, 31, 0.24);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pub-tab[aria-pressed="true"] .pub-badge {
+    background: rgba(23, 20, 31, 0.24);
+  }
+}
 .project-card {
   background: var(--panel);
   border: 1px solid var(--rule);
