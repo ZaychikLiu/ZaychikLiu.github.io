@@ -73,7 +73,7 @@
         <h1>Feiyang Liu</h1>
         <p class="role">Undergraduate researcher · South China University of Technology</p>
         <p>I study Intelligent Science and Technology at South China University of Technology (graduating June 2027) and was a visiting student at UC Berkeley in 2024–2025.</p>
-        <p>My research focuses on building <strong>scalable, language-centric multimodal foundation models</strong>—studying how representations, model architectures, and pretraining recipes unify visual understanding, generation, and reasoning.</p>
+        <p>My research focuses on building <strong>scalable, language-centric multimodal foundation models</strong>—studying how representations, model architectures, and pretraining/post-training recipes unify visual understanding, generation, and reasoning.</p>
         <p>I previously worked on <strong>3D vision and computer graphics</strong> for building spatial-aware visual intelligence.</p>
         <nav class="links" aria-label="Contact and profiles">
           <a href="mailto:a160130k@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2 4l6 4.5L14 4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Email</a>
@@ -91,7 +91,7 @@
     <div class="research-focus">
       <p class="focus-lead">Currently, my research centers on two directions:</p>
       <ul class="intro-themes">
-        <li><strong>Scalable, Unified Multimodal Pretraining:</strong> demystifying the pretraining design space of unified multimodal models across visual tokenizers/encoders, MoT routing, data mixtures, and multi-stage pretraining recipes across hundreds of TPU chips (<a href="#ongoing">OpenUMM</a>).</li>
+        <li><strong>Scalable, Unified, and Controllable Multimodal Models:</strong> demystifying the design space of unified multimodal models with a strong focus on large-scale pretraining—across visual tokenizers/encoders, MoT routing, data mixtures, and multi-stage training recipes on hundreds of TPU chips (<a href="#ongoing">OpenUMM</a>).</li>
         <li><strong>Solving Vision with LLMs &amp; Symbolic Vision:</strong> probing how far LLMs can go as general visual learners and generators—compressing visual signals into compact <em>symbolic visual primitives</em> in plain text (<a href="#publications">PixelBench</a>) or directly tackling core visual perception tasks (<a href="#ongoing">GroundingBench</a>).</li>
       </ul>
       <p class="status-callout">I am applying for Fall 2027 M.Phil. / Master's programs and actively seeking research internship opportunities in industry—feel free to <a href="#contact">reach out</a> for internships or research collaborations.</p>
@@ -157,16 +157,16 @@
     <h2 id="ongoing">Ongoing Projects</h2>
     <article class="project-card">
       <div class="project-head">
-        <h3>OpenUMM — Demystifying the Design Space of Unified Multimodal Pretraining</h3>
+        <h3>OpenUMM — Demystifying the Design Space of Unified Multimodal Models</h3>
         <p class="project-meta"><strong class="meta-role">Project Lead</strong> · UC Santa Cruz &amp; Gemini Team · <span class="meta-scale">Hundreds of Cloud TPU v5p/v6e Chips</span></p>
       </div>
-      <p>In the spirit of systematic empirical studies by <a href="https://tsb0601.github.io/">Shengbang Tong</a> and <a href="https://junlinhan.github.io/">Junlin Han</a> (e.g., <em>Towards Physics of Multimodal Pretraining</em>, <em>Beyond Language Modeling</em>, <em>Learning to See Before Seeing</em>), we conduct a controlled, large-scale <strong>unified multimodal pretraining</strong> study unifying language modeling, visual understanding, and image generation (e.g., Qwen3 + latent flow matching)—ablating visual representations, architecture/MoT routing, pretraining data mixtures, multi-stage pretraining recipes, and how pretraining signals predict post-training performance. Built and optimized a modular JAX/Flax pretraining, data, and decontaminated evaluation stack across hundreds of TPU v5p/v6e chips (multi-host/multi-slice sharding, ZeRO-1, rematerialization, elastic recovery, XLA profiling).</p>
+      <p>In the spirit of systematic empirical studies by <a href="https://tsb0601.github.io/">Shengbang Tong</a> and <a href="https://junlinhan.github.io/">Junlin Han</a> (e.g., <em>Towards Physics of Multimodal Pretraining</em>, <em>Beyond Language Modeling</em>, <em>Learning to See Before Seeing</em>), we conduct a controlled, end-to-end study of unified language modeling, visual understanding, and image generation (e.g., Qwen3 + latent flow matching)—with a heavy emphasis on <strong>large-scale unified pretraining</strong> alongside post-training, ablating visual representations, architecture/MoT routing, data mixtures, multi-stage training recipes, and how pretraining signals predict post-training outcomes. Built and optimized a modular JAX/Flax pretraining, post-training, and decontaminated evaluation stack across hundreds of TPU v5p/v6e chips (multi-host/multi-slice sharding, ZeRO-1, rematerialization, elastic recovery, XLA profiling).</p>
       <ul class="axis-tags" aria-label="Study axes">
-        <li>Unified Multimodal Pretraining</li>
+        <li>Unified Pretraining &amp; Post-Training</li>
         <li>Visual Tokenizers &amp; Encoders</li>
         <li>Architecture &amp; MoT Routing</li>
-        <li>Pretraining Data Mixtures &amp; Resolution</li>
-        <li>Multi-Stage Pretraining Recipes</li>
+        <li>Data Mixtures &amp; Resolution</li>
+        <li>Multi-Stage Training Recipes</li>
         <li>Pretraining-to-Post-Training Prediction</li>
       </ul>
     </article>
