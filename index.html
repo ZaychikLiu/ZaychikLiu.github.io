@@ -92,7 +92,7 @@
     <div class="research-focus">
       <p class="focus-lead">Currently, my research centers on two directions:</p>
       <ul class="intro-themes">
-        <li><strong>Scalable, Unified, and Controllable Multimodal Models:</strong> demystifying the design space of unified multimodal models with a strong focus on large-scale pretraining—across visual tokenizers/encoders, MoT routing, data mixtures, and multi-stage training recipes on hundreds of TPU chips (<a href="#ongoing">OpenUMM</a>).</li>
+        <li><strong>Scalable, Unified, and Controllable Multimodal Models:</strong> end-to-end training of Unified Multimodal Models (UMMs)—with a strong emphasis on large-scale unified pretraining alongside post-training and evaluation across language modeling, visual understanding, and generation on TPU clusters (<a href="#ongoing">ongoing work</a>).</li>
         <li><strong>Solving Vision with LLMs &amp; Symbolic Vision:</strong> probing how far LLMs can go as general visual learners and generators—compressing visual signals into compact <em>symbolic visual primitives</em> in plain text (<a href="#publications">PixelBench</a>) and exploring how modern LLMs tackle core visual perception (<a href="#ongoing">ongoing work</a>).</li>
       </ul>
       <p class="status-callout">I am applying for Fall 2027 M.Phil. / Master's programs and actively seeking research internship opportunities in industry—feel free to <a href="#contact">reach out</a> for internships or research collaborations.</p>
@@ -170,18 +170,10 @@
     <h2 id="ongoing">Ongoing Projects</h2>
     <article class="project-card">
       <div class="project-head">
-        <h3>OpenUMM — Demystifying the Design Space of Unified Multimodal Models</h3>
-        <p class="project-meta"><strong class="meta-role">Project Lead</strong> · UC Santa Cruz &amp; Gemini Team · <span class="meta-scale">Hundreds of Cloud TPU v5p/v6e Chips</span></p>
+        <h3>End-to-End Training of Unified Multimodal Models</h3>
+        <p class="project-meta"><strong class="meta-role">Project Lead</strong> · UC Santa Cruz &amp; Gemini Team · <span class="meta-scale">Ongoing · Hundreds of Cloud TPU v5p/v6e Chips</span></p>
       </div>
-      <p>In the spirit of systematic empirical studies by <a href="https://tsb0601.github.io/">Shengbang Tong</a>, <a href="https://junlinhan.github.io/">Junlin Han</a>, and <a href="https://penghao-wu.github.io/">Penghao Wu</a> (e.g., <em>Towards Physics of Multimodal Pretraining</em>, <em>Beyond Language Modeling</em>, <em>Uncovering Understanding–Generation Synergy</em>, <em>Learning to See Before Seeing</em>), we conduct a controlled, end-to-end study of unified language modeling, visual understanding, and image generation (e.g., Qwen3 + latent flow matching)—with a heavy emphasis on <strong>large-scale unified pretraining</strong> alongside post-training, ablating visual representations, architecture/MoT routing, data mixtures, multi-stage training recipes, and how pretraining signals predict post-training outcomes. Built and optimized a modular JAX/Flax pretraining, post-training, and decontaminated evaluation stack across hundreds of TPU v5p/v6e chips (multi-host/multi-slice sharding, ZeRO-1, rematerialization, elastic recovery, XLA profiling).</p>
-      <ul class="axis-tags" aria-label="Study axes">
-        <li>Unified Pretraining &amp; Post-Training</li>
-        <li>Visual Tokenizers &amp; Encoders</li>
-        <li>Architecture &amp; MoT Routing</li>
-        <li>Data Mixtures &amp; Resolution</li>
-        <li>Multi-Stage Training Recipes</li>
-        <li>Pretraining-to-Post-Training Prediction</li>
-      </ul>
+      <p>In the spirit of systematic empirical studies by <a href="https://tsb0601.github.io/">Shengbang Tong</a>, <a href="https://junlinhan.github.io/">Junlin Han</a>, and <a href="https://penghao-wu.github.io/">Penghao Wu</a> (e.g., <em>Towards Physics of Multimodal Pretraining</em>, <em>Beyond Language Modeling</em>, <em>Uncovering Understanding–Generation Synergy</em>, <em>Learning to See Before Seeing</em>), we are conducting an end-to-end empirical study of Unified Multimodal Models (UMMs) across language modeling, visual understanding, and image generation—with a major focus on <strong>large-scale unified pretraining</strong> alongside multi-stage post-training and evaluation. Built and optimized a modular JAX/Flax distributed training and evaluation stack across hundreds of TPU v5p/v6e chips (details to be shared upon release).</p>
     </article>
 
     <article class="project-card">
