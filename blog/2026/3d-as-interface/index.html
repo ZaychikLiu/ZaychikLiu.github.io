@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+  <script src="../../../assets/js/theme.js" defer></script>
+  <script src="../../../assets/js/toc.js" defer></script>
+  <title>3D更应该定位为交互手段而非通用智能 / 3D as an Interaction Interface Rather Than General Intelligence · Feiyang Liu</title>
+  <meta name="description" content="3D may disappear from inside the model, only to reappear outside the model as environments, states, and control interfaces bridging language agents and the physical world.">
+  <meta property="og:title" content="3D更应该定位为交互手段而非通用智能 / 3D as an Interaction Interface Rather Than General Intelligence">
+  <meta property="og:description" content="3D may disappear from inside the model, only to reappear outside the model as environments, states, and control interfaces.">
+  <meta property="og:image" content="https://zaychikliu.github.io/assets/img/avatar.jpg">
+  <link rel="canonical" href="https://zaychikliu.github.io/blog/2026/3d-as-interface/">
+  <link rel="icon" href="../../../assets/img/avatar.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Feiyang Liu</a><span aria-hidden="true">/</span><a href="../../../#blog">Blog</a><button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">Dark mode</button></nav>
+
+  <header class="post-head">
+    <h1 id="post-title">3D更应该定位为交互手段而非通用智能</h1>
+    <p class="post-meta"><time datetime="2026-08-17">17 August 2026</time></p>
+    <div class="lang-switch" role="group" aria-label="Article language">
+      <button type="button" data-lang="zh" aria-pressed="true">中文</button>
+      <button type="button" data-lang="en" aria-pressed="false">English</button>
+    </div>
+  </header>
+
+  <nav class="toc toc-side" aria-label="目录" data-lang-content="zh">
+    <ol>
+      <li><a href="#zh-1">1. 3D 视觉的存在主义危机</a></li>
+      <li><a href="#zh-2">2. 3D 作为连接虚拟与物理世界的交互媒介</a></li>
+      <li><a href="#zh-3">3. 对三种常见质疑的回应</a></li>
+      <li><a href="#zh-3-1">3.1 Sim-to-Real Gap 与白模 + 视频渲染</a></li>
+      <li><a href="#zh-3-2">3.2 显式几何输出作为结构化中间状态</a></li>
+      <li><a href="#zh-3-3">3.3 3D Interactive Game 作为具身跳板</a></li>
+    </ol>
+  </nav>
+  <nav class="toc toc-side" aria-label="Contents" data-lang-content="en" hidden>
+    <ol>
+      <li><a href="#en-1">1. The Existential Crisis of 3D Vision</a></li>
+      <li><a href="#en-2">2. 3D as an Interactive Bridge</a></li>
+      <li><a href="#en-3">3. Addressing Three Common Objections</a></li>
+      <li><a href="#en-3-1">3.1 Sim-to-Real Gap &amp; Generative Rendering</a></li>
+      <li><a href="#en-3-2">3.2 Explicit Geometry as Structured State</a></li>
+      <li><a href="#en-3-3">3.3 3D Interactive Games as a Stepping Stone</a></li>
+    </ol>
+  </nav>
+
+  <details class="toc toc-inline" data-lang-content="zh">
+    <summary>目录</summary>
+    <ol>
+      <li><a href="#zh-1">1. 3D 视觉的存在主义危机</a></li>
+      <li><a href="#zh-2">2. 3D 作为连接虚拟与物理世界的交互媒介</a></li>
+      <li><a href="#zh-3">3. 对三种常见质疑的回应</a></li>
+      <li><a href="#zh-3-1">3.1 Sim-to-Real Gap 与白模 + 视频渲染</a></li>
+      <li><a href="#zh-3-2">3.2 显式几何输出作为结构化中间状态</a></li>
+      <li><a href="#zh-3-3">3.3 3D Interactive Game 作为具身跳板</a></li>
+    </ol>
+  </details>
+  <details class="toc toc-inline" data-lang-content="en" hidden>
+    <summary>Contents</summary>
+    <ol>
+      <li><a href="#en-1">1. The Existential Crisis of 3D Vision</a></li>
+      <li><a href="#en-2">2. 3D as an Interactive Bridge</a></li>
+      <li><a href="#en-3">3. Addressing Three Common Objections</a></li>
+      <li><a href="#en-3-1">3.1 Sim-to-Real Gap &amp; Generative Rendering</a></li>
+      <li><a href="#en-3-2">3.2 Explicit Geometry as Structured State</a></li>
+      <li><a href="#en-3-3">3.3 3D Interactive Games as a Stepping Stone</a></li>
+    </ol>
+  </details>
+
+  <article class="post-body" lang="zh-CN" data-lang-content="zh">
+    <h3 id="zh-1">1. 3D 视觉的存在主义危机</h3>
+    <p>在 2026 年，我认为几乎整个视觉领域都遭遇了某种存在主义危机：一方面，越来越多人意识到纯 Vision-Centric（尤其是纯视觉预训练）的范式并不能独立通向以数学、代码为代表的强逻辑智能；另一方面，以 Agentic LLM 配合轻量视觉组件的方案在众多视觉任务上展现出压倒性优势——视觉领域并没有像传统 NLP 那样被终结，而是反过来被以语言为核心的系统更好地解决了。</p>
+    <p>而 3D 视觉作为经典的计算机图形学与计算机视觉交叉方向，更是首当其冲。过去几年里，以 DUSt3R / MASt3R（3R 系列）为代表的 3D feed-forward 模型快速发展，VGGT 等工作更试图将 3D Foundation Model 推向更接近物理世界的通用 Planning Backbone，在机器人与多模态理解中寻找优势。但至少到目前为止，与直接基于 LLM/MLLM 加入空间与物理数据训练相比，纯 3D Foundation Model 并没有展现出不可替代的规划能力；而在新视角合成（NVS）和 3D 生成等经典任务上，更容易 scale up 的视频生成模型也几乎接管了比赛。目前 3D 在大模型中的角色，更多只是作为临时的 Condition、Injection 或 Alignment 信号，形式尚未统一，甚至有时会妨碍模型进一步 scale up。</p>
+    <p>如果 3D 本身并不是逻辑智能，也难以作为模型内部的独立主干继续扩张，那么 3D 在未来的多模态与具身时代究竟应该处于什么定位？</p>
+
+    <h3 id="zh-2">2. 3D 作为连接虚拟与物理世界的交互媒介</h3>
+    <p>我的核心观点是：<strong>3D 更应该被定位为一种高效的交互手段与环境基础设施——作为构造环境与数据的载体、作为结构化的类文本状态（structured text-like state）、以及作为精确的控制接口，在以 Agentic LLM 为代表的虚拟世界（Virtual Environment）与以 Robotics 为终极目标的物理世界（Physical Environment）之间搭建桥梁。</strong></p>
+    <p>以 LLM 领域类比，当下“算法即 Infra，Infra 即数据，数据即算法”的趋势愈发明显，而 Agentic LLM 的核心飞轮正是建立在可交互环境（Environment Pipeline）之上的数据闭环。反观物理世界的 Robotics，真实物理环境的数据采集成本极高、格式难以统一、试错代价昂贵，很难直接跑起像代码或网页环境那样的数据飞轮。在这一背景下，<strong>以 3D Assets / 3D Simulator 构建可编程的交互环境骨架，由多模态 Agentic LLM 担任高层 Planner，再以视觉生成模型作为弥合外观差距的可控渲染器（Renderer）</strong>，是一条极具吸引力的路径。相比直接蒸馏闭源视频生成模型的 WAM 路线，3D 环境天然可控、规则可编程，并且能与底层规划模型解耦，大幅降低 Planner 的感知与试错负担。</p>
+
+    <h3 id="zh-3">3. 对三种常见质疑的回应</h3>
+
+    <h4 id="zh-3-1">3.1 质疑一：3D Simulator 与真实世界 Gap 过大，不如端到端隐式表征？</h4>
+    <p>首先，3D Simulator 不必独自承担逼真外观渲染的全部任务。我们完全可以把 3D 场景作为几何与物理拓扑准确的粗糙白模（coarse condition）输入，让视频生成模型作为神经渲染器来补齐真实感外观——因为绝大部分空间关系与规划已经在 3D 环境中显式解决，生成模型只需专注做好局部渲染，这是一种极其高效的系统权衡。其次，没有真实物理传感器数据闭环支撑的“端到端隐式物理表征”往往并不可靠；用显式 3D 环境提供确定性的几何与交互骨架，再用生成式工作流弥补 Sim-to-Real Gap，反而能把复杂问题拆解得更干净。</p>
+
+    <h4 id="zh-3-2">3.2 质疑二：深度、法线、点云、3DGS 等显式 3D 输出无法被下游直接利用？</h4>
+    <p>不妨看看 Agentic LLM 是如何工作的：在多智能体或工具调用链路中，模型之间传递的从来不是黑盒的连续 embedding，而是文本、文档、代码等人类与下游工具均可解析的<strong>结构化中间状态</strong>。同理，在接近物理世界的场景中，深度、法线、点云、相机位姿乃至 3DGS 参数，本质上就是空间场景的“结构化文本”。当这些互补的显式几何模态足够完备时，它们不仅能共同还原场景的中间状态，还能作为精确的控制接口（或通过白模渲染）注入下游模型，从而替代繁琐脆弱的纯文本 prompting，提前为下游模型分担空间规划压力。</p>
+
+    <h4 id="zh-3-3">3.3 质疑三：显式 3D 数据会妨碍 Scale Up，对智能本身没有贡献？</h4>
+    <p>如果试图把脏乱的显式 3D 点云硬塞进主干网络做预训练，确实容易面临数据规模与分布冲突的问题。但如果换一个视角：从纯符号的 Virtual World（Code / GUI）直接跳到真实的 Physical World（Robotics），中间的跨度太大了——而填补这一鸿沟最天然的中间演练场，正是 <strong>3D Interactive Game（三维交互式游戏环境）</strong>。</p>
+    <p>随着 Agentic Coding LLM 的能力跃升，通过 Text/Image-to-Three.js 或 Blender 工具链程序化生成可交互 3D 场景的门槛正在迅速降低。如果说 2D GUI 是具身智能的二维简化版，那么 3D Interactive Game 就是最接近物理世界、同时又能完全软件化扩展的试验场。3D 数据在这里不需要作为静态 condition 硬塞进模型内部，而是作为<strong>模型外部的可交互环境</strong>，通过动作与状态反馈训练模型的空间规划、长程记忆（Memory）与推演（Rollout）能力。</p>
+
+    <blockquote>
+      <p>正如那句令我印象深刻的话：<strong>3D 也许会从模型内部消失，但会在模型外部以环境、状态和控制接口的形式重新出现。</strong></p>
+    </blockquote>
+  </article>
+
+  <article class="post-body" lang="en" data-lang-content="en" hidden>
+    <h3 id="en-1">1. The Existential Crisis of 3D Vision</h3>
+    <p>In 2026, computer vision as a whole faces an existential question: pure vision-centric pretraining has not independently led to the kind of logical intelligence exemplified by math and coding, while agentic LLMs paired with lightweight visual modules are increasingly solving classic vision problems from the outside. As a traditional intersection of computer graphics and vision, 3D vision feels this shift most acutely.</p>
+    <p>Over the past few years, feed-forward 3D reconstruction models (the 3R family, VGGT, etc.) have sought to establish 3D Foundation Models as general spatial planning backbones for multimodal understanding and robotics. Yet in practice, compared with directly training LLMs/MLLMs on spatial and physical instruction data, standalone 3D foundation backbones have not demonstrated a decisive advantage as planners; meanwhile, on classic 3D tasks like novel view synthesis (NVS) and 3D generation, more scalable video generation models have largely overtaken pure 3D pipelines. Inside foundation models, 3D increasingly serves as an ad-hoc conditioning or alignment signal rather than an independent core.</p>
+    <p>If 3D is neither logical intelligence in itself nor the central planning backbone inside the model, what is its rightful role in the era of multimodal and embodied AI?</p>
+
+    <h3 id="en-2">2. 3D as an Interactive Bridge Between Virtual and Physical Worlds</h3>
+    <p>My view is that <strong>3D should be positioned as an interaction medium and environmental infrastructure—serving as a controllable environment generator, a structured “text-like” state representation, and an explicit control interface that bridges virtual Agentic LLMs and physical embodied intelligence.</strong></p>
+    <p>In the LLM ecosystem, “algorithm is infra, infra is data, and data is algorithm”: the agentic flywheel is powered by scalable interactive environments (coding sandboxes, web environments, tool-use loops). Physical robotics, by contrast, lacks a scalable data and environment flywheel because real-world data collection is slow, fragmented, and expensive to reset. Here, <strong>combining 3D simulators and assets as the structural environment, multimodal Agentic LLMs as the high-level planner, and generative video models as controllable neural renderers</strong> offers a compelling middle path. Unlike World-Action Models (WAMs) that rely purely on distilling black-box video generators, 3D environments are explicitly programmable, decoupled from the planner, and controllable at the object and rule level.</p>
+
+    <h3 id="en-3">3. Addressing Three Common Objections</h3>
+
+    <h4 id="en-3-1">3.1 Objection 1: Isn’t the Sim-to-Real Gap Too Large Compared to End-to-End Latent Models?</h4>
+    <p>A 3D simulator does not need to shoulder photorealistic appearance synthesis on its own. Instead, a 3D scene can provide an accurate coarse geometric and topological scaffold (white-box condition), while a video generation model acts as a controllable renderer to close the appearance gap. Because spatial layout and task planning are already handled in the 3D environment, the generative model is relieved of the burden of long-horizon planning. Conversely, claiming that end-to-end video generators learn reliable physical mechanics without grounded sensor feedback often masks brittle shortcuts.</p>
+
+    <h4 id="en-3-2">3.2 Objection 2: Are Explicit 3D Outputs (Depth, Normals, Point Clouds, 3DGS) Useless Downstream?</h4>
+    <p>Consider how Agentic LLMs communicate: they do not pass raw hidden embeddings between agents and tools; they emit structured text, code, and documents—human- and tool-readable intermediate states. In spatial and physical tasks, explicit geometric outputs such as depth maps, surface normals, point clouds, camera poses, and 3D Gaussians play the exact same role: they are <strong>structured intermediate scene states</strong>. Used together as control interfaces or rendered proxies, they replace fragile text prompting and offload spatial constraints from downstream models.</p>
+
+    <h4 id="en-3-3">3.3 Objection 3: Doesn’t 3D Data Impede Scaling?</h4>
+    <p>Forcing noisy raw 3D point clouds into pretraining backbones is indeed hard to scale. Instead, 3D’s greatest leverage lies in <strong>3D Interactive Games and Programmable Environments</strong>—the missing stepping stone between 2D virtual GUIs and physical robotics. With modern coding LLMs capable of synthesizing interactive Three.js and Blender scenes directly from text or images, 3D environments no longer need to be fed into the model as static input tensors; they act as <strong>scalable external environments</strong> that train and test long-horizon spatial planning, memory, and rollout through closed-loop interaction.</p>
+
+    <blockquote>
+      <p><strong>3D may disappear from inside the model, only to reappear outside the model as environments, states, and control interfaces.</strong></p>
+    </blockquote>
+  </article>
+
+  <footer class="foot">
+    <p><a href="../../../#blog">Back to homepage</a></p>
+  </footer>
+</main>
+<script>
+  (function () {
+    var titles = {
+      zh: '3D更应该定位为交互手段而非通用智能',
+      en: '3D as an Interaction Interface Rather Than General Intelligence'
+    };
+    function show(lang) {
+      document.querySelectorAll('[data-lang-content]').forEach(function (el) {
+        el.hidden = el.getAttribute('data-lang-content') !== lang;
+      });
+      document.querySelectorAll('[data-lang]').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
+      });
+      document.getElementById('post-title').textContent = titles[lang];
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      window.dispatchEvent(new Event('scroll'));
+    }
+    document.querySelectorAll('[data-lang]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var lang = b.getAttribute('data-lang');
+        show(lang);
+        history.replaceState(null, '', lang === 'en' ? '?lang=en' : location.pathname);
+      });
+    });
+    if (new URLSearchParams(location.search).get('lang') === 'en') show('en');
+  })();
+</script>
+</body>
+</html>

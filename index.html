@@ -35,7 +35,9 @@
       "Multimodal foundation models",
       "Representation learning",
       "Large language models",
-      "Computer vision"
+      "Computer vision",
+      "Distributed TPU training",
+      "Computer graphics"
     ],
     "sameAs": [
       "https://scholar.google.com/citations?user=md3YPrAAAAAJ",
@@ -54,32 +56,45 @@
   <nav class="toc toc-side" aria-label="Contents">
     <ol>
       <li><a href="#about">About</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#research">Research</a></li>
       <li><a href="#publications">Publications</a></li>
+      <li><a href="#ongoing">Ongoing</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#blog">Blog</a></li>
-      <li><a href="#education">Education</a></li>
+      <li><a href="#people">People</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ol>
   </nav>
 
-  <header class="intro" id="about">
-    <img class="portrait" src="assets/img/avatar.jpg" alt="Abstract painting of overlapping translucent ellipses" width="168" height="168">
-    <div class="intro-text">
-      <h1>Feiyang Liu</h1>
-      <p class="role">Undergraduate researcher, South China University of Technology</p>
-      <p>I study Intelligent Science and Technology at South China University of Technology and will graduate in June 2027. In 2024–2025 I was a visiting student at UC Berkeley.</p>
-      <p>My research aims to understand how multimodal foundation models learn. In unified models that both understand and generate images, I study how visual and linguistic representations emerge and interact during training, how multimodal training reshapes the representations of a pretrained language model, and which properties of a training recipe determine its outcome. I currently lead UMP, a project on full-pipeline training of unified multimodal models on Cloud TPUs. I also work on <a href="https://haoquanzhang.github.io/pixelbench/">PixelBench</a>, which asks whether large language models can understand and generate images pixel by pixel. I work closely with <a href="https://arctanxarc.github.io/">Ruichuan An</a> (Peking University) and <a href="https://haoquanzhang.github.io/">Haoquan Zhang</a> (CUHK).</p>
-      <p>I approach these questions empirically. Benchmark scores show what a model can do but rarely why, so I combine controlled ablations with probes of internal representations to explain the behavior that training produces.</p>
-      <nav class="links" aria-label="Contact and profiles">
-        <a href="mailto:a160130k@gmail.com">Email</a>
-        <a href="assets/Feiyang_Liu_CV.pdf">CV</a>
-        <a href="https://scholar.google.com/citations?user=md3YPrAAAAAJ">Google Scholar</a>
-        <a href="https://github.com/ZaychikLiu">GitHub</a>
-        <a href="https://x.com/ZaychikLFY">X</a>
-        <a href="https://www.xiaohongshu.com/user/profile/62a32fde000000001b02936e">Xiaohongshu</a>
-        <a href="#blog">Blog</a>
-      </nav>
+  <header class="intro-section" id="about">
+    <div class="intro">
+      <img class="portrait" src="assets/img/avatar.jpg" alt="Abstract painting of overlapping translucent ellipses" width="184" height="184">
+      <div class="intro-text">
+        <h1>Feiyang Liu</h1>
+        <p class="role">Undergraduate researcher · South China University of Technology</p>
+        <p>I study Intelligent Science and Technology at South China University of Technology (graduating June 2027) and was a visiting student at UC Berkeley in 2024–2025.</p>
+        <p>I previously worked on 3D vision and computer graphics, once believing that scaling 3D and visual representations could by itself yield general spatial intelligence. Working across 3D reconstruction and multimodal pretraining shifted my perspective: while visual pretraining remains essential, purely vision-centric scaling closes off the problem space, whereas high-level reasoning and planning are fundamentally <strong>language-centric</strong>.</p>
+        <nav class="links" aria-label="Contact and profiles">
+          <a href="mailto:a160130k@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2 4l6 4.5L14 4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Email</a>
+          <a href="assets/Feiyang_Liu_CV.pdf"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 1.75h6l3 3v9.5a1 1 0 0 1-1 1h-8a1 1 0 0 1-1-1v-11.5a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M9.25 1.75v3.25h3.25M5.25 8.5h5.5M5.25 11h4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>CV</a>
+          <a href="assets/img/wechat-qr.jpg" data-wechat-open><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.2 2.5C3.6 2.5 1.5 4.2 1.5 6.4c0 1.2.7 2.3 1.8 3l-.5 1.6 1.7-.9c.5.1 1.1.2 1.7.2.2 0 .4 0 .6-.02-.1-.4-.2-.8-.2-1.28 0-2.1 2-3.8 4.4-3.8.2 0 .4 0 .6.03C11.1 3.6 8.9 2.5 6.2 2.5z" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/><path d="M10.6 6.2c-2.1 0-3.9 1.4-3.9 3.2s1.8 3.2 3.9 3.2c.5 0 1-.1 1.4-.2l1.4.7-.4-1.3c.9-.6 1.5-1.5 1.5-2.4 0-1.8-1.8-3.2-3.9-3.2z" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/></svg>WeChat</a>
+          <a href="https://scholar.google.com/citations?user=md3YPrAAAAAJ"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2L1.5 5.5 8 9l6.5-3.5L8 2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4 7.2v3.6c0 1.2 1.8 2.2 4 2.2s4-1 4-2.2V7.2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Scholar</a>
+          <a href="https://github.com/ZaychikLiu"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 0 0-2.05 12.67c.32.06.44-.14.44-.31v-1.2c-1.8.39-2.18-.76-2.18-.76-.3-.75-.72-.95-.72-.95-.59-.4.04-.39.04-.39.65.05 1 .67 1 .67.58.99 1.52.7 1.89.54.06-.42.23-.7.41-.86-1.44-.16-2.95-.72-2.95-3.2 0-.71.25-1.29.67-1.75-.07-.16-.29-.82.06-1.72 0 0 .55-.17 1.79.67a6.2 6.2 0 0 1 3.26 0c1.24-.84 1.79-.67 1.79-.67.35.9.13 1.56.06 1.72.42.46.67 1.04.67 1.75 0 2.49-1.51 3.04-2.96 3.2.23.2.44.6.44 1.21v1.8c0 .17.12.37.45.31A6.5 6.5 0 0 0 8 1.5z" fill="currentColor"/></svg>GitHub</a>
+          <a href="https://x.com/ZaychikLFY"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.3 6.9L14.2 1.5h-1.2L8.7 6.1 5.3 1.5H1.4l5.1 7.2L1.4 14.5h1.2l4.5-5 3.6 5h3.9L9.3 6.9zm-1.6 1.8l-.5-.7-4.1-5.6h1.8l3.3 4.5.5.7 4.3 5.9h-1.8L7.7 8.7z" fill="currentColor"/></svg>X</a>
+          <a href="https://www.xiaohongshu.com/user/profile/62a32fde000000001b02936e"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2.5" width="12" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M5.2 6h5.6M5.2 8.5h5.6M5.2 11h3.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Xiaohongshu</a>
+          <a href="#blog"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11M2.5 7h11M2.5 10.5h7.5M2.5 13.5h5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Blog</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="research-focus">
+      <p class="focus-lead">My current research explores <strong>language-centric multimodal systems</strong> across three directions:</p>
+      <ul class="intro-themes">
+        <li><strong>Solving Vision with LLMs &amp; Symbolic Vision:</strong> probing how far LLMs can go as general visual learners and generators—compressing visual signals into compact <em>symbolic visual primitives</em> in plain text (<a href="#publications">PixelBench</a>) or directly replacing specialist and generative vision models on core perception tasks (<a href="#ongoing">GroundingBench</a>).</li>
+        <li><strong>Scalable, Unified, and Controllable Multimodal Models:</strong> demystifying the design space of unified multimodal models across visual tokenizers/encoders, MoT routing, data mixtures, and multi-stage training recipes across hundreds of TPU chips (<a href="#ongoing">OpenUMM</a>).</li>
+        <li><strong>3D &amp; Generative Models as Controllable Interfaces:</strong> treating 3D representations (<a href="#publications">3DGS</a>, interactive graphics) and visual generators not as standalone planners, but as structured states, simulation environments, and controllable renderers bridged with language agents.</li>
+      </ul>
+      <p class="status-callout">I am applying for Fall 2027 M.Phil. / Master's programs and am always happy to chat about research collaborations.</p>
     </div>
   </header>
 
@@ -87,53 +102,31 @@
     <summary>Contents</summary>
     <ol>
       <li><a href="#about">About</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#research">Research</a></li>
       <li><a href="#publications">Publications</a></li>
+      <li><a href="#ongoing">Ongoing</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#blog">Blog</a></li>
-      <li><a href="#education">Education</a></li>
+      <li><a href="#people">People</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ol>
   </details>
 
-  <section aria-labelledby="news">
-    <h2 id="news">News</h2>
-    <ul class="news">
-      <li><time datetime="2026-08">Aug 2026</time><span>Started leading UMP, full-pipeline training of unified multimodal models on Cloud TPU v5p and v6e.</span></li>
-      <li><time datetime="2026-04">Apr 2026</time><span>Our paper on sparse-view high-resolution 3D Gaussian Splatting was accepted to CVPR 2026 as a Highlight.</span></li>
-    </ul>
-  </section>
-
-  <section aria-labelledby="research">
-    <h2 id="research">Research</h2>
-    <p>I am currently working on three questions.</p>
-    <dl class="themes">
-      <div>
-        <dt>What happens during multimodal training</dt>
-        <dd>How understanding, generation and language compete with or help each other inside one model, and how data mixtures, loss weighting and learning-rate schedules shape what the model learns. Most of this work happens in UMP.</dd>
-      </div>
-      <div>
-        <dt>Probing what a model has learned</dt>
-        <dd>Probes of a model's internal representations: whether it actually uses the image, where its language ability is lost, when generation starts to overfit, and what interpolating between checkpoints reveals. Made cheap, the same probes serve as evaluation. They track text, understanding and generation together and predict full benchmark results, so recipes can be compared early in training.</dd>
-      </div>
-      <div>
-        <dt>LLMs for vision</dt>
-        <dd>Whether language models can understand and generate images with the tools they already have, and what learning to produce pixels teaches them about seeing. This is the subject of PixelBench and GroundingBench.</dd>
-      </div>
-    </dl>
-  </section>
-
   <section aria-labelledby="publications">
-    <h2 id="publications">Publications</h2>
+    <div class="section-head">
+      <h2 id="publications">Selected Publications</h2>
+      <button type="button" id="pub-toggle" class="pub-toggle" aria-pressed="false">Show full list (3)</button>
+    </div>
 
+    <div id="pub-selected">
     <article class="paper">
       <a href="https://haoquanzhang.github.io/pixelbench/"><img class="teaser" src="assets/img/pub/pixelbench.jpg" alt="Pixel images generated by language models at 16, 32 and 64 pixel resolution, next to a palette-indexed pixel grid for a tree" loading="lazy"></a>
       <div>
         <h3><a href="https://haoquanzhang.github.io/pixelbench/">PixelBench: Can LLMs Understand and Generate Images Pixel by Pixel?</a></h3>
-        <p class="authors">Haoquan Zhang, <strong>Feiyang Liu</strong>, Juanxi Tian, Wanhua Li, Haodong Duan, Weiyang Liu</p>
+        <p class="authors"><a href="https://haoquanzhang.github.io/">Haoquan Zhang</a>, <strong>Feiyang Liu</strong>, <a href="https://tianshijing.github.io/">Juanxi Tian</a>, <a href="https://li-wanhua.github.io/">Wanhua Li</a>, <a href="https://kennymckormick.github.io/">Haodong Duan</a>, <a href="https://wyliu.com/">Weiyang Liu</a></p>
         <p class="venue">2026</p>
-        <p class="summary">Language models write an RGB palette and a grid of palette indices, generating pixel images with their existing vocabulary. Pixel understanding tracks pixel generation, and training models to reconstruct pixels helps visual understanding.</p>
-        <p class="paper-links"><a href="https://haoquanzhang.github.io/pixelbench/">Project page</a></p>
+        <p class="summary">Probing LLMs as general visual generators directly in plain text—without agentic tools, visual tokenizers, or diffusion modules—by representing images as compact symbolic visual primitives (palette-indexed pixel grids), and introducing Pixel Reconstruction Tuning (PRT) to improve downstream multimodal understanding.</p>
+        <p class="paper-links"><a href="https://haoquanzhang.github.io/pixelbench/">Project page</a><a href="https://github.com/HaoquanZhang/PixelBench">Code</a><a href="https://huggingface.co/collections/haoquan03/pixel-reconstruction-tuning">Models</a></p>
       </div>
     </article>
 
@@ -141,45 +134,55 @@
       <a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html"><img class="teaser" src="assets/img/pub/cags.jpg" alt="Poster for Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting" loading="lazy"></a>
       <div>
         <h3><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting</a></h3>
-        <p class="authors">Qinzheng Zhou, <strong>Feiyang Liu</strong>, Lijing Lu, Zhihang Li</p>
+        <p class="authors"><a href="https://openreview.net/profile?id=~Qinzheng_Zhou1">Qinzheng Zhou</a>, <strong>Feiyang Liu</strong>, <a href="https://openreview.net/profile?id=~Lijing_Lu1">Lijing Lu</a>, <a href="https://openreview.net/profile?id=~Zhihang_Li1">Zhihang Li</a></p>
         <p class="venue">CVPR 2026 <span class="award">Highlight</span></p>
-        <p class="summary">Low input resolution gives stable geometry and high resolution gives detail but also noise; a coarse-to-fine aggregation keeps both.</p>
+        <p class="summary">Low input resolution yields stable global geometry while high resolution recovers fine detail at the cost of multi-view noise; confidence-guided coarse-to-fine aggregation across resolutions preserves both.</p>
         <p class="paper-links"><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Paper</a><a href="https://cvpr.thecvf.com/virtual/2026/poster/36203">Poster</a></p>
       </div>
     </article>
-  </section>
 
-  <section aria-labelledby="experience">
-    <h2 id="experience">Experience</h2>
-    <div class="entry">
-      <h3>UMP: Unified Multimodal Models</h3>
-      <p class="meta">Project lead, research intern (remote), with UC Santa Cruz and Google DeepMind (Gemini)</p>
-      <p>Full-pipeline training of unified understanding-and-generation models on hundreds of Cloud TPU v5p and v6e chips, from pretraining to post-training. I built the multi-slice training and evaluation infrastructure, designed the data mixtures, and ran the ablations that shape the training recipe.</p>
-      <p>The evaluation stack watches text, understanding and generation together, with decontaminated generation benchmarks and image-shuffle tests of whether the model uses the image. Recipes are screened with branch-and-decay annealing and short fine-tuning probes, against seed-noise floors and thresholds set in advance. We are now testing whether cheap probes rank checkpoints the same way full evaluations do.</p>
-    </div>
-    <div class="entry">
-      <h3>PixelBench and GroundingBench</h3>
-      <p class="meta">Research collaborator (remote), ByteDance Seed and The Chinese University of Hong Kong</p>
-      <p>On <a href="https://haoquanzhang.github.io/pixelbench/">PixelBench</a>, I built the initial demo, proposed ideas, and designed part of the experiments. On GroundingBench, a benchmark for visual grounding, I contribute to the task survey and the design of detection and counting tasks.</p>
-    </div>
-    <div class="entry">
-      <h3>Sparse-view 3D Gaussian Splatting</h3>
-      <p class="meta">Co-author, with collaborators from HUST, Peking University and Alibaba</p>
-      <p>Studied how input resolution affects sparse-view reconstruction, leading to the CVPR 2026 paper.</p>
+    <article class="paper" id="pub-extra" hidden>
+      <img class="teaser" src="assets/img/pub/counterfactual-3dgs.svg" alt="Diagram comparing standard greedy Gaussian splitting with counterfactual topology selection under sparse views" loading="lazy">
+      <div>
+        <h3>Commit Only When Justified: Counterfactual Topology Selection for Sparse-View 3DGS</h3>
+        <p class="authors"><a href="https://openreview.net/profile?id=~Qinzheng_Zhou1">Qinzheng Zhou</a>, <strong>Feiyang Liu</strong>, <a href="https://openreview.net/profile?id=~Lijing_Lu1">Lijing Lu</a>, <a href="https://openreview.net/profile?id=~Zhihang_Li1">Zhihang Li</a></p>
+        <p class="venue">Under review (Phase 2), AAAI 2027</p>
+        <p class="summary">Counterfactual topology selection commits Gaussian densification and pruning updates only when justified by multi-view consistency, preventing premature topological lock-in and floaters under sparse views.</p>
+      </div>
+    </article>
     </div>
   </section>
 
-  <section aria-labelledby="blog">
-    <h2 id="blog">Blog</h2>
-    <ul class="post-list-home">
-      <li>
-        <time datetime="2026-07-06">Jul 2026</time>
-        <div>
-          <h3><a href="blog/2026/beyond-vision/">Vision之外 / Beyond Vision</a></h3>
-          <p>Do ego and taste still matter for newcomers in AI research, and should one stay in academia or move to industry?</p>
-        </div>
-      </li>
-    </ul>
+  <section aria-labelledby="ongoing">
+    <h2 id="ongoing">Ongoing Projects</h2>
+    <article class="project-card">
+      <div class="project-head">
+        <h3>OpenUMM — Demystifying the Design Space of Unified Multimodal Models</h3>
+        <p class="project-meta"><strong class="meta-role">Project Lead</strong> · UC Santa Cruz &amp; Gemini Team · <span class="meta-scale">Hundreds of Cloud TPU v5p/v6e Chips</span></p>
+      </div>
+      <p>End-to-end empirical study of unified language modeling, visual understanding, and image generation from pretrained LLM backbones (e.g., Qwen3) and latent flow matching. Built and optimized a modular JAX/Flax training, data, and decontaminated evaluation stack across hundreds of TPU v5p/v6e chips (multi-host/multi-slice sharding, ZeRO-1, rematerialization, elastic recovery, XLA profiling).</p>
+      <ul class="axis-tags" aria-label="Study axes">
+        <li>Visual Tokenizers &amp; Encoders</li>
+        <li>Architecture &amp; MoT Routing</li>
+        <li>Data Mixtures &amp; Resolution</li>
+        <li>Cross-Task Interactions</li>
+        <li>Multi-Stage Training Recipes</li>
+        <li>Pretraining-to-Post-Training Performance Prediction</li>
+      </ul>
+    </article>
+
+    <article class="project-card">
+      <div class="project-head">
+        <h3>GroundingBench — Can Modern LLMs Replace Vision Specialists and Generators?</h3>
+        <p class="project-meta"><strong class="meta-role">Research Contributor</strong> · CUHK &amp; ByteDance Seed</p>
+      </div>
+      <p>Investigating whether modern LLMs can directly replace specialist and generative vision models on standard computer vision tasks—in contrast to approaches that repurpose image or video generators for visual perception such as Vision Banana (<em>Image Generators are Generalist Vision Learners</em>), GenCeption (<em>Video Generation Models are General-Purpose Vision Learners</em>), and SenseNova-Vision (<em>Vision as Unified Multimodal Generation</em>).</p>
+      <ul class="axis-tags" aria-label="Contributions">
+        <li>2D Object Detection &amp; Counting</li>
+        <li>Training &amp; Evaluation Data Verification</li>
+        <li>Evaluation Protocols &amp; Baseline Tuning</li>
+      </ul>
+    </article>
   </section>
 
   <section aria-labelledby="education">
@@ -194,9 +197,132 @@
     </div>
   </section>
 
+  <section aria-labelledby="experience">
+    <h2 id="experience">Experience</h2>
+    <div class="entry">
+      <div class="entry-row">
+        <div><h3>UC Santa Cruz &amp; Gemini Team</h3><p class="meta">Project Lead (Remote) · <a href="#ongoing">OpenUMM</a></p></div>
+        <p class="when">2026 – Present</p>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-row">
+        <div><h3>The Chinese University of Hong Kong &amp; ByteDance Seed</h3><p class="meta">Research Contributor (Remote) · <a href="#publications">PixelBench</a> &amp; <a href="#ongoing">GroundingBench</a></p></div>
+        <p class="when">2026 – Present</p>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-row">
+        <div><h3>Huazhong University of Science and Technology</h3><p class="meta">Research Collaborator · Sparse-View 3D Reconstruction (<a href="#publications">CVPR 2026 Highlight</a>, AAAI 2027 Phase 2)</p></div>
+        <p class="when">2025 – 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="blog">
+    <h2 id="blog">Blog</h2>
+    <ul class="post-list-home">
+      <li>
+        <time datetime="2026-10-30">Oct 2026</time>
+        <div>
+          <h3><a href="blog/2026/millennium-prize/">0.6B模型能解决千禧年难题吗？</a> <a class="post-sub" href="blog/2026/millennium-prize/?lang=en">/ Can a 0.6B Model Solve the Millennium Prize?</a></h3>
+          <p>Language models that draw in pixels and video as plain text, and why symbolic visual data might be a better pretraining signal than images.</p>
+        </div>
+      </li>
+      <li>
+        <time datetime="2026-08-17">Aug 2026</time>
+        <div>
+          <h3><a href="blog/2026/3d-as-interface/">3D更应该定位为交互手段而非通用智能</a> <a class="post-sub" href="blog/2026/3d-as-interface/?lang=en">/ 3D as an Interaction Interface Rather Than General Intelligence</a></h3>
+          <p>Why 3D may disappear from inside the model, only to reappear outside the model as interactive environments, structured states, and control interfaces bridging language agents and the physical world.</p>
+        </div>
+      </li>
+      <li>
+        <time datetime="2026-07-20">Jul 2026</time>
+        <div>
+          <h3><a href="blog/2026/rethinking-vision-centric/">警惕 Vision Centric</a> <a class="post-sub" href="blog/2026/rethinking-vision-centric/?lang=en">/ Rethinking Vision-Centricity</a></h3>
+          <p>Why vision in multimodal understanding behaves almost like another text, why encoder-free and language-centric paradigms are rising, and why visual generators are controllable renderers rather than logical planners.</p>
+        </div>
+      </li>
+      <li>
+        <time datetime="2026-07-06">Jul 2026</time>
+        <div>
+          <h3><a href="blog/2026/beyond-vision/">Vision之外</a> <a class="post-sub" href="blog/2026/beyond-vision/?lang=en">/ Beyond Vision</a></h3>
+          <p>Do ego and taste still matter for newcomers in AI research, and should one stay in academia or move to industry?</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="people">
+    <h2 id="people">People</h2>
+    <p>People whose work has shaped mine:</p>
+    <ul class="people-list">
+      <li><a href="https://hwjiang1510.github.io/"><strong>Hanwen Jiang</strong></a> — for his candid reflections on the limits of 3D scaling and his pursuit of more general visual and physical representations.</li>
+      <li><a href="https://sustcsonglin.github.io/"><strong>Songlin Yang</strong></a> — for pushing the frontier of sequence modeling architectures and hardware-aware algorithms with remarkable clarity and rigor.</li>
+      <li><a href="https://tsb0601.github.io/"><strong>Shengbang Tong</strong></a> &amp; <a href="https://junlinhan.github.io/"><strong>Junlin Han</strong></a> — for demystifying multimodal pretraining and unified models through systematic, controlled empirical science.</li>
+    </ul>
+    <p class="people-note">Their work has shaped how I formulate questions, design controlled experiments, and rethink prevailing assumptions—I aspire to create research that is equally rigorous, insightful, and impactful.</p>
+  </section>
+
+  <section aria-labelledby="contact">
+    <h2 id="contact">Contact</h2>
+    <p>You can reach me at <a href="mailto:a160130k@gmail.com">a160130k@gmail.com</a> or on WeChat (<a href="assets/img/wechat-qr.jpg" data-wechat-open>ZaychikLiu · QR code</a>).</p>
+  </section>
+
+  <dialog id="wechat-modal" class="qr-modal" aria-label="WeChat QR Code">
+    <div class="qr-modal-box">
+      <div class="qr-modal-head">
+        <span>WeChat · <strong>ZaychikLiu</strong></span>
+        <button type="button" class="qr-close" data-wechat-close aria-label="Close">×</button>
+      </div>
+      <img src="assets/img/wechat-qr.jpg" alt="WeChat QR code for Feiyang Liu (ZaychikLiu)" width="260" height="340" loading="lazy">
+      <p class="qr-caption">Scan to add on WeChat, or search ID: <code>ZaychikLiu</code></p>
+    </div>
+  </dialog>
+
   <footer class="foot">
-    <p>Last updated October 2026.</p>
+    <p>Last updated November 2026.</p>
   </footer>
 </main>
+<script>
+  // 出版物：选中卡片与完整卡片列表之间切换；?pubs=all 可直接展开完整列表
+  (function () {
+    var btn = document.getElementById('pub-toggle');
+    var extra = document.getElementById('pub-extra');
+    var h2 = document.getElementById('publications');
+    function show(full) {
+      if (extra) extra.hidden = !full;
+      btn.setAttribute('aria-pressed', String(full));
+      btn.textContent = full ? 'Show selected (2)' : 'Show full list (3)';
+      if (h2) h2.textContent = full ? 'Publications' : 'Selected Publications';
+    }
+    btn.addEventListener('click', function () {
+      var full = extra ? extra.hidden : false;
+      show(full);
+      history.replaceState(null, '', full ? '?pubs=all' : location.pathname);
+    });
+    if (new URLSearchParams(location.search).get('pubs') === 'all') show(true);
+  })();
+
+  // 微信二维码弹窗
+  (function () {
+    var modal = document.getElementById('wechat-modal');
+    if (!modal || typeof modal.showModal !== 'function') return;
+    document.querySelectorAll('[data-wechat-open]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        modal.showModal();
+      });
+    });
+    document.querySelectorAll('[data-wechat-close]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        modal.close();
+      });
+    });
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) modal.close();
+    });
+  })();
+</script>
 </body>
 </html>

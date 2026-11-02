@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+  <script src="../../../assets/js/theme.js" defer></script>
+  <script src="../../../assets/js/toc.js" defer></script>
+  <title>警惕 Vision Centric / Rethinking Vision-Centricity · Feiyang Liu</title>
+  <meta name="description" content="Why vision in multimodal systems behaves almost like another text, why encoder-free and language-centric paradigms are rising, and why visual generators are controllable renderers rather than logical planners.">
+  <meta property="og:title" content="警惕 Vision Centric / Rethinking Vision-Centricity">
+  <meta property="og:description" content="Why vision in multimodal systems behaves almost like another text, why encoder-free and language-centric paradigms are rising, and why visual generators are controllable renderers rather than logical planners.">
+  <meta property="og:image" content="https://zaychikliu.github.io/assets/img/avatar.jpg">
+  <link rel="canonical" href="https://zaychikliu.github.io/blog/2026/rethinking-vision-centric/">
+  <link rel="icon" href="../../../assets/img/avatar.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Feiyang Liu</a><span aria-hidden="true">/</span><a href="../../../#blog">Blog</a><button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">Dark mode</button></nav>
+
+  <header class="post-head">
+    <h1 id="post-title">警惕 Vision Centric</h1>
+    <p class="post-meta"><time datetime="2026-07-20">20 July 2026</time></p>
+    <div class="lang-switch" role="group" aria-label="Article language">
+      <button type="button" data-lang="zh" aria-pressed="true">中文</button>
+      <button type="button" data-lang="en" aria-pressed="false">English</button>
+    </div>
+  </header>
+
+  <nav class="toc toc-side" aria-label="目录" data-lang-content="zh">
+    <ol>
+      <li><a href="#zh-1">1. 多模态理解里视觉更多是附庸</a></li>
+      <li><a href="#zh-1-1">1.1 Vision is almost another Text</a></li>
+      <li><a href="#zh-1-2">1.2 多模态系统正在削减视觉组件</a></li>
+      <li><a href="#zh-1-3">1.3 多模态对逻辑智能经常是投毒</a></li>
+      <li><a href="#zh-1-4">1.4 业界几乎没有真正广泛的多模态业务</a></li>
+      <li><a href="#zh-2">2. 视觉生成可能不是逻辑智能</a></li>
+      <li><a href="#zh-2-1">2.1 理解促进生成 vs. 生成促进理解</a></li>
+      <li><a href="#zh-2-2">2.2 视觉生成模型作为 Planner 的局限</a></li>
+      <li><a href="#zh-2-3">2.3 视觉生成是 World Model 吗</a></li>
+      <li><a href="#zh-2-4">2.4 视觉生成的落地定位：可控渲染器</a></li>
+      <li><a href="#zh-3">3. 结语</a></li>
+    </ol>
+  </nav>
+  <nav class="toc toc-side" aria-label="Contents" data-lang-content="en" hidden>
+    <ol>
+      <li><a href="#en-1">1. Vision in Multimodal Understanding</a></li>
+      <li><a href="#en-1-1">1.1 Vision Is Almost Another Text</a></li>
+      <li><a href="#en-1-2">1.2 Stripping Down Vision Encoders</a></li>
+      <li><a href="#en-1-3">1.3 Multimodal Interference with Reasoning</a></li>
+      <li><a href="#en-1-4">1.4 Where Are the Real Multimodal Workloads?</a></li>
+      <li><a href="#en-2">2. Visual Generation Is Not Logical Intelligence</a></li>
+      <li><a href="#en-2-1">2.1 Understanding Helps Generation—Not Vice Versa</a></li>
+      <li><a href="#en-2-2">2.2 Why Visual Generators Struggle as Planners</a></li>
+      <li><a href="#en-2-3">2.3 Are Visual Generators World Models?</a></li>
+      <li><a href="#en-2-4">2.4 Visual Generators as Controllable Renderers</a></li>
+      <li><a href="#en-3">3. Closing Thoughts</a></li>
+    </ol>
+  </nav>
+
+  <details class="toc toc-inline" data-lang-content="zh">
+    <summary>目录</summary>
+    <ol>
+      <li><a href="#zh-1">1. 多模态理解里视觉更多是附庸</a></li>
+      <li><a href="#zh-1-1">1.1 Vision is almost another Text</a></li>
+      <li><a href="#zh-1-2">1.2 多模态系统正在削减视觉组件</a></li>
+      <li><a href="#zh-1-3">1.3 多模态对逻辑智能经常是投毒</a></li>
+      <li><a href="#zh-1-4">1.4 业界几乎没有真正广泛的多模态业务</a></li>
+      <li><a href="#zh-2">2. 视觉生成可能不是逻辑智能</a></li>
+      <li><a href="#zh-2-1">2.1 理解促进生成 vs. 生成促进理解</a></li>
+      <li><a href="#zh-2-2">2.2 视觉生成模型作为 Planner 的局限</a></li>
+      <li><a href="#zh-2-3">2.3 视觉生成是 World Model 吗</a></li>
+      <li><a href="#zh-2-4">2.4 视觉生成的落地定位：可控渲染器</a></li>
+      <li><a href="#zh-3">3. 结语</a></li>
+    </ol>
+  </details>
+  <details class="toc toc-inline" data-lang-content="en" hidden>
+    <summary>Contents</summary>
+    <ol>
+      <li><a href="#en-1">1. Vision in Multimodal Understanding</a></li>
+      <li><a href="#en-1-1">1.1 Vision Is Almost Another Text</a></li>
+      <li><a href="#en-1-2">1.2 Stripping Down Vision Encoders</a></li>
+      <li><a href="#en-1-3">1.3 Multimodal Interference with Reasoning</a></li>
+      <li><a href="#en-1-4">1.4 Where Are the Real Multimodal Workloads?</a></li>
+      <li><a href="#en-2">2. Visual Generation Is Not Logical Intelligence</a></li>
+      <li><a href="#en-2-1">2.1 Understanding Helps Generation—Not Vice Versa</a></li>
+      <li><a href="#en-2-2">2.2 Why Visual Generators Struggle as Planners</a></li>
+      <li><a href="#en-2-3">2.3 Are Visual Generators World Models?</a></li>
+      <li><a href="#en-2-4">2.4 Visual Generators as Controllable Renderers</a></li>
+      <li><a href="#en-3">3. Closing Thoughts</a></li>
+    </ol>
+  </details>
+
+  <article class="post-body" lang="zh-CN" data-lang-content="zh">
+    <blockquote>
+      <p>这里的 Vision Centric 指的不是“重视视觉”，而是“认为视觉可以以自身为中心，通过视觉代理任务与视觉表征的 scaling 独立逼近通用智能”。本文写于我从 3D 视觉转向多模态预训练与语言中心范式的阶段性反思。</p>
+    </blockquote>
+
+    <p>我一直不是很清楚，视觉至少在当下的时代，究竟是一个什么定位？或者说，我已经不知道视觉这东西该用到哪些 domain？而这些被用上的 domain 里面，本身的 scope 又到底有多大？抛开 scope 不提，视觉本身在这些 domain 里面到底有多大用处，还是说，去掉视觉可能也没有多大问题？视觉本身能有多核心？还是说，大部分时候，视觉脱离了 Robotics 和 Agentic 系统根本无法独立存在，视觉本身也没有多少逻辑智能，而只能作为更大智能系统里的感知接口？</p>
+
+    <p>放眼目前工业界，大家真正在用的各类产品里，好像确实没有什么大的纯视觉场景。非要说广泛应用的，反而是各种传统的 low-level vision，但这些 domain 的 scope 非常细分化，并且几乎没有成长空间。而如果说看上去成长空间大的，一方面是多模态理解（尤其是图像理解和视频理解），另一方面是多模态生成（图像生成、视频生成以及更为广泛的 World Model 概念）。但问题在于，这里面的视觉智能，好像和我们理想中的通用智能相差甚远——甚至有人会用更激进的方式和你说：“视觉没有智能”。</p>
+
+    <h3 id="zh-1">1. 多模态理解里视觉更多是附庸</h3>
+
+    <h4 id="zh-1-1">1.1 Vision is almost another Text in MM</h4>
+    <p>说实话，现在做多模态理解的，尤其是工业界，如果真的可以选，谁愿意用多模态 embedding 来做任务？我对此深感怀疑。我之前一直以为，多模态 embedding 会更加 native，也更加 make sense，觉得那些认为“vision is another text”的人简直错完了。但后面我发现，在真实的系统链路里，更多人宁愿直接用一个 VLM 做 caption，再把这些 text 丢给下游的语言 agent，都不愿意在链路里传递连续的多模态 embedding。</p>
+    <p>如果说要精细描述图片，图片是连续的，所以 VLM 做定位不行？那就调用各种 grounding 工具，把 <code>&lt;img&gt;xx坐标-xx坐标&lt;/img&gt;</code> 插入到 caption 里面。或者说我们的任务需要完整的视觉信息才能成功——但是理解任务里面有多少场景，是真的一次性需要这么完整的连续像素信息，尤其是最终输出本来就是 text 的？况且真需要像素级完整信息的场景，往往已经是视觉生成任务了。</p>
+    <p>更现实的是，现在几乎没有闭源或 SOTA 开源系统真正只靠单次端到端的多模态 embedding 完成复杂理解，大家都在走 agentic 路线。而对于 agentic 系统来说，最好用、最可组合的信息传递结构并不是一个“优雅”的连续 embedding，而是把视觉直接当作 <em>another text</em> 来使用。</p>
+
+    <h4 id="zh-1-2">1.2 多模态理解系统正在削减视觉组件</h4>
+    <p>很长一段时间以来，我们都习惯于在进入 MLLM 主干之前先提前处理好视觉信息，由此得到了名为 Vision Encoder 的组件，也有了 VAE、CLIP、SigLIP、DINO 之类的经典工作。但问题在于，当模型 scale up、我们拥有更强大的多模态主干之后，再保留一个厚重的 Vision Encoder，到底对整体上限是提升还是累赘？</p>
+    <p>在过去的 1–2 年里，社区争论的一个热门话题是：我们的 Vision Encoder 到底该不该换？比如 VAE 只有细节没有语义，低维潜空间能承载并传递给主干的信息有限；而 DINO、SigLIP 拥有高维语义，是否有潜力改造它们来让模型拥有更高的上限？后续也出现了 VA-VAE、RAE、SVG 等非常多扎实而有洞察的工作。</p>
+    <p>但一个耐人寻味的现象是：无论是 VAE 还是 DINO 或是各种异构组合，在理解或生成任务上真正 scale up 之后，只要加上充足的数据进行充分训练（尤其是解冻 encoder 之后），不同编码器最终收敛到的实验结果其实非常接近。这不由得让人怀疑：如果不同的 encoder 在大规模训练后结果都大差不差，是不是说明 Vision Encoder 根本就不是决定性的东西，更不是什么本质的东西？</p>
+    <p>放到空间智能领域也是同样的道理：无论基于什么“brain-inspired”设计加入几何或空间编码器，在训练不充分时确实在指标上有差距；但一旦使用大量空间理解数据进行充分训练，无论使用怎样的编码器组合，所有 MLLM 的最终性能都会趋同。甚至作为 3D 条件注入最主流的 3R 主干，其底层的 Encoder 本身也是 DINO 这种 2D 编码器；即便不用 DINO 初始化、从头训练，结果也相差无几。这恰恰说明，底层的微架构归纳偏置往往并不本质，数据与充分训练才是本质的。</p>
+    <p>因此我们有理由怀疑：Vision Encoder 在主干不够强大、数据不够充分时，可以作为外挂组件注入先验、保住模型的下限；但当规模足够大、LLM 主干自身已经具备极强的建模能力时，固定的视觉编码器反而可能成为信息瓶颈，限制模型的上限。与其在 Vision Encoder 这一小块地方做修修补补，不如尝试不断缩小甚至去掉它，走向 <strong>Encoder-Free / Native Multimodal</strong>。这也是为什么无论是 NEO、SenseNova、HighDream，还是近期一些前沿大厂模型，都在不约而同地探索削减独立视觉编码器的路径。</p>
+
+    <h4 id="zh-1-3">1.3 多模态对逻辑智能经常是投毒</h4>
+    <p>多模态的愿景非常美好：我们希望单个模型能感知所有模态，甚至兼具生成能力，最终收敛出柏拉图假说式的“通用无敌表征”。但残酷的工程现实是：<strong>直接往语言主干里加多模态数据，经常会导致语言与逻辑能力掉点</strong>，为了新增多模态感知而损伤核心推理能力，往往得不偿失。</p>
+    <p>一个直观的解释是：视觉能力主要覆盖感知（更接近某种 <em>Animal Intelligence</em>），而以 Math 和 Coding 为代表的推理能力属于高信息密度的 <em>Logical Intelligence</em>。原始视觉信号的信噪比极低，在做 paired data 联合训练时，极易与 text 和 code 的表征空间发生争夺与冲突。</p>
+    <p>这也是为什么我们在真实的统一多模态训练中会观察到许多反直觉现象，必须极其小心地设计冻结预热（frozen warm-up）、主干低学习率、纯文本回放（text replay）乃至 MoT 分支路由来“保住语言”；这也是为什么许多工业界基模为了全力保住 Coding 和 Math 的上限，甚至会有意控制或隔离多模态分支的干扰。更进一步想，LLM 本身通过海量文本描述已经内化了相当程度的世界与视觉结构，加入视觉编码器与配对数据很大程度上只是为了激活和对齐 LLM 原有的能力，而非从零塑造智能。</p>
+
+    <h4 id="zh-1-4">1.4 业界几乎没有真正广泛的多模态业务</h4>
+    <p>无论是图像理解还是视频理解，在业界的落地处境都比想象中微妙。图像理解与图像生成在很多常规场景已接近可用上限，后续增量更多来自 agentic 工作流而非底层视觉表征；视频理解虽然科学空间很大，但在以互联网业务为主导的当下，真正高频刚需的场景有限。即便在 Computer-Use Agent（CUA）这类场景中，如果一个 agent 能通过高信息密度的 CLI 与代码接口直接完成任务，往往远比每步塞入几千个视频帧截图 token 更高效、更可靠。至于物理世界的 Robotics，视频理解固然重要，但它只是具身闭环中的一个子问题，且受限于动作数据采集基建的滞后。</p>
+
+    <h3 id="zh-2">2. 视觉生成可能不是逻辑智能</h3>
+
+    <h4 id="zh-2-1">2.1 理解可以促进生成，但生成促进理解尚缺充分证据</h4>
+    <p>Unified Multimodal Model（UMM）最初的愿景非常迷人：把多模态理解与视觉生成放进同一个模型，不仅架构统一，而且期望“理解与生成能够互相促进”。</p>
+    <p>然而随着社区深入探索，大家发现：**理解能力（更强的 LLM/MLLM 主干）确实能显著促进生成的语义对齐与指令跟随，但反过来，“连续像素生成促进多模态理解”却很难找到干净、普适的证据。** 许多声称生成促进理解的工作，仔细拆解后会发现收益往往来自额外引入的配对文本数据或特定评测分布。最具代表性的信号恰恰是架构演进本身：越来越多效果最好的 UMM 不得不采用 Mixture-of-Transformers（MoT）或任务隔离的专家路由，将理解与生成拆成两个相对独立的分支——如果两个任务天然无缝互促，为什么完全共享参数反而容易发生干扰甚至训崩？这恰恰说明连续像素生成与高层语义理解之间存在着真实的梯度与表征鸿沟（也正因如此，我们在 PixelBench 中转而探索把视觉生成变成离散符号空间的 Symbolic Visual Primitives，情况才截然不同）。</p>
+
+    <h4 id="zh-2-2">2.2 视觉生成模型可能无法证明其作为 Planner 的优势</h4>
+    <p>近一年来，领域内有许多工作尝试用图像生成模型直接做分割、检测等感知任务，或用视频生成模型接上 Action Head 作为具身智能的通用 Planner（如 World-Action Models, WAM），试图以此取代基于 VLM/LLM 的 VLA 范式。对此我持保留态度。</p>
+    <p>连续像素生成模型本质上更接近一种分布到分布的“视觉翻译”。用图像生成模型做分割，与其说是产生了逻辑智能层面的理解，不如说是完成了一次条件图像翻译。而在具身任务中，WAM 的核心叙事是“通过像素级预测想象未来，从而更好地规划动作”。但首先，越来越多的实验（如 Fast-WM、单步去噪的 DreamZero 等）表明，视频生成的 pixel loss 往往只在训练阶段起辅助监督作用，推理时去掉像素生成对动作性能影响有限；其次，为了换取视频生成主干的视觉分布先验，WAM 往往牺牲了 LLM/VLA 最核心的分段规划、符号推理、长程记忆与 Agentic 交互能力。而且无论是 VLA 还是 WAM，具身智能真正的瓶颈始终在于高质量的物理交互与动作配对数据，单纯靠在没有动作闭环的视频生成模型上做视觉预测，很难真正解决跨场景泛化。</p>
+
+    <h4 id="zh-2-3">2.3 视觉生成是 World Model 吗</h4>
+    <p>如果把 World Model 广义地定义为“能够对环境状态转移进行建模与推演的系统”，那么只有具备时间序列结构的模态才可能承载动态世界建模。从这个意义上讲，如果单纯的视觉路线里存在某种智能，那它一定存在于流式视频生成（Streaming Video Generation）中。但即便如此，真正完整的 Planner 依然需要一个以语言和逻辑为核心的强推理中枢——LLM 的 next-token prediction 本身就是离散符号空间上的状态转移预测。因此，与其把纯视觉生成模型单独奉为 World Model，不如说未来的 World Model 必然是以 LLM 为逻辑内核、结合多模态状态与环境交互的统一系统。</p>
+
+    <h4 id="zh-2-4">2.4 视觉生成的落地定位：可控渲染器</h4>
+    <p>总结而言，我认为单纯的 Vision-Centric 生成模型本身并不承载多少逻辑智能。视频生成模型是视觉路线中最有前景的方向，但它最合理的定位不是取代 LLM 去做顶层 Planner，而是作为具备物理与视觉先验的 **“可控渲染器（Controllable Renderer）”**——由人类或 LLM Agent 负责高层逻辑规划、代码生成与结构化状态控制（例如通过 3D 场景白模或符号化布局提供显式条件），再由视频生成模型完成最后一公里的逼真视觉渲染。</p>
+
+    <h3 id="zh-3">3. 结语</h3>
+    <p>写下这些反思，并不是为了否定视觉的价值，而是为了走出一种把视觉问题封闭起来的“纯视觉中心主义（Vision-Centricity）”。当下的多模态系统正在经历从“外挂厚重视觉编码器”向“以语言为核心、视觉走向原生化/符号化与可控交互接口”的深刻范式转移。厘清什么属于逻辑规划（Language &amp; Symbolic Reasoning）、什么属于感知与可控渲染（Vision）、什么属于环境与状态接口（3D &amp; Simulation），或许才是我们在下一阶段构建真正可扩展的多模态系统的起点。</p>
+  </article>
+
+  <article class="post-body" lang="en" data-lang-content="en" hidden>
+    <blockquote>
+      <p>By “Vision-Centricity,” I do not mean valuing computer vision; I mean the belief that scaling visual proxy tasks and visual representations alone—with vision at the center—can independently converge to general intelligence. These notes capture my reflections while transitioning from 3D vision toward language-centric multimodal pretraining.</p>
+    </blockquote>
+
+    <p>What is the true role of computer vision in the current era? In which domains is vision genuinely irreplaceable, and how much of what we call “visual intelligence” can actually stand on its own when detached from language agents or embodied robotics? Looking across industry deployments today, specialized low-level vision remains widespread but narrowly scoped, while the two areas with the largest apparent headroom—multimodal understanding and visual generation (including video generation and world models)—raise a fundamental question: how much of general intelligence actually resides inside continuous visual representations, and how much of vision is instead an interface to a language-centric reasoning core?</p>
+
+    <h3 id="en-1">1. Vision in Multimodal Understanding</h3>
+
+    <h4 id="en-1-1">1.1 Vision Is Almost Another Text</h4>
+    <p>In practical multimodal systems, I used to assume that continuous multimodal embeddings were the most native and principled way to pass visual information, and that treating “vision as another text” was a crude shortcut. Yet in real-world agentic workflows, practitioners overwhelmingly prefer using a VLM to convert images into structured captions or grounded text tokens (such as <code>&lt;img&gt;box_coords&lt;/img&gt;</code>) and handing pure text to downstream reasoning agents, rather than passing opaque continuous visual embeddings across stages.</p>
+    <p>For tasks whose output is ultimately symbolic decisions, plans, or text, very few scenarios require preserving every continuous pixel nuance end-to-end; and when pixel-complete fidelity is required, the task is usually visual generation rather than understanding. In an era dominated by agentic systems, the most composable interface for visual information turns out to behave very much like <em>another form of text</em>.</p>
+
+    <h4 id="en-1-2">1.2 Stripping Down Vision Encoders</h4>
+    <p>For years, the standard recipe for multimodal LLMs has been to preprocess images through a dedicated Vision Encoder (CLIP, SigLIP, DINO, or VAE variants) before feeding features into the language backbone. Over the past two years, intense debate has centered on which visual representation is best—whether low-dimensional VAEs lack semantics, or whether high-dimensional semantic encoders like DINO and SigLIP can be adapted for unified models (e.g., VA-VAE, RAE).</p>
+    <p>Yet a striking empirical pattern emerges once models and data are genuinely scaled up: whether one starts from VAE, DINO, SigLIP, or heterogeneous combinations—and especially once the encoder is unfrozen—sufficiently trained large-scale models converge to remarkably similar downstream performance. The same phenomenon appears in spatial intelligence: elaborate “brain-inspired” 3D or geometric encoders show initial gains in low-data regimes, but after large-scale supervised post-training on spatial data, architectural differences largely wash out. Even state-of-the-art 3R backbones rely on 2D encoders like DINO under the hood.</p>
+    <p>This suggests that heavy, handcrafted vision encoders primarily act as a scaffold when the backbone or training budget is small. Once the language-centric backbone is sufficiently capable and well-trained at scale, a fixed external vision encoder ceases to be the decisive factor—and can even become an information bottleneck that caps the model’s ceiling. Rather than micro-engineering vision encoders, the long-term trajectory points toward shrinking or removing them altogether in favor of <strong>encoder-free / native multimodal architectures</strong> or compact symbolic representations.</p>
+
+    <h4 id="en-1-3">1.3 Multimodal Interference with Logical Intelligence</h4>
+    <p>While the “Platonic representation hypothesis” envisions a single shared representation space where all modalities effortlessly reinforce one another, joint multimodal pretraining in practice frequently <strong>degrades core language and logical reasoning</strong>. Visual perception is closer to low-SNR <em>animal intelligence</em>, whereas math, coding, and multi-step planning rely on high-SNR <em>logical intelligence</em>. Naively mixing noisy continuous visual signals with text and code creates severe optimization and capacity conflicts—which is precisely why unified multimodal pretraining requires careful recipes (frozen warm-up, decoupled learning rates, text replay, and task-routed Mixture-of-Transformers experts) just to preserve the language backbone’s knowledge and reasoning.</p>
+
+    <h4 id="en-1-4">1.4 Where Are the Real Multimodal Workloads?</h4>
+    <p>Even in application domains like Computer-Use Agents (CUA), feeding thousands of visual screenshot tokens at every step is often far less efficient than equipping a strong coding LLM with clean CLI and programmatic interfaces. And in physical robotics, while visual perception is necessary, it is only one subsystem within a loop currently bottlenecked by action data collection rather than visual backbone capacity.</p>
+
+    <h3 id="en-2">2. Visual Generation Is Not Logical Intelligence</h3>
+
+    <h4 id="en-2-1">2.1 Understanding Helps Generation—Not Automatically Vice Versa</h4>
+    <p>Unified Multimodal Models (UMMs) were initially motivated by the hope that putting visual understanding and image generation into a single model would allow both tasks to mutually reinforce each other. Empirically, the transfer is highly asymmetric: **stronger language and multimodal understanding clearly improves generation (especially instruction following and compositional fidelity), whereas evidence that continuous pixel generation improves general visual understanding remains weak or confounded by extra paired data.**</p>
+    <p>In fact, the architectural evolution of UMMs tells the story clearly: top-performing unified models increasingly rely on Mixture-of-Transformers (MoT) or isolated task-routed experts that separate understanding and generation parameters to prevent mutual interference. Continuous pixel synthesis and high-level semantic reasoning pull representations in different directions—unless generation itself is reformulated in a symbolic token space (as we explore in <em>PixelBench</em>).</p>
+
+    <h4 id="en-2-2">2.2 Why Visual Generators Struggle as Planners</h4>
+    <p>A growing wave of work attempts to repurpose image or video generation models directly as general perception learners or embodied planners (e.g., World-Action Models / WAMs that predict future video frames alongside robot actions). In my view, continuous visual generators are fundamentally distribution-to-distribution “visual translators,” not logical planners.</p>
+    <p>First, recent empirical studies (such as Fast-WM and single-step action variants) show that pixel-level video generation loss mainly serves as an auxiliary training signal; bypassing pixel generation at inference time barely hurts action accuracy. Second, replacing an LLM/VLM backbone with a video generator sacrifices long-horizon symbolic planning, compositional reasoning, memory, and agentic tool use. Neither VLA nor WAM can magically bypass the true bottleneck of embodied AI—the scarcity of scalable physical interaction and action data—through visual hallucination alone.</p>
+
+    <h4 id="en-2-3">2.3 Are Visual Generators World Models?</h4>
+    <p>If any visual paradigm captures temporal dynamics, it is streaming video generation. Yet a complete World Model requires state-transition reasoning and planning, which is already what autoregressive language models do in discrete token space via next-token prediction. Rather than treating a standalone video generator as a self-sufficient world model, a genuine world model must pair a language-centric reasoning core with multimodal state representations.</p>
+
+    <h4 id="en-2-4">2.4 Visual Generators as Controllable Renderers</h4>
+    <p>Where, then, do visual generation models shine? Rather than forcing video generators to act as logical planners, their most compelling role is as **controllable renderers** with rich physical and appearance priors—guided by an LLM planner and explicit structured conditions (such as code, symbolic layouts, or coarse 3D simulation states) to synthesize photorealistic visual rollouts.</p>
+
+    <h3 id="en-3">3. Closing Thoughts</h3>
+    <p>Critiquing “Vision-Centricity” is not about dismissing computer vision; it is about breaking out of a closed problem space that expects pixel or 3D scaling alone to yield general reasoning. Recognizing that logical planning is language-centric, that vision works best when compressed into symbolic primitives or routed cleanly within unified architectures, and that visual generators and 3D engines serve as controllable renderers and interactive environments gives us a much clearer blueprint for the next generation of multimodal systems.</p>
+  </article>
+
+  <footer class="foot">
+    <p><a href="../../../#blog">Back to homepage</a></p>
+  </footer>
+</main>
+<script>
+  (function () {
+    var titles = { zh: '警惕 Vision Centric', en: 'Rethinking Vision-Centricity' };
+    function show(lang) {
+      document.querySelectorAll('[data-lang-content]').forEach(function (el) {
+        el.hidden = el.getAttribute('data-lang-content') !== lang;
+      });
+      document.querySelectorAll('[data-lang]').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
+      });
+      document.getElementById('post-title').textContent = titles[lang];
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      window.dispatchEvent(new Event('scroll'));
+    }
+    document.querySelectorAll('[data-lang]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var lang = b.getAttribute('data-lang');
+        show(lang);
+        history.replaceState(null, '', lang === 'en' ? '?lang=en' : location.pathname);
+      });
+    });
+    if (new URLSearchParams(location.search).get('lang') === 'en') show('en');
+  })();
+</script>
+</body>
+</html>

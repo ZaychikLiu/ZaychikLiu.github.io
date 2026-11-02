@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#231d30"/>
+      <stop offset="100%" stop-color="#17141f"/>
+    </linearGradient>
+    <radialGradient id="gViolet" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#b4a7ee" stop-opacity="0.85"/>
+      <stop offset="70%" stop-color="#7c68c9" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#7c68c9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gAmber" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e2b45c" stop-opacity="0.9"/>
+      <stop offset="68%" stop-color="#c98a2c" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#c98a2c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gRed" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0544f" stop-opacity="0.75"/>
+      <stop offset="70%" stop-color="#f0544f" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#f0544f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gTeal" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6cc5b8" stop-opacity="0.85"/>
+      <stop offset="70%" stop-color="#3c9d90" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#3c9d90" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="500" height="300" fill="url(#bg)"/>
+
+  <!-- Left panel: Unjustified / Premature Split (Rejected) -->
+  <rect x="22" y="24" width="214" height="252" rx="10" fill="#211d2b" stroke="#352f44" stroke-width="1.5"/>
+  <text x="129" y="48" text-anchor="middle" fill="#a39db1" font-family="Instrument Sans, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600">Standard Greedy Split</text>
+  <text x="129" y="64" text-anchor="middle" fill="#f0544f" font-family="Instrument Sans, Helvetica, Arial, sans-serif" font-size="11">Premature Floaters (Rejected)</text>
+
+  <!-- Camera rays left -->
+  <line x1="48" y1="242" x2="175" y2="95" stroke="#4f4763" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="205" y1="242" x2="82" y2="95" stroke="#4f4763" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- Noisy floaters -->
+  <ellipse cx="95" cy="128" rx="34" ry="18" transform="rotate(-24 95 128)" fill="url(#gRed)"/>
+  <ellipse cx="162" cy="134" rx="30" ry="16" transform="rotate(32 162 134)" fill="url(#gRed)"/>
+  <ellipse cx="128" cy="162" rx="44" ry="22" transform="rotate(8 128 162)" fill="url(#gViolet)"/>
+  <ellipse cx="82" cy="186" rx="26" ry="13" transform="rotate(40 82 186)" fill="url(#gRed)"/>
+  <ellipse cx="170" cy="190" rx="28" ry="14" transform="rotate(-35 170 190)" fill="url(#gRed)"/>
+
+  <!-- Center arrow -->
+  <path d="M 243 150 L 257 150" stroke="#e2b45c" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="255,146 262,150 255,154" fill="#e2b45c"/>
+
+  <!-- Right panel: Counterfactual Topology Selection (Committed) -->
+  <rect x="264" y="24" width="214" height="252" rx="10" fill="#211d2b" stroke="#5d508c" stroke-width="1.5"/>
+  <text x="371" y="48" text-anchor="middle" fill="#e8e5ee" font-family="Instrument Sans, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600">Counterfactual Selection</text>
+  <text x="371" y="64" text-anchor="middle" fill="#6cc5b8" font-family="Instrument Sans, Helvetica, Arial, sans-serif" font-size="11">Commit Only When Justified</text>
+
+  <!-- Camera rays right -->
+  <line x1="290" y1="242" x2="415" y2="95" stroke="#635885" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="448" y1="242" x2="324" y2="95" stroke="#635885" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- Clean structured Gaussians along surface -->
+  <ellipse cx="340" cy="156" rx="36" ry="16" transform="rotate(-18 340 156)" fill="url(#gTeal)"/>
+  <ellipse cx="372" cy="148" rx="40" ry="18" transform="rotate(4 372 148)" fill="url(#gAmber)"/>
+  <ellipse cx="404" cy="158" rx="34" ry="15" transform="rotate(20 404 158)" fill="url(#gViolet)"/>
+  <ellipse cx="371" cy="166" rx="30" ry="14" transform="rotate(-4 371 166)" fill="url(#gTeal)"/>
+
+  <!-- Camera icons at bottom -->
+  <polygon points="42,252 54,252 58,242 38,242" fill="#a39db1"/>
+  <polygon points="199,252 211,252 215,242 195,242" fill="#a39db1"/>
+  <polygon points="284,252 296,252 300,242 280,242" fill="#e2b45c"/>
+  <polygon points="442,252 454,252 458,242 438,242" fill="#e2b45c"/>
+</svg>
