@@ -149,7 +149,7 @@ h1 {
 
 /* 各节 */
 section { margin-top: 3rem; }
-h2[id], .intro-section[id], .intro[id] { scroll-margin-top: 1.5rem; }
+h2[id], .intro-section[id], .intro[id], .project-card[id] { scroll-margin-top: 1.5rem; }
 h2 {
   font-size: 1.5rem;
   font-weight: 500;
