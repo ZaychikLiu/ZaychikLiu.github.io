@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark light">
   <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
   <script src="assets/js/theme.js" defer></script>
-  <script src="assets/js/toc.js" defer></script>
+  <script src="assets/js/avatar-ellipses.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
   <meta name="google-site-verification" content="9uan5uVzWiVjjlFHSaJjC30M5aBQpUH-4UdYbgOzNMU">
   <title>Feiyang Liu</title>
   <meta name="description" content="Feiyang Liu, undergraduate researcher at South China University of Technology working on multimodal foundation models.">
@@ -16,7 +17,7 @@
   <link rel="icon" href="assets/img/avatar.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="canonical" href="https://zaychikliu.github.io/">
   <script type="application/ld+json">
@@ -48,243 +49,558 @@
   }
   </script>
 </head>
-<body>
-<main class="page">
-  <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">Dark mode</button>
+<body id="top">
+  <div class="grain-overlay" aria-hidden="true"></div>
 
+  <div class="ambient-field" aria-hidden="true">
+    <canvas id="gaussian-canvas"></canvas>
+    <div class="ellipse ellipse-1"></div>
+    <div class="ellipse ellipse-2"></div>
+    <div class="ellipse ellipse-3"></div>
+  </div>
 
-  <nav class="toc toc-side" aria-label="Contents">
-    <ol>
-      <li><a href="#about">About</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#publications">Publications</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#ongoing">Ongoing</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#people">People</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ol>
-  </nav>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="brand" href="#top">
+        <img class="brand-avatar" src="assets/img/avatar.jpg" alt="" width="24" height="24">
+        <span>Feiyang Liu</span>
+      </a>
 
-  <header class="intro-section" id="about">
-    <div class="intro">
-      <img class="portrait" src="assets/img/avatar.jpg" alt="Abstract painting of overlapping translucent ellipses" width="184" height="184">
-      <div class="intro-text">
-        <h1>Feiyang Liu</h1>
-        <p class="role">Undergraduate researcher · South China University of Technology</p>
-        <p>I study Intelligent Science and Technology at South China University of Technology (graduating June 2027) and was a visiting student at UC Berkeley in 2024–2025.</p>
-        <p>My research focuses on building <strong>scalable, language-centric multimodal foundation models</strong>—studying how representations, model architectures, and pretraining/post-training recipes unify visual understanding, generation, and reasoning.</p>
-        <p>I previously worked on <strong>3D vision and computer graphics</strong> for building spatial-aware visual intelligence.</p>
-        <nav class="links" aria-label="Contact and profiles">
-          <a href="mailto:a160130k@gmail.com"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2 4l6 4.5L14 4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Email</a>
-          <a href="assets/Feiyang_Liu_CV.pdf"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 1.75h6l3 3v9.5a1 1 0 0 1-1 1h-8a1 1 0 0 1-1-1v-11.5a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M9.25 1.75v3.25h3.25M5.25 8.5h5.5M5.25 11h4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>CV</a>
-          <a href="assets/img/wechat-qr.jpg" data-wechat-open><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.2 2.5C3.6 2.5 1.5 4.2 1.5 6.4c0 1.2.7 2.3 1.8 3l-.5 1.6 1.7-.9c.5.1 1.1.2 1.7.2.2 0 .4 0 .6-.02-.1-.4-.2-.8-.2-1.28 0-2.1 2-3.8 4.4-3.8.2 0 .4 0 .6.03C11.1 3.6 8.9 2.5 6.2 2.5z" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/><path d="M10.6 6.2c-2.1 0-3.9 1.4-3.9 3.2s1.8 3.2 3.9 3.2c.5 0 1-.1 1.4-.2l1.4.7-.4-1.3c.9-.6 1.5-1.5 1.5-2.4 0-1.8-1.8-3.2-3.9-3.2z" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/></svg>WeChat</a>
-          <a href="https://scholar.google.com/citations?user=md3YPrAAAAAJ"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2L1.5 5.5 8 9l6.5-3.5L8 2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4 7.2v3.6c0 1.2 1.8 2.2 4 2.2s4-1 4-2.2V7.2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Scholar</a>
-          <a href="https://github.com/ZaychikLiu"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 0 0-2.05 12.67c.32.06.44-.14.44-.31v-1.2c-1.8.39-2.18-.76-2.18-.76-.3-.75-.72-.95-.72-.95-.59-.4.04-.39.04-.39.65.05 1 .67 1 .67.58.99 1.52.7 1.89.54.06-.42.23-.7.41-.86-1.44-.16-2.95-.72-2.95-3.2 0-.71.25-1.29.67-1.75-.07-.16-.29-.82.06-1.72 0 0 .55-.17 1.79.67a6.2 6.2 0 0 1 3.26 0c1.24-.84 1.79-.67 1.79-.67.35.9.13 1.56.06 1.72.42.46.67 1.04.67 1.75 0 2.49-1.51 3.04-2.96 3.2.23.2.44.6.44 1.21v1.8c0 .17.12.37.45.31A6.5 6.5 0 0 0 8 1.5z" fill="currentColor"/></svg>GitHub</a>
-          <a href="https://x.com/ZaychikLFY"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.3 6.9L14.2 1.5h-1.2L8.7 6.1 5.3 1.5H1.4l5.1 7.2L1.4 14.5h1.2l4.5-5 3.6 5h3.9L9.3 6.9zm-1.6 1.8l-.5-.7-4.1-5.6h1.8l3.3 4.5.5.7 4.3 5.9h-1.8L7.7 8.7z" fill="currentColor"/></svg>X</a>
-          <a href="https://www.xiaohongshu.com/user/profile/62a32fde000000001b02936e"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2.5" width="12" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M5.2 6h5.6M5.2 8.5h5.6M5.2 11h3.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Xiaohongshu</a>
-          <a href="#blog"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11M2.5 7h11M2.5 10.5h7.5M2.5 13.5h5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Blog</a>
-        </nav>
+      <nav class="header-nav" aria-label="Primary">
+        <span class="header-nav-pill" aria-hidden="true"></span>
+        <a href="#publications">Work</a>
+        <a href="#ongoing">Ongoing</a>
+        <a href="#experience">Experience</a>
+        <a href="#blog">Writing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="cmdk-trigger" data-cmdk-open aria-label="Open command menu">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <kbd data-cmdk-kbd>⌘K</kbd>
+        </button>
+
+        <button type="button" id="sound-toggle" class="icon-btn" aria-pressed="false" aria-label="Enable tactile sound" title="Enable tactile sound">
+          <svg class="icon-sound-off" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 6.25h2.2L8.5 3.5v9l-3.3-2.75H3a.75.75 0 0 1-.75-.75V7A.75.75 0 0 1 3 6.25z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M11 6l3 4M14 6l-3 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          <svg class="icon-sound-on" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 6.25h2.2L8.5 3.5v9l-3.3-2.75H3a.75.75 0 0 1-.75-.75V7A.75.75 0 0 1 3 6.25z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M10.8 5.8a3.2 3.2 0 0 1 0 4.4M12.6 4.2a5.5 5.5 0 0 1 0 7.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <button type="button" id="theme-toggle" class="icon-btn" data-icon-toggle aria-pressed="true" aria-label="Switch to light mode" title="Switch to light mode">
+          <svg class="icon-sun" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.35"/>
+            <path d="M8 1.75v1.3M8 12.95v1.3M1.75 8h1.3M12.95 8h1.3M3.58 3.58l.92.92M11.5 11.5l.92.92M12.42 3.58l-.92.92M4.5 11.5l-.92.92" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M12.9 10.2A5.2 5.2 0 0 1 5.8 3.1a5.3 5.3 0 1 0 7.1 7.1z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     </div>
-
-    <div class="research-focus">
-      <p class="focus-lead">Currently, my research centers on two directions:</p>
-      <ul class="intro-themes">
-        <li><strong>Scalable Unified Multimodal Pretraining:</strong> end-to-end training of Unified Multimodal Models (UMMs)—with a strong emphasis on large-scale unified pretraining alongside post-training and evaluation across language modeling, visual understanding, and generation on TPU clusters (<a href="#ongoing">ongoing work</a>).</li>
-        <li><strong>Solving Vision with LLMs &amp; Symbolic Vision:</strong> probing how far LLMs can go as general visual learners and generators—compressing visual signals into compact <em>symbolic visual primitives</em> in plain text, from images (<a href="#publications">PixelBench</a>) to videos (<a href="#ongoing-video">ongoing work</a>), and exploring how modern LLMs tackle core visual perception (<a href="#ongoing-perception">ongoing work</a>).</li>
-      </ul>
-      <p class="status-callout">I am applying for Fall 2027 M.Phil. / Master's programs and actively seeking research internship opportunities in industry—feel free to <a href="#contact">reach out</a> for internships or research collaborations.</p>
-    </div>
+    <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
   </header>
 
-  <details class="toc toc-inline">
-    <summary>Contents</summary>
-    <ol>
-      <li><a href="#about">About</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#publications">Publications</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#ongoing">Ongoing</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#people">People</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ol>
-  </details>
+  <main class="home-shell">
+    <section class="hero" id="about" aria-label="Introduction">
+      <div class="hero-grid-bg" aria-hidden="true"></div>
+      <a class="status-pill hero-stagger hero-stagger-1" href="#contact">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Applying for Fall 2027 M.Phil. / Master's · Seeking Research Internships</span>
+      </a>
 
-  <section aria-labelledby="news">
-    <h2 id="news">News</h2>
-    <ul class="news">
-      <li><time datetime="2026-10">Oct 2026</time><span>Released <a href="https://haoquanzhang.github.io/pixelbench/"><strong>PixelBench</strong></a> (<a href="https://github.com/HaoquanZhang/PixelBench">code</a> &amp; <a href="https://huggingface.co/collections/haoquan03/pixel-reconstruction-tuning">models</a>) and a companion blog post: <a href="blog/2026/millennium-prize/">0.6B模型能解决千禧年难题吗？</a> <a class="post-sub" href="blog/2026/millennium-prize/?lang=en">/ Can a 0.6B Model Solve the Millennium Prize?</a></span></li>
-      <li><time datetime="2026-04">Apr 2026</time><span><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html"><strong>CAGS</strong></a> was accepted to <strong>CVPR 2026</strong> as a <span class="award">Highlight</span>.</span></li>
-    </ul>
-  </section>
-
-  <section aria-labelledby="publications">
-    <div class="section-head">
-      <h2 id="publications">Publications</h2>
-      <div class="pub-switch" role="group" aria-label="Filter publications">
-        <button type="button" class="pub-tab" data-pub-mode="selected" aria-pressed="true">Selected <span class="pub-badge">2</span></button>
-        <button type="button" class="pub-tab" data-pub-mode="all" aria-pressed="false">All <span class="pub-badge">3</span></button>
-      </div>
-    </div>
-
-    <div id="pub-selected">
-    <article class="paper">
-      <a href="https://haoquanzhang.github.io/pixelbench/"><img class="teaser" src="assets/img/pub/pixelbench.jpg" alt="Pixel images generated by language models at 16, 32 and 64 pixel resolution, next to a palette-indexed pixel grid for a tree" loading="lazy"></a>
-      <div>
-        <h3><a href="https://haoquanzhang.github.io/pixelbench/">PixelBench: Can LLMs Understand and Generate Images Pixel by Pixel?</a></h3>
-        <p class="authors"><a href="https://haoquanzhang.github.io/">Haoquan Zhang</a>, <strong>Feiyang Liu</strong>, <a href="https://tianshijing.github.io/">Juanxi Tian</a>, <a href="https://li-wanhua.github.io/">Wanhua Li</a>, <a href="https://kennymckormick.github.io/">Haodong Duan</a>, <a href="https://wyliu.com/">Weiyang Liu</a></p>
-        <p class="venue">2026</p>
-        <p class="summary">Probing LLMs as general visual generators directly in plain text—without agentic tools, visual tokenizers, or diffusion modules—by representing images as compact symbolic visual primitives (palette-indexed pixel grids), and introducing Pixel Reconstruction Tuning (PRT) to improve downstream multimodal understanding.</p>
-        <p class="paper-links"><a href="https://haoquanzhang.github.io/pixelbench/">Project page</a><a href="https://github.com/HaoquanZhang/PixelBench">Code</a><a href="https://huggingface.co/collections/haoquan03/pixel-reconstruction-tuning">Models</a></p>
-      </div>
-    </article>
-
-    <article class="paper">
-      <a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html"><img class="teaser" src="assets/img/pub/cags.jpg" alt="Poster for Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting" loading="lazy"></a>
-      <div>
-        <h3><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting</a></h3>
-        <p class="authors"><a href="https://openreview.net/profile?id=~Qinzheng_Zhou1">Qinzheng Zhou</a>, <strong>Feiyang Liu</strong>, <a href="https://openreview.net/profile?id=~Lijing_Lu1">Lijing Lu</a>, <a href="https://openreview.net/profile?id=~Zhihang_Li1">Zhihang Li</a></p>
-        <p class="venue">CVPR 2026 <span class="award">Highlight</span></p>
-        <p class="summary">Low input resolution yields stable global geometry while high resolution recovers fine detail at the cost of multi-view noise; confidence-guided coarse-to-fine aggregation across resolutions preserves both.</p>
-        <p class="paper-links"><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Paper</a><a href="https://cvpr.thecvf.com/virtual/2026/poster/36203">Poster</a></p>
-      </div>
-    </article>
-
-    <article class="paper" id="pub-extra" hidden>
-      <img class="teaser" src="assets/img/pub/counterfactual-3dgs.svg" alt="Diagram comparing standard greedy Gaussian splitting with counterfactual topology selection under sparse views" loading="lazy">
-      <div>
-        <h3>Commit Only When Justified: Counterfactual Topology Selection for Sparse-View 3DGS</h3>
-        <p class="authors"><a href="https://openreview.net/profile?id=~Qinzheng_Zhou1">Qinzheng Zhou</a>, <strong>Feiyang Liu</strong>, <a href="https://openreview.net/profile?id=~Lijing_Lu1">Lijing Lu</a>, <a href="https://openreview.net/profile?id=~Zhihang_Li1">Zhihang Li</a></p>
-        <p class="venue">Under review (Phase 2), AAAI 2027</p>
-        <p class="summary">Counterfactual topology selection commits Gaussian densification and pruning updates only when justified by multi-view consistency, preventing premature topological lock-in and floaters under sparse views.</p>
-      </div>
-    </article>
-    </div>
-  </section>
-
-  <section aria-labelledby="experience">
-    <h2 id="experience">Experience</h2>
-    <div class="entry">
-      <div class="entry-row">
-        <div><h3>UC Santa Cruz &amp; Gemini Team</h3><p class="meta">Project Lead · Unified Multimodal Pretraining &amp; Post-Training</p></div>
-        <p class="when">2026 – Present</p>
-      </div>
-    </div>
-    <div class="entry">
-      <div class="entry-row">
-        <div><h3>The Chinese University of Hong Kong &amp; ByteDance Seed</h3><p class="meta">Research Contributor · Symbolic Vision &amp; LLM Visual Perception</p></div>
-        <p class="when">2026 – Present</p>
-      </div>
-    </div>
-    <div class="entry">
-      <div class="entry-row">
-        <div><h3>Huazhong University of Science and Technology</h3><p class="meta">Research Collaborator · Sparse-View 3D Gaussian Splatting &amp; Scene Reconstruction</p></div>
-        <p class="when">2025 – 2026</p>
-      </div>
-    </div>
-  </section>
-
-  <section aria-labelledby="ongoing">
-    <div class="section-head">
-      <h2 id="ongoing">Ongoing Projects</h2>
-      <button type="button" id="ongoing-toggle" class="section-collapse-btn" aria-expanded="true" aria-controls="ongoing-list">
-        <span data-ongoing-label>Collapse</span>
-        <span class="pub-badge">3</span>
-        <svg class="collapse-chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 7.5L6 4l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-    <div id="ongoing-list">
-    <article class="project-card">
-      <div class="project-head">
-        <h3>End-to-End Training of Unified Multimodal Models</h3>
-        <p class="project-meta"><strong class="meta-role">Project Lead</strong> · UC Santa Cruz &amp; Gemini Team · <span class="meta-scale">Ongoing · Hundreds of Cloud TPU v5p/v6e Chips</span></p>
-      </div>
-      <p>Leading an end-to-end empirical study on <strong>large-scale unified pretraining</strong> and <strong>multi-stage post-training</strong> of Unified Multimodal Models (UMMs) across language modeling, visual understanding, and image generation, supported by a modular JAX/Flax distributed training and evaluation stack across hundreds of TPU v5p/v6e chips (details to be shared upon release).</p>
-    </article>
-
-    <article class="project-card" id="ongoing-perception">
-      <div class="project-head">
-        <h3>Visual Perception with Modern LLMs</h3>
-        <p class="project-meta"><strong class="meta-role">Research Contributor</strong> · CUHK &amp; ByteDance Seed · <span class="meta-scale">Ongoing</span></p>
-      </div>
-      <p>Collaborating on an ongoing empirical study exploring how modern LLMs tackle core visual perception tasks (details to be shared upon release).</p>
-    </article>
-
-    <article class="project-card" id="ongoing-video">
-      <div class="project-head">
-        <h3>Pixel-Level Video Generation with LLMs</h3>
-        <p class="project-meta"><strong class="meta-role">Research Contributor</strong> · <span class="meta-scale">Ongoing</span></p>
-      </div>
-      <p>A video follow-up to <strong>PixelBench</strong>: language models generate videos directly at the pixel level, with no image or video generator in the loop. Early results are visually striking (details to be shared upon release).</p>
-    </article>
-    </div>
-  </section>
-
-  <section aria-labelledby="education">
-    <h2 id="education">Education</h2>
-    <div class="entry entry-row">
-      <div><h3>South China University of Technology</h3><p class="meta">B.Eng. in Intelligent Science and Technology</p></div>
-      <p class="when">2022 – 2027</p>
-    </div>
-    <div class="entry entry-row">
-      <div><h3>University of California, Berkeley</h3><p class="meta">Visiting student</p></div>
-      <p class="when">2024 – 2025</p>
-    </div>
-  </section>
-
-  <section aria-labelledby="blog">
-    <h2 id="blog">Blog</h2>
-    <ul class="post-list-home">
-      <li>
-        <time datetime="2026-10-30">Oct 2026</time>
-        <div>
-          <h3><a href="blog/2026/millennium-prize/">0.6B模型能解决千禧年难题吗？</a> <a class="post-sub" href="blog/2026/millennium-prize/?lang=en">/ Can a 0.6B Model Solve the Millennium Prize?</a></h3>
-          <p>Language models that draw in pixels and video as plain text, and why symbolic visual data might be a better pretraining signal than images.</p>
+      <div class="hero-grid hero-stagger hero-stagger-2">
+        <div class="hero-copy">
+          <h1>Feiyang Liu</h1>
+          <p class="hero-role">Undergraduate researcher · South China University of Technology</p>
+          <p class="hero-thesis">How multimodal foundation models learn: representations, training dynamics, and why training recipes work.</p>
+          <div class="hero-bio">
+            <p>I study Intelligent Science and Technology at South China University of Technology (graduating June 2027) and was a visiting student at UC Berkeley in 2024–2025.</p>
+            <p>My research focuses on building <strong>scalable, language-centric multimodal foundation models</strong>—studying how representations, model architectures, and pretraining/post-training recipes unify visual understanding, generation, and reasoning.</p>
+            <p>I previously worked on <strong>3D vision and computer graphics</strong> for building spatial-aware visual intelligence.</p>
+          </div>
         </div>
-      </li>
-      <li>
-        <time datetime="2026-08-17">Aug 2026</time>
-        <div>
-          <h3><a href="blog/2026/3d-as-interface/">3D更应该定位为交互手段而非通用智能</a> <a class="post-sub" href="blog/2026/3d-as-interface/?lang=en">/ 3D as an Interaction Interface Rather Than General Intelligence</a></h3>
-          <p>Why 3D may disappear from inside the model, only to reappear outside the model as interactive environments, structured states, and control interfaces bridging language agents and the physical world.</p>
-        </div>
-      </li>
-      <li>
-        <time datetime="2026-07-20">Jul 2026</time>
-        <div>
-          <h3><a href="blog/2026/rethinking-vision-centric/">警惕 Vision Centric</a> <a class="post-sub" href="blog/2026/rethinking-vision-centric/?lang=en">/ Rethinking Vision-Centricity</a></h3>
-          <p>Why vision in multimodal understanding behaves almost like another text, why encoder-free and language-centric paradigms are rising, and why visual generators are controllable renderers rather than logical planners.</p>
-        </div>
-      </li>
-      <li>
-        <time datetime="2026-07-06">Jul 2026</time>
-        <div>
-          <h3><a href="blog/2026/beyond-vision/">Vision之外</a> <a class="post-sub" href="blog/2026/beyond-vision/?lang=en">/ Beyond Vision</a></h3>
-          <p>Do ego and taste still matter for newcomers in AI research, and should one stay in academia or move to industry?</p>
-        </div>
-      </li>
-    </ul>
-  </section>
 
-  <section aria-labelledby="people">
-    <h2 id="people">People</h2>
-    <p>People whose work has shaped mine:</p>
-    <ul class="people-list">
-      <li><a href="https://hwjiang1510.github.io/"><strong>Hanwen Jiang</strong></a> — for his insightful perspectives on 3D vision and his pursuit of generalizable spatial and physical representations.</li>
-      <li><a href="https://sustcsonglin.github.io/"><strong>Songlin Yang</strong></a> — for pushing the frontier of sequence modeling architectures and hardware-aware algorithms with remarkable clarity and rigor.</li>
-      <li><a href="https://tsb0601.github.io/"><strong>Shengbang Tong</strong></a>, <a href="https://junlinhan.github.io/"><strong>Junlin Han</strong></a> &amp; <a href="https://penghao-wu.github.io/"><strong>Penghao Wu</strong></a> — for demystifying multimodal pretraining and unified models through systematic, controlled empirical science.</li>
-    </ul>
-    <p class="people-note">Their work has shaped how I formulate questions, design controlled experiments, and rethink prevailing assumptions—I aspire to create research that is equally rigorous, insightful, and impactful.</p>
-  </section>
+        <div class="hero-avatar-wrap">
+          <div class="portrait-frame" data-avatar-tilt title="Click to replay ellipse fit &amp; ripple field">
+            <img class="portrait" src="assets/img/avatar.jpg" alt="Abstract painting of overlapping translucent ellipses" width="152" height="152">
+            <canvas id="avatar-fit-canvas" class="avatar-fit-canvas" width="304" height="304" aria-hidden="true"></canvas>
+            <div class="portrait-glare" aria-hidden="true"></div>
+          </div>
+          <div class="avatar-fit-bar" aria-label="Ellipse fitting controls">
+            <div class="avatar-fit-top">
+              <span id="avatar-fit-status" class="avatar-fit-status">72 ellipses</span>
+              <button type="button" id="avatar-fit-replay" class="avatar-fit-btn" aria-label="Replay ellipse fitting">↻ Fit</button>
+            </div>
+            <svg id="avatar-fit-spark" class="avatar-fit-spark" viewBox="0 0 152 20" aria-hidden="true"></svg>
+            <input id="avatar-fit-range" class="avatar-fit-range" type="range" min="0" max="72" value="72" aria-label="Ellipse fitting progress">
+          </div>
+        </div>
+      </div>
 
-  <section aria-labelledby="contact">
-    <h2 id="contact">Contact</h2>
-    <p>You can reach me at <a href="mailto:a160130k@gmail.com">a160130k@gmail.com</a> or on WeChat (<a href="assets/img/wechat-qr.jpg" data-wechat-open>ZaychikLiu · QR code</a>).</p>
-  </section>
+      <div class="hero-actions hero-stagger hero-stagger-3">
+        <a class="btn-primary" href="assets/Feiyang_Liu_CV.pdf">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3.5 1.75h6l3 3v9.5a1 1 0 0 1-1 1h-8a1 1 0 0 1-1-1v-11.5a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M9.25 1.75v3.25h3.25M5.25 8.5h5.5M5.25 11h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          <span>Read CV</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+
+        <button type="button" class="btn-secondary" data-copy-email data-email="a160130k@gmail.com">
+          <svg class="copy-icon-mail" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="2" y="3.25" width="12" height="9.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2.5 4.25L8 8.5l5.5-4.25" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg class="copy-icon-check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span data-copy-label>Copy Email</span>
+          <kbd class="btn-kbd">E</kbd>
+        </button>
+      </div>
+
+      <nav class="profile-pills hero-stagger hero-stagger-4" aria-label="Contact and profiles">
+        <a class="profile-pill" href="https://scholar.google.com/citations?user=md3YPrAAAAAJ">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2L1.5 5.5 8 9l6.5-3.5L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4 7.2v3.6c0 1.2 1.8 2.2 4 2.2s4-1 4-2.2V7.2" stroke="currentColor" stroke-width="1.3"/></svg>
+          <span>Scholar</span>
+        </a>
+        <a class="profile-pill" href="https://github.com/ZaychikLiu">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 0 0-2.05 12.67c.32.06.44-.14.44-.31v-1.2c-1.8.39-2.18-.76-2.18-.76-.3-.75-.72-.95-.72-.95-.59-.4.04-.39.04-.39.65.05 1 .67 1 .67.58.99 1.52.7 1.89.54.06-.42.23-.7.41-.86-1.44-.16-2.95-.72-2.95-3.2 0-.71.25-1.29.67-1.75-.07-.16-.29-.82.06-1.72 0 0 .55-.17 1.79.67a6.2 6.2 0 0 1 3.26 0c1.24-.84 1.79-.67 1.79-.67.35.9.13 1.56.06 1.72.42.46.67 1.04.67 1.75 0 2.49-1.51 3.04-2.96 3.2.23.2.44.6.44 1.21v1.8c0 .17.12.37.45.31A6.5 6.5 0 0 0 8 1.5z" fill="currentColor"/></svg>
+          <span>GitHub</span>
+        </a>
+        <a class="profile-pill" href="https://x.com/ZaychikLFY">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.3 6.9L14.2 1.5h-1.2L8.7 6.1 5.3 1.5H1.4l5.1 7.2L1.4 14.5h1.2l4.5-5 3.6 5h3.9L9.3 6.9zm-1.6 1.8l-.5-.7-4.1-5.6h1.8l3.3 4.5.5.7 4.3 5.9h-1.8L7.7 8.7z" fill="currentColor"/></svg>
+          <span>X</span>
+        </a>
+        <a class="profile-pill" href="assets/img/wechat-qr.jpg" data-wechat-open>
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6.2 2.5C3.6 2.5 1.5 4.2 1.5 6.4c0 1.2.7 2.3 1.8 3l-.5 1.6 1.7-.9c.5.1 1.1.2 1.7.2.2 0 .4 0 .6-.02-.1-.4-.2-.8-.2-1.28 0-2.1 2-3.8 4.4-3.8.2 0 .4 0 .6.03C11.1 3.6 8.9 2.5 6.2 2.5z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/><path d="M10.6 6.2c-2.1 0-3.9 1.4-3.9 3.2s1.8 3.2 3.9 3.2c.5 0 1-.1 1.4-.2l1.4.7-.4-1.3c.9-.6 1.5-1.5 1.5-2.4 0-1.8-1.8-3.2-3.9-3.2z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/></svg>
+          <span>WeChat</span>
+        </a>
+        <a class="profile-pill" href="https://www.xiaohongshu.com/user/profile/62a32fde000000001b02936e">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2.5" width="12" height="11" rx="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M5.2 6h5.6M5.2 8.5h5.6M5.2 11h3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Xiaohongshu</span>
+        </a>
+        <a class="profile-pill" href="#blog">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 3.5h11M2.5 7h11M2.5 10.5h7.5M2.5 13.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span>Blog</span>
+        </a>
+      </nav>
+    </section>
+
+    <section class="home-section reveal" id="focus" aria-labelledby="focus-heading">
+      <div class="sec-head">
+        <span class="sec-idx">01</span>
+        <h2 id="focus-heading">Research Focus</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+      </div>
+
+      <p class="focus-lead">Currently, my research centers on two directions:</p>
+
+      <div class="focus-grid spotlight-grid">
+        <article class="spotlight-card focus-card">
+          <div>
+            <div class="focus-card-top">
+              <span class="focus-num">AXIS 01</span>
+            </div>
+            <h3>Scalable Unified Multimodal Pretraining</h3>
+            <p>End-to-end training of Unified Multimodal Models (UMMs)—with a strong emphasis on large-scale unified pretraining alongside post-training and evaluation across language modeling, visual understanding, and generation on TPU clusters.</p>
+          </div>
+          <div class="focus-links">
+            <a href="#ongoing">Ongoing work →</a>
+          </div>
+        </article>
+
+        <article class="spotlight-card focus-card">
+          <div>
+            <div class="focus-card-top">
+              <span class="focus-num">AXIS 02</span>
+            </div>
+            <h3>Solving Vision with LLMs &amp; Symbolic Vision</h3>
+            <p>Probing how far LLMs can go as general visual learners and generators—compressing visual signals into compact <em>symbolic visual primitives</em> in plain text, from images to videos, and exploring how modern LLMs tackle core visual perception.</p>
+          </div>
+          <div class="focus-links">
+            <a href="#publications" data-preview="pixelbench">PixelBench →</a>
+            <a href="#ongoing-video">Video follow-up →</a>
+            <a href="#ongoing-perception">LLM perception →</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="spotlight-card craft-lab" aria-label="Interactive Symbolic Visual Primitives Demo">
+        <div class="craft-lab-head">
+          <div class="craft-lab-title-group">
+            <span class="craft-badge">CRAFT · SYMBOLIC VISION</span>
+            <h3 class="craft-lab-title">Pixel Grid → Plain-Text Token Stream</h3>
+          </div>
+          <div class="sv-presets" role="group" aria-label="Pixel presets">
+            <button type="button" class="sv-preset-btn" data-sv-preset="tree" aria-pressed="true">Tree</button>
+            <button type="button" class="sv-preset-btn" data-sv-preset="avatar" aria-pressed="false">Avatar</button>
+            <button type="button" class="sv-preset-btn" data-sv-preset="gaussian" aria-pressed="false">Gaussian</button>
+            <button type="button" class="sv-preset-btn" data-sv-preset="wave" aria-pressed="false">Wave</button>
+            <button type="button" class="sv-preset-btn" data-sv-preset="clear" aria-pressed="false">Clear</button>
+          </div>
+        </div>
+
+        <div class="craft-lab-body">
+          <div class="sv-canvas-col">
+            <div id="sv-canvas" class="sv-grid" role="grid" aria-label="10 by 10 symbolic pixel editor"></div>
+            <div class="sv-palette" role="group" aria-label="Palette symbol">
+              <button type="button" class="sv-swatch" data-sv-symbol="A" aria-pressed="true" title="Ochre (A)"><span class="sv-swatch-dot" style="background:#d8b263"></span></button>
+              <button type="button" class="sv-swatch" data-sv-symbol="B" aria-pressed="false" title="Sage (B)"><span class="sv-swatch-dot" style="background:#8fb369"></span></button>
+              <button type="button" class="sv-swatch" data-sv-symbol="C" aria-pressed="false" title="Violet (C)"><span class="sv-swatch-dot" style="background:#c4b5fd"></span></button>
+              <button type="button" class="sv-swatch" data-sv-symbol="D" aria-pressed="false" title="Plum (D)"><span class="sv-swatch-dot" style="background:#d4829c"></span></button>
+              <button type="button" class="sv-swatch" data-sv-symbol="." aria-pressed="false" title="Empty (.)">.</button>
+            </div>
+          </div>
+
+          <div class="sv-token-col">
+            <div class="sv-token-bar">
+              <span>Paint pixels to inspect symbolic tokens</span>
+              <div class="sv-token-right">
+                <span id="sv-meta">38 / 100 active</span>
+                <button type="button" id="sv-copy-prompt" class="sv-copy-btn">Copy Prompt</button>
+              </div>
+            </div>
+            <pre id="sv-tokens" class="sv-tokens" aria-live="polite"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="news">
+      <div class="sec-head">
+        <span class="sec-idx">02</span>
+        <h2 id="news">News</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+      </div>
+      <ul class="news-list">
+        <li>
+          <time datetime="2026-10">2026.10</time>
+          <span>Released <a href="https://haoquanzhang.github.io/pixelbench/" data-preview="pixelbench"><strong>PixelBench</strong></a> (<a href="https://github.com/HaoquanZhang/PixelBench">code</a> &amp; <a href="https://huggingface.co/collections/haoquan03/pixel-reconstruction-tuning">models</a>) and a companion blog post: <a href="blog/2026/millennium-prize/">0.6B模型能解决千禧年难题吗？</a> <a class="post-sub" href="blog/2026/millennium-prize/?lang=en">/ Can a 0.6B Model Solve the Millennium Prize?</a></span>
+        </li>
+        <li>
+          <time datetime="2026-04">2026.04</time>
+          <span><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html" data-preview="cags"><strong>CAGS</strong></a> was accepted to <strong>CVPR 2026</strong> as a <span class="award-badge">Highlight</span></span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="publications">
+      <div class="sec-head">
+        <span class="sec-idx">03</span>
+        <h2 id="publications">Publications</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+        <div class="pub-switch" role="group" aria-label="Filter publications">
+          <span class="pub-switch-thumb" aria-hidden="true"></span>
+          <button type="button" class="pub-tab" data-pub-mode="selected" aria-pressed="true">Selected <span class="pub-badge">2</span></button>
+          <button type="button" class="pub-tab" data-pub-mode="all" aria-pressed="false">All <span class="pub-badge">3</span></button>
+        </div>
+      </div>
+
+      <div id="pub-selected" class="paper-list spotlight-grid">
+        <article class="spotlight-card paper-card">
+          <div class="paper-media">
+            <a class="paper-media-link" href="https://haoquanzhang.github.io/pixelbench/">
+              <img src="assets/img/pub/pixelbench.jpg" alt="Pixel images generated by language models at 16, 32 and 64 pixel resolution, next to a palette-indexed pixel grid for a tree" loading="lazy">
+            </a>
+            <button type="button" class="paper-zoom-btn" data-lightbox-src="assets/img/pub/pixelbench.jpg" data-lightbox-title="PixelBench: Can LLMs Understand and Generate Images Pixel by Pixel?" aria-label="Inspect PixelBench figure">↗ Inspect</button>
+          </div>
+          <div class="paper-body">
+            <h3><a href="https://haoquanzhang.github.io/pixelbench/">PixelBench: Can LLMs Understand and Generate Images Pixel by Pixel?</a></h3>
+            <p class="authors"><a href="https://haoquanzhang.github.io/">Haoquan Zhang</a>, <strong>Feiyang Liu</strong>, <a href="https://tianshijing.github.io/">Juanxi Tian</a>, <a href="https://li-wanhua.github.io/">Wanhua Li</a>, <a href="https://kennymckormick.github.io/">Haodong Duan</a>, <a href="https://wyliu.com/">Weiyang Liu</a></p>
+            <div class="venue-row">
+              <span class="venue-pill">2026</span>
+            </div>
+            <p class="summary">Probing LLMs as general visual generators directly in plain text—without agentic tools, visual tokenizers, or diffusion modules—by representing images as compact symbolic visual primitives (palette-indexed pixel grids), and introducing Pixel Reconstruction Tuning (PRT) to improve downstream multimodal understanding.</p>
+            <p class="paper-links">
+              <a href="https://haoquanzhang.github.io/pixelbench/">Project page ↗</a>
+              <a href="https://github.com/HaoquanZhang/PixelBench">Code ↗</a>
+              <a href="https://huggingface.co/collections/haoquan03/pixel-reconstruction-tuning">Models ↗</a>
+              <button type="button" class="paper-cite-btn" data-cite-key="pixelbench">Cite</button>
+            </p>
+          </div>
+        </article>
+
+        <article class="spotlight-card paper-card">
+          <div class="paper-media">
+            <a class="paper-media-link" href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">
+              <img src="assets/img/pub/cags.jpg" alt="Poster for Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting" loading="lazy">
+            </a>
+            <button type="button" class="paper-zoom-btn" data-lightbox-src="assets/img/pub/cags.jpg" data-lightbox-title="CAGS: Confidence-Guided Multi-Scale Aggregation (CVPR 2026 Highlight)" aria-label="Inspect CAGS figure">↗ Inspect</button>
+          </div>
+          <div class="paper-body">
+            <h3><a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Confidence-Guided Multi-Scale Aggregation for Sparse-View High-Resolution 3D Gaussian Splatting</a></h3>
+            <p class="authors"><a href="https://openreview.net/profile?id=~Qinzheng_Zhou1">Qinzheng Zhou</a>, <strong>Feiyang Liu</strong>, <a href="https://openreview.net/profile?id=~Lijing_Lu1">Lijing Lu</a>, <a href="https://openreview.net/profile?id=~Zhihang_Li1">Zhihang Li</a></p>
+            <div class="venue-row">
+              <span class="venue-pill">CVPR 2026</span>
+              <span class="award-badge">Highlight</span>
+            </div>
+            <p class="summary">Low input resolution yields stable global geometry while high resolution recovers fine detail at the cost of multi-view noise; confidence-guided coarse-to-fine aggregation across resolutions preserves both.</p>
+            <p class="paper-links">
+              <a href="https://openaccess.thecvf.com/content/CVPR2026/html/Zhou_Confidence-Guided_Multi-Scale_Aggregation_for_Sparse-View_High-Resolution_3D_Gaussian_Splatting_CVPR_2026_paper.html">Paper ↗</a>
+              <a href="https://cvpr.thecvf.com/virtual/2026/poster/36203">Poster ↗</a>
+              <button type="button" class="paper-cite-btn" data-cite-key="cags">Cite</button>
+            </p>
+          </div>
+        </article>
+
+        <article class="spotlight-card paper-card" id="pub-extra" hidden>
+          <div class="paper-media paper-media-btn" data-lightbox-src="assets/img/pub/counterfactual-3dgs.svg" data-lightbox-title="Commit Only When Justified: Counterfactual Topology Selection for Sparse-View 3DGS">
+            <img src="assets/img/pub/counterfactual-3dgs.svg" alt="Diagram comparing standard greedy Gaussian splitting with counterfactual topology selection under sparse views" loading="lazy">
+            <button type="button" class="paper-zoom-btn" data-lightbox-src="assets/img/pub/counterfactual-3dgs.svg" data-lightbox-title="Commit Only When Justified: Counterfactual Topology Selection for Sparse-View 3DGS" aria-label="Inspect Counterfactual 3DGS diagram">↗ Inspect</button>
+          </div>
+          <div class="paper-body">
+            <h3>Commit Only When Justified: Counterfactual Topology Selection for Sparse-View 3DGS</h3>
+            <p class="authors"><a href="https://openreview.net/profile?id=~Qinzheng_Zhou1">Qinzheng Zhou</a>, <strong>Feiyang Liu</strong>, <a href="https://openreview.net/profile?id=~Lijing_Lu1">Lijing Lu</a>, <a href="https://openreview.net/profile?id=~Zhihang_Li1">Zhihang Li</a></p>
+            <div class="venue-row">
+              <span class="venue-pill">Under review (Phase 2), AAAI 2027</span>
+            </div>
+            <p class="summary">Counterfactual topology selection commits Gaussian densification and pruning updates only when justified by multi-view consistency, preventing premature topological lock-in and floaters under sparse views.</p>
+            <p class="paper-links">
+              <button type="button" class="paper-cite-btn" data-cite-key="counterfactual3dgs">Cite</button>
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="experience">
+      <div class="sec-head">
+        <span class="sec-idx">04</span>
+        <h2 id="experience">Experience</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+      </div>
+      <div class="arch-list">
+        <div class="arch-row">
+          <div class="arch-main">
+            <h3 class="arch-title">UC Santa Cruz &amp; Gemini Team</h3>
+            <p class="arch-sub">Project Lead · Unified Multimodal Pretraining &amp; Post-Training</p>
+          </div>
+          <p class="arch-when">2026 – Present</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-main">
+            <h3 class="arch-title">The Chinese University of Hong Kong &amp; ByteDance Seed</h3>
+            <p class="arch-sub">Research Contributor · Symbolic Vision &amp; LLM Visual Perception</p>
+          </div>
+          <p class="arch-when">2026 – Present</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-main">
+            <h3 class="arch-title">Huazhong University of Science and Technology</h3>
+            <p class="arch-sub">Research Collaborator · Sparse-View 3D Gaussian Splatting &amp; Scene Reconstruction</p>
+          </div>
+          <p class="arch-when">2025 – 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="ongoing">
+      <div class="sec-head">
+        <span class="sec-idx">05</span>
+        <h2 id="ongoing">Ongoing Projects</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+        <button type="button" id="ongoing-toggle" class="section-collapse-btn" aria-expanded="true" aria-controls="ongoing-list">
+          <span data-ongoing-label>Collapse</span>
+          <span class="pub-badge">3</span>
+          <svg class="collapse-chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 7.5L6 4l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div id="ongoing-list" class="ongoing-grid">
+        <article class="project-card">
+          <div class="project-head">
+            <h3>End-to-End Training of Unified Multimodal Models</h3>
+            <span class="project-status"><span class="project-status-dot" aria-hidden="true"></span>Ongoing</span>
+          </div>
+          <p class="project-meta"><strong class="meta-role">Project Lead</strong> · UC Santa Cruz &amp; Gemini Team · <span class="meta-scale">Hundreds of Cloud TPU v5p/v6e Chips</span></p>
+          <p>Leading an end-to-end empirical study on <strong>large-scale unified pretraining</strong> and <strong>multi-stage post-training</strong> of Unified Multimodal Models (UMMs) across language modeling, visual understanding, and image generation, supported by a modular JAX/Flax distributed training and evaluation stack across hundreds of TPU v5p/v6e chips (details to be shared upon release).</p>
+        </article>
+
+        <article class="project-card" id="ongoing-perception">
+          <div class="project-head">
+            <h3>Visual Perception with Modern LLMs</h3>
+            <span class="project-status"><span class="project-status-dot" aria-hidden="true"></span>Ongoing</span>
+          </div>
+          <p class="project-meta"><strong class="meta-role">Research Contributor</strong> · CUHK &amp; ByteDance Seed</p>
+          <p>Collaborating on an ongoing empirical study exploring how modern LLMs tackle core visual perception tasks (details to be shared upon release).</p>
+        </article>
+
+        <article class="project-card" id="ongoing-video">
+          <div class="project-head">
+            <h3>Pixel-Level Video Generation with LLMs</h3>
+            <span class="project-status"><span class="project-status-dot" aria-hidden="true"></span>Ongoing</span>
+          </div>
+          <p class="project-meta"><strong class="meta-role">Research Contributor</strong></p>
+          <p>A video follow-up to <strong>PixelBench</strong>: language models generate videos directly at the pixel level, with no image or video generator in the loop. Early results are visually striking (details to be shared upon release).</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="education">
+      <div class="sec-head">
+        <span class="sec-idx">06</span>
+        <h2 id="education">Education</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+      </div>
+      <div class="arch-list">
+        <div class="arch-row">
+          <div class="arch-main">
+            <h3 class="arch-title">South China University of Technology</h3>
+            <p class="arch-sub">B.Eng. in Intelligent Science and Technology</p>
+          </div>
+          <p class="arch-when">2022 – 2027</p>
+        </div>
+        <div class="arch-row">
+          <div class="arch-main">
+            <h3 class="arch-title">University of California, Berkeley</h3>
+            <p class="arch-sub">Visiting student</p>
+          </div>
+          <p class="arch-when">2024 – 2025</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="blog">
+      <div class="sec-head">
+        <span class="sec-idx">07</span>
+        <h2 id="blog">Writing</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+        <a class="sec-action-link" href="blog/">All essays →</a>
+      </div>
+
+      <ul class="writing-list">
+        <li class="writing-item">
+          <time class="writing-date" datetime="2026-10-30">2026.10</time>
+          <div class="writing-main">
+            <div class="writing-title-row">
+              <a class="writing-title" href="blog/2026/millennium-prize/">0.6B模型能解决千禧年难题吗？</a>
+              <a class="writing-sub" href="blog/2026/millennium-prize/?lang=en">Can a 0.6B Model Solve the Millennium Prize?</a>
+            </div>
+            <p class="writing-summary">Language models that draw in pixels and video as plain text, and why symbolic visual data might be a better pretraining signal than images.</p>
+          </div>
+          <div class="writing-actions">
+            <a class="lang-chip" href="blog/2026/millennium-prize/">中文</a>
+            <a class="lang-chip" href="blog/2026/millennium-prize/?lang=en">EN</a>
+            <span class="writing-arrow" aria-hidden="true">→</span>
+          </div>
+        </li>
+
+        <li class="writing-item">
+          <time class="writing-date" datetime="2026-08-17">2026.08</time>
+          <div class="writing-main">
+            <div class="writing-title-row">
+              <a class="writing-title" href="blog/2026/3d-as-interface/">3D更应该定位为交互手段而非通用智能</a>
+              <a class="writing-sub" href="blog/2026/3d-as-interface/?lang=en">3D as an Interaction Interface Rather Than General Intelligence</a>
+            </div>
+            <p class="writing-summary">Why 3D may disappear from inside the model, only to reappear outside the model as interactive environments, structured states, and control interfaces bridging language agents and the physical world.</p>
+          </div>
+          <div class="writing-actions">
+            <a class="lang-chip" href="blog/2026/3d-as-interface/">中文</a>
+            <a class="lang-chip" href="blog/2026/3d-as-interface/?lang=en">EN</a>
+            <span class="writing-arrow" aria-hidden="true">→</span>
+          </div>
+        </li>
+
+        <li class="writing-item">
+          <time class="writing-date" datetime="2026-07-20">2026.07</time>
+          <div class="writing-main">
+            <div class="writing-title-row">
+              <a class="writing-title" href="blog/2026/rethinking-vision-centric/">警惕 Vision Centric</a>
+              <a class="writing-sub" href="blog/2026/rethinking-vision-centric/?lang=en">Rethinking Vision-Centricity</a>
+            </div>
+            <p class="writing-summary">Why vision in multimodal understanding behaves almost like another text, why encoder-free and language-centric paradigms are rising, and why visual generators are controllable renderers rather than logical planners.</p>
+          </div>
+          <div class="writing-actions">
+            <a class="lang-chip" href="blog/2026/rethinking-vision-centric/">中文</a>
+            <a class="lang-chip" href="blog/2026/rethinking-vision-centric/?lang=en">EN</a>
+            <span class="writing-arrow" aria-hidden="true">→</span>
+          </div>
+        </li>
+
+        <li class="writing-item">
+          <time class="writing-date" datetime="2026-07-06">2026.07</time>
+          <div class="writing-main">
+            <div class="writing-title-row">
+              <a class="writing-title" href="blog/2026/beyond-vision/">Vision之外</a>
+              <a class="writing-sub" href="blog/2026/beyond-vision/?lang=en">Beyond Vision</a>
+            </div>
+            <p class="writing-summary">Do ego and taste still matter for newcomers in AI research, and should one stay in academia or move to industry?</p>
+          </div>
+          <div class="writing-actions">
+            <a class="lang-chip" href="blog/2026/beyond-vision/">中文</a>
+            <a class="lang-chip" href="blog/2026/beyond-vision/?lang=en">EN</a>
+            <span class="writing-arrow" aria-hidden="true">→</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="people">
+      <div class="sec-head">
+        <span class="sec-idx">08</span>
+        <h2 id="people">People</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+      </div>
+      <p class="people-intro">People whose work has shaped mine:</p>
+      <ul class="people-list">
+        <li><a href="https://hwjiang1510.github.io/"><strong>Hanwen Jiang</strong></a> — for his insightful perspectives on 3D vision and his pursuit of generalizable spatial and physical representations.</li>
+        <li><a href="https://sustcsonglin.github.io/"><strong>Songlin Yang</strong></a> — for pushing the frontier of sequence modeling architectures and hardware-aware algorithms with remarkable clarity and rigor.</li>
+        <li><a href="https://tsb0601.github.io/"><strong>Shengbang Tong</strong></a>, <a href="https://junlinhan.github.io/"><strong>Junlin Han</strong></a> &amp; <a href="https://penghao-wu.github.io/"><strong>Penghao Wu</strong></a> — for demystifying multimodal pretraining and unified models through systematic, controlled empirical science.</li>
+      </ul>
+      <p class="people-note">Their work has shaped how I formulate questions, design controlled experiments, and rethink prevailing assumptions—I aspire to create research that is equally rigorous, insightful, and impactful.</p>
+    </section>
+
+    <section class="home-section reveal" aria-labelledby="contact">
+      <div class="sec-head">
+        <span class="sec-idx">09</span>
+        <h2 id="contact">Contact</h2>
+        <span class="sec-line" aria-hidden="true"></span>
+      </div>
+      <div class="spotlight-card contact-card">
+        <div class="contact-copy">
+          <p>You can reach me at <a href="mailto:a160130k@gmail.com">a160130k@gmail.com</a> or on WeChat (<a href="assets/img/wechat-qr.jpg" data-wechat-open>ZaychikLiu · QR code</a>).</p>
+          <p class="contact-sub">Open to Fall 2027 M.Phil. / Master's opportunities &amp; research internships.</p>
+        </div>
+        <div class="contact-actions">
+          <button type="button" class="btn-secondary" data-copy-email data-email="a160130k@gmail.com">
+            <svg class="copy-icon-mail" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="2" y="3.25" width="12" height="9.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M2.5 4.25L8 8.5l5.5-4.25" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg class="copy-icon-check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span data-copy-label>Copy Email</span>
+          </button>
+          <a class="btn-primary" href="mailto:a160130k@gmail.com">Send Email ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-left">
+        <span>Last updated November 2026.</span>
+        <span id="live-clock" class="mono-meta">Guangzhou · CST</span>
+        <button type="button" class="kbd-hint-btn" data-cmdk-open>
+          <span>Press</span>
+          <kbd data-cmdk-kbd>⌘K</kbd>
+          <span>to navigate</span>
+        </button>
+      </div>
+      <div id="pixel-artifact" class="pixel-artifact" title="Symbolic visual primitive grid · hover or click"></div>
+    </footer>
+  </main>
 
   <dialog id="wechat-modal" class="qr-modal" aria-label="WeChat QR Code">
     <div class="qr-modal-box">
@@ -297,75 +613,29 @@
     </div>
   </dialog>
 
-  <footer class="foot">
-    <p>Last updated November 2026.</p>
-  </footer>
-</main>
-<script>
-  // 出版物：Segmented 切换 Selected (2) / All (3)；?pubs=all 可直接展开完整列表
-  (function () {
-    var tabs = document.querySelectorAll('[data-pub-mode]');
-    var extra = document.getElementById('pub-extra');
-    function show(full) {
-      if (extra) extra.hidden = !full;
-      tabs.forEach(function (tab) {
-        var isAll = tab.getAttribute('data-pub-mode') === 'all';
-        tab.setAttribute('aria-pressed', String(full ? isAll : !isAll));
-      });
-    }
-    tabs.forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        var full = tab.getAttribute('data-pub-mode') === 'all';
-        show(full);
-        history.replaceState(null, '', full ? '?pubs=all' : location.pathname);
-      });
-    });
-    if (new URLSearchParams(location.search).get('pubs') === 'all') show(true);
-  })();
+  <dialog id="cmdk-modal" class="cmdk-modal" aria-label="Command menu">
+    <div class="cmdk-header">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <input id="cmdk-input" class="cmdk-input" type="text" placeholder="Type a command or search papers, essays, links…" autocomplete="off" spellcheck="false">
+      <button type="button" class="cmdk-esc" data-cmdk-close>ESC</button>
+    </div>
+    <div id="cmdk-list" class="cmdk-list" role="listbox" aria-label="Commands"></div>
+  </dialog>
 
-  // Ongoing Projects：支持一键收起/展开，且点击 #ongoing 锚点时自动展开
-  (function () {
-    var btn = document.getElementById('ongoing-toggle');
-    var list = document.getElementById('ongoing-list');
-    var label = btn ? btn.querySelector('[data-ongoing-label]') : null;
-    if (!btn || !list) return;
-    function setExpanded(expanded) {
-      list.hidden = !expanded;
-      btn.setAttribute('aria-expanded', String(expanded));
-      if (label) label.textContent = expanded ? 'Collapse' : 'Expand';
-    }
-    btn.addEventListener('click', function () {
-      var expanded = btn.getAttribute('aria-expanded') === 'true';
-      setExpanded(!expanded);
-    });
-    // Links to a single card (#ongoing-video) must also expand the list,
-    // or the browser scrolls to a card inside a hidden container.
-    document.querySelectorAll('a[href^="#ongoing"]').forEach(function (link) {
-      link.addEventListener('click', function () {
-        setExpanded(true);
-      });
-    });
-  })();
+  <dialog id="lightbox-modal" class="lightbox-modal" aria-label="Figure inspection">
+    <div class="lightbox-head">
+      <span id="lightbox-title" class="lightbox-title"></span>
+      <button type="button" class="qr-close" data-lightbox-close aria-label="Close">×</button>
+    </div>
+    <div class="lightbox-body">
+      <img id="lightbox-img" src="" alt="">
+    </div>
+  </dialog>
 
-  // 微信二维码弹窗
-  (function () {
-    var modal = document.getElementById('wechat-modal');
-    if (!modal || typeof modal.showModal !== 'function') return;
-    document.querySelectorAll('[data-wechat-open]').forEach(function (el) {
-      el.addEventListener('click', function (e) {
-        e.preventDefault();
-        modal.showModal();
-      });
-    });
-    document.querySelectorAll('[data-wechat-close]').forEach(function (el) {
-      el.addEventListener('click', function () {
-        modal.close();
-      });
-    });
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) modal.close();
-    });
-  })();
-</script>
+  <div id="link-preview" class="link-preview-card" role="tooltip" hidden></div>
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>
