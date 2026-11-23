@@ -1291,6 +1291,15 @@
       },
       {
         group: 'Writing',
+        title: 'TPU-RTX: Native Ray Tracing on Google TPU',
+        hint: 'Nov 2026 · Interactive Post',
+        keywords: 'tpu rtx ray tracing 3dgs mjx pallas xla moana blender cuda',
+        run: function () {
+          location.href = 'https://zaychikliu.github.io/tpu-rtx/';
+        }
+      },
+      {
+        group: 'Writing',
         title: '0.6B模型能解决千禧年难题吗？',
         hint: 'Oct 2026 · Essay',
         keywords: 'millennium prize symbolic vision pixelbench',
