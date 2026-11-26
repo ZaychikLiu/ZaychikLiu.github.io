@@ -7,13 +7,13 @@
   <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
   <script src="../assets/js/theme.js" defer></script>
   <title>Blog · Feiyang Liu</title>
-  <meta name="description" content="Essays and research notes by Feiyang Liu on multimodal foundation models, language-centric vision, and 3D interfaces.">
+  <meta name="description" content="Essays, systems notes, and LLM architecture series by Feiyang Liu.">
   <link rel="canonical" href="https://zaychikliu.github.io/blog/">
   <link rel="icon" href="../assets/img/avatar.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261126">
 </head>
 <body>
 <main class="page">
@@ -21,65 +21,78 @@
 
   <header class="post-head">
     <h1>Blog</h1>
-    <p class="post-meta">Bilingual essays and notes on multimodal models, language-centric vision, 3D representations, and LLM architectures.</p>
+    <p class="post-meta">Columns, systems engineering notes, and bilingual essays on multimodal foundation models and LLM architectures.</p>
   </header>
 
-  <section class="series-column" aria-labelledby="llm-arch-col">
-    <div class="series-column-head">
-      <div class="series-column-title-group">
-        <span class="series-badge">COLUMN · 专栏</span>
-        <h2 id="llm-arch-col" class="series-column-title">LLM 架构专栏 · LLM Architecture Notes</h2>
-      </div>
-      <span class="series-column-count">1 post</span>
-    </div>
-    <p class="series-column-desc">面向初学者的现代大模型底层架构系列笔记，结合手算数值例子与结构图解梳理核心模块演进。</p>
-    <ul class="series-ep-list">
-      <li class="series-ep-item">
-        <span class="series-ep-num">01</span>
-        <div class="series-ep-body">
-          <h4><a href="2026/llm-architecture-01/">LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进</a></h4>
-          <p>对比 RNN 与 Transformer 并行性及数学形式；手算拆解 Enc/Dec、MHA/FFN、RMSNorm、SwiGLU、GQA、RoPE 及其副作用，并延伸至 NoPE 与 KDA。</p>
-        </div>
-        <time class="series-ep-date" datetime="2026-11-26">Nov 2026</time>
-      </li>
-    </ul>
-  </section>
+  <div class="blog-filter-bar" role="group" aria-label="Filter posts by column or category">
+    <button type="button" class="blog-filter-btn" data-cat="all" aria-pressed="true">All <span class="blog-filter-count">6</span></button>
+    <button type="button" class="blog-filter-btn" data-cat="llm-architecture" aria-pressed="false">LLM 架构专栏 <span class="blog-filter-count">1</span></button>
+    <button type="button" class="blog-filter-btn" data-cat="systems" aria-pressed="false">Systems &amp; Rendering <span class="blog-filter-count">1</span></button>
+    <button type="button" class="blog-filter-btn" data-cat="essays" aria-pressed="false">Essays · 随笔 <span class="blog-filter-count">4</span></button>
+  </div>
 
-  <p class="blog-section-label">Standalone Essays · 随笔与短论</p>
+  <div id="column-intro" class="column-intro" hidden>
+    <strong>LLM 架构专栏（LLM Architecture Notes）</strong>：面向初学者的现代大模型底层架构系列梳理，配合小规模手算例子与可交互图解，逐章拆解核心组件的设计动机与工程代价。
+  </div>
 
   <ul class="post-list">
-    <li>
+    <li data-cat="llm-architecture">
+      <time datetime="2026-11-26">Nov 2026</time>
+      <div>
+        <div class="post-title-line">
+          <h3><a href="2026/llm-architecture-01/">LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进</a></h3>
+          <a class="post-cat-tag is-column" href="?cat=llm-architecture" data-filter-link="llm-architecture">LLM 架构专栏 · 01</a>
+        </div>
+        <p>面向初学者的现代大模型底层架构笔记：结合手算例子与图解拆解 Transformer 并行、MHA/FFN、RMSNorm、SwiGLU、GQA、RoPE 副作用及 Kimi K3 的 NoPE 与 KDA。</p>
+      </div>
+    </li>
+    <li data-cat="systems">
       <time datetime="2026-11-23">Nov 2026</time>
       <div>
-        <h3><a href="https://zaychikliu.github.io/tpu-rtx/">TPU-RTX: Native Ray Tracing and Physical AI Rendering on Google TPU</a> <a class="post-sub" href="https://zaychikliu.github.io/tpu-rtx/?lang=zh">/ 在 Google TPU 上实现原生光线追踪与具身渲染</a></h3>
+        <div class="post-title-line">
+          <h3><a href="https://zaychikliu.github.io/tpu-rtx/">TPU-RTX: Native Ray Tracing and Physical AI Rendering on Google TPU</a> <a class="post-sub" href="https://zaychikliu.github.io/tpu-rtx/?lang=zh">/ 在 Google TPU 上实现原生光线追踪与具身渲染</a></h3>
+          <a class="post-cat-tag" href="?cat=systems" data-filter-link="systems">Systems &amp; Rendering</a>
+        </div>
         <p>Running Wide-BVH-64 ray tracing, 3DGS/4DGS, OpenUSD/Blender compilation, and differentiable physics in a single zero-copy XLA graph across 1–32 TPU v5p chips (3.06 TB HBM), with 17 TPU videos, 19 comparison sliders, and 21 metric JSONs.</p>
       </div>
     </li>
-    <li>
+    <li data-cat="essays">
       <time datetime="2026-10-30">Oct 2026</time>
       <div>
-        <h3><a href="2026/millennium-prize/">0.6B模型能解决千禧年难题吗？</a> <a class="post-sub" href="2026/millennium-prize/?lang=en">/ Can a 0.6B Model Solve the Millennium Prize?</a></h3>
+        <div class="post-title-line">
+          <h3><a href="2026/millennium-prize/">0.6B模型能解决千禧年难题吗？</a> <a class="post-sub" href="2026/millennium-prize/?lang=en">/ Can a 0.6B Model Solve the Millennium Prize?</a></h3>
+          <a class="post-cat-tag" href="?cat=essays" data-filter-link="essays">Essay</a>
+        </div>
         <p>Language models that draw in pixels and video as plain text, and why symbolic visual data might be a better pretraining signal than images.</p>
       </div>
     </li>
-    <li>
+    <li data-cat="essays">
       <time datetime="2026-08-17">Aug 2026</time>
       <div>
-        <h3><a href="2026/3d-as-interface/">3D更应该定位为交互手段而非通用智能</a> <a class="post-sub" href="2026/3d-as-interface/?lang=en">/ 3D as an Interaction Interface Rather Than General Intelligence</a></h3>
+        <div class="post-title-line">
+          <h3><a href="2026/3d-as-interface/">3D更应该定位为交互手段而非通用智能</a> <a class="post-sub" href="2026/3d-as-interface/?lang=en">/ 3D as an Interaction Interface Rather Than General Intelligence</a></h3>
+          <a class="post-cat-tag" href="?cat=essays" data-filter-link="essays">Essay</a>
+        </div>
         <p>Why 3D may disappear from inside the model, only to reappear outside the model as interactive environments, structured states, and control interfaces bridging language agents and the physical world.</p>
       </div>
     </li>
-    <li>
+    <li data-cat="essays">
       <time datetime="2026-07-20">Jul 2026</time>
       <div>
-        <h3><a href="2026/rethinking-vision-centric/">警惕 Vision Centric</a> <a class="post-sub" href="2026/rethinking-vision-centric/?lang=en">/ Rethinking Vision-Centricity</a></h3>
+        <div class="post-title-line">
+          <h3><a href="2026/rethinking-vision-centric/">警惕 Vision Centric</a> <a class="post-sub" href="2026/rethinking-vision-centric/?lang=en">/ Rethinking Vision-Centricity</a></h3>
+          <a class="post-cat-tag" href="?cat=essays" data-filter-link="essays">Essay</a>
+        </div>
         <p>Why vision in multimodal understanding behaves almost like another text, why encoder-free and language-centric paradigms are rising, and why visual generators are controllable renderers rather than logical planners.</p>
       </div>
     </li>
-    <li>
+    <li data-cat="essays">
       <time datetime="2026-07-06">Jul 2026</time>
       <div>
-        <h3><a href="2026/beyond-vision/">Vision之外</a> <a class="post-sub" href="2026/beyond-vision/?lang=en">/ Beyond Vision</a></h3>
+        <div class="post-title-line">
+          <h3><a href="2026/beyond-vision/">Vision之外</a> <a class="post-sub" href="2026/beyond-vision/?lang=en">/ Beyond Vision</a></h3>
+          <a class="post-cat-tag" href="?cat=essays" data-filter-link="essays">Essay</a>
+        </div>
         <p>Do ego and taste still matter for newcomers in AI research, and should one stay in academia or move to industry?</p>
       </div>
     </li>
@@ -89,5 +102,46 @@
     <p><a href="../">← Back to homepage</a></p>
   </footer>
 </main>
+<script>
+  (function () {
+    var btns = Array.prototype.slice.call(document.querySelectorAll('.blog-filter-btn'));
+    var items = Array.prototype.slice.call(document.querySelectorAll('.post-list li[data-cat]'));
+    var colIntro = document.getElementById('column-intro');
+    var valid = { all: true, 'llm-architecture': true, systems: true, essays: true };
+
+    function applyFilter(cat, updateUrl) {
+      if (!valid[cat]) cat = 'all';
+      btns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-cat') === cat));
+      });
+      items.forEach(function (li) {
+        li.hidden = cat !== 'all' && li.getAttribute('data-cat') !== cat;
+      });
+      if (colIntro) {
+        colIntro.hidden = cat !== 'llm-architecture';
+      }
+      if (updateUrl && window.history && typeof window.history.replaceState === 'function') {
+        var nextUrl = cat === 'all' ? location.pathname : '?cat=' + encodeURIComponent(cat);
+        window.history.replaceState(null, '', nextUrl);
+      }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        applyFilter(b.getAttribute('data-cat'), true);
+      });
+    });
+
+    document.querySelectorAll('[data-filter-link]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        applyFilter(a.getAttribute('data-filter-link'), true);
+      });
+    });
+
+    var initial = new URLSearchParams(location.search).get('cat') || 'all';
+    applyFilter(initial, false);
+  })();
+</script>
 </body>
 </html>
