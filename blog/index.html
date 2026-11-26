@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark light">
   <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
   <script src="../assets/js/theme.js" defer></script>
   <title>Blog · Feiyang Liu</title>
@@ -12,12 +12,13 @@
   <link rel="icon" href="../assets/img/avatar.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css?v=20261126">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="Feiyang Liu · Blog" href="https://zaychikliu.github.io/feed.xml">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261126b">
 </head>
 <body>
 <main class="page">
-  <nav class="crumbs" aria-label="Breadcrumb"><a href="../">Feiyang Liu</a><span aria-hidden="true">/</span><span>Blog</span><button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">Dark mode</button></nav>
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../">Feiyang Liu</a><span aria-hidden="true">/</span><span>Blog</span><button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="true">Light mode</button></nav>
 
   <header class="post-head">
     <h1>Blog</h1>
@@ -40,7 +41,7 @@
       <time datetime="2026-11-26">Nov 2026</time>
       <div>
         <div class="post-title-line">
-          <h3><a href="2026/llm-architecture-01/">LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进</a></h3>
+          <h3><a href="2026/llm-architecture-01/">LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进</a> <a class="post-sub" href="2026/llm-architecture-01/">/ LLM Architecture Notes (01)</a></h3>
           <a class="post-cat-tag is-column" href="?cat=llm-architecture" data-filter-link="llm-architecture">LLM 架构专栏 · 01</a>
         </div>
         <p>面向初学者的现代大模型底层架构笔记：结合手算例子与图解拆解 Transformer 并行、MHA/FFN、RMSNorm、SwiGLU、GQA、RoPE 副作用及 Kimi K3 的 NoPE 与 KDA。</p>
@@ -99,7 +100,7 @@
   </ul>
 
   <footer class="foot">
-    <p><a href="../">← Back to homepage</a></p>
+    <p><a href="../">← Back to homepage</a> · <a href="../feed.xml">RSS</a></p>
   </footer>
 </main>
 <script>

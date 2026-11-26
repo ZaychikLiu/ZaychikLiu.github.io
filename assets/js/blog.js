@@ -89,43 +89,53 @@
     });
   }
 
-  /* 4. 上一篇 / 下一篇导读卡片 */
-  var essays = [
+  /* 4. 按专栏/类别分流的上/下一篇导读卡片 */
+  var posts = [
     {
       slug: 'beyond-vision',
+      series: 'essays',
       zh: 'Vision之外',
       en: 'Beyond Vision'
     },
     {
       slug: 'rethinking-vision-centric',
+      series: 'essays',
       zh: '警惕 Vision Centric',
       en: 'Rethinking Vision-Centricity'
     },
     {
       slug: '3d-as-interface',
+      series: 'essays',
       zh: '3D更应该定位为交互手段而非通用智能',
       en: '3D as an Interaction Interface Rather Than General Intelligence'
     },
     {
       slug: 'millennium-prize',
+      series: 'essays',
       zh: '0.6B模型能解决千禧年难题吗？',
       en: 'Can a 0.6B Model Solve the Millennium Prize?'
     },
     {
       slug: 'llm-architecture-01',
+      series: 'llm-architecture',
       zh: 'LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进',
       en: 'LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进'
     }
   ];
 
   var path = location.pathname || '';
-  var curIdx = -1;
-  for (var i = 0; i < essays.length; i++) {
-    if (path.indexOf(essays[i].slug) !== -1) {
-      curIdx = i;
+  var curPost = null;
+  for (var i = 0; i < posts.length; i++) {
+    if (path.indexOf(posts[i].slug) !== -1) {
+      curPost = posts[i];
       break;
     }
   }
+
+  var seriesPosts = curPost
+    ? posts.filter(function (p) { return p.series === curPost.series; })
+    : [];
+  var curIdx = curPost ? seriesPosts.indexOf(curPost) : -1;
 
   var foot = document.querySelector('footer.foot');
   var navEl = null;
@@ -140,8 +150,8 @@
     if (!navEl || curIdx === -1) return;
     var lang = currentLang();
     var suffix = lang === 'en' ? '?lang=en' : '';
-    var prev = curIdx > 0 ? essays[curIdx - 1] : null;
-    var next = curIdx < essays.length - 1 ? essays[curIdx + 1] : null;
+    var prev = curIdx > 0 ? seriesPosts[curIdx - 1] : null;
+    var next = curIdx < seriesPosts.length - 1 ? seriesPosts[curIdx + 1] : null;
 
     var html = '';
     if (prev) {
@@ -149,6 +159,12 @@
         '<a class="post-nav-card is-prev" href="../' + prev.slug + '/' + suffix + '">' +
         '<span class="post-nav-dir">' + (lang === 'zh' ? '← 上一篇' : '← Previous') + '</span>' +
         '<span class="post-nav-title">' + prev[lang] + '</span>' +
+        '</a>';
+    } else if (curPost && curPost.series === 'llm-architecture') {
+      html +=
+        '<a class="post-nav-card is-prev" href="../../?cat=llm-architecture">' +
+        '<span class="post-nav-dir">← 专栏目录</span>' +
+        '<span class="post-nav-title">LLM 架构专栏 · LLM Architecture Notes</span>' +
         '</a>';
     } else {
       html += '<span class="post-nav-spacer" aria-hidden="true"></span>';
@@ -166,6 +182,32 @@
 
     navEl.innerHTML = html;
   }
+
+  /* 5. 代码块自动添加一键复制按钮 */
+  document.querySelectorAll('.post-body pre').forEach(function (pre) {
+    var code = pre.querySelector('code');
+    if (!code) return;
+    pre.classList.add('has-copy');
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'code-copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('aria-label', 'Copy code');
+    btn.addEventListener('click', function () {
+      var text = code.textContent || '';
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(text).then(function () {
+          btn.textContent = 'Copied ✓';
+          btn.classList.add('is-copied');
+          setTimeout(function () {
+            btn.textContent = 'Copy';
+            btn.classList.remove('is-copied');
+          }, 1600);
+        }).catch(function () {});
+      }
+    });
+    pre.appendChild(btn);
+  });
 
   function syncAll() {
     updateReadingTime();

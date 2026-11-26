@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Feiyang Liu · Writing</title>
+    <link>https://zaychikliu.github.io/blog/</link>
+    <description>Columns, systems engineering notes, and bilingual essays on multimodal foundation models and LLM architectures by Feiyang Liu.</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 26 Nov 2026 20:30:00 +0800</lastBuildDate>
+    <atom:link href="https://zaychikliu.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进</title>
+      <link>https://zaychikliu.github.io/blog/2026/llm-architecture-01/</link>
+      <guid isPermaLink="true">https://zaychikliu.github.io/blog/2026/llm-architecture-01/</guid>
+      <pubDate>Thu, 26 Nov 2026 00:00:00 +0800</pubDate>
+      <description>面向初学者的现代大模型底层架构笔记：结合手算例子与图解拆解 Transformer 并行、MHA/FFN、RMSNorm、SwiGLU、GQA、RoPE 副作用及 Kimi K3 的 NoPE 与 KDA。</description>
+    </item>
+    <item>
+      <title>TPU-RTX: Native Ray Tracing and Physical AI Rendering on Google TPU</title>
+      <link>https://zaychikliu.github.io/tpu-rtx/</link>
+      <guid isPermaLink="true">https://zaychikliu.github.io/tpu-rtx/</guid>
+      <pubDate>Mon, 23 Nov 2026 00:00:00 +0800</pubDate>
+      <description>Running Wide-BVH-64 ray tracing, 3DGS/4DGS, OpenUSD/Blender compilation, and differentiable physics in a single zero-copy XLA graph across 1–32 TPU v5p chips (3.06 TB HBM).</description>
+    </item>
+    <item>
+      <title>0.6B模型能解决千禧年难题吗？ / Can a 0.6B Model Solve the Millennium Prize?</title>
+      <link>https://zaychikliu.github.io/blog/2026/millennium-prize/</link>
+      <guid isPermaLink="true">https://zaychikliu.github.io/blog/2026/millennium-prize/</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 +0800</pubDate>
+      <description>Language models that draw in pixels and video as plain text, and why symbolic visual data might be a better pretraining signal than images.</description>
+    </item>
+    <item>
+      <title>3D更应该定位为交互手段而非通用智能 / 3D as an Interaction Interface Rather Than General Intelligence</title>
+      <link>https://zaychikliu.github.io/blog/2026/3d-as-interface/</link>
+      <guid isPermaLink="true">https://zaychikliu.github.io/blog/2026/3d-as-interface/</guid>
+      <pubDate>Mon, 17 Aug 2026 00:00:00 +0800</pubDate>
+      <description>Why 3D may disappear from inside the model, only to reappear outside the model as interactive environments, structured states, and control interfaces bridging language agents and the physical world.</description>
+    </item>
+    <item>
+      <title>警惕 Vision Centric / Rethinking Vision-Centricity</title>
+      <link>https://zaychikliu.github.io/blog/2026/rethinking-vision-centric/</link>
+      <guid isPermaLink="true">https://zaychikliu.github.io/blog/2026/rethinking-vision-centric/</guid>
+      <pubDate>Mon, 20 Jul 2026 00:00:00 +0800</pubDate>
+      <description>Why vision in multimodal understanding behaves almost like another text, why encoder-free and language-centric paradigms are rising, and why visual generators are controllable renderers rather than logical planners.</description>
+    </item>
+    <item>
+      <title>Vision之外 / Beyond Vision</title>
+      <link>https://zaychikliu.github.io/blog/2026/beyond-vision/</link>
+      <guid isPermaLink="true">https://zaychikliu.github.io/blog/2026/beyond-vision/</guid>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 +0800</pubDate>
+      <description>Do ego and taste still matter for newcomers in AI research, and should one stay in academia or move to industry?</description>
+    </item>
+  </channel>
+</rss>
