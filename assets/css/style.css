@@ -3011,6 +3011,558 @@ p:last-child {
 }
 
 /* ==========================================================================
+   Series Column (LLM 架构专栏) & Textbook Article Components
+   ========================================================================== */
+
+.series-column {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.75rem;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.series-column:hover {
+  border-color: var(--border-strong);
+}
+
+.series-column-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.45rem;
+}
+
+.series-column-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.series-badge,
+.series-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  background: var(--spotlight);
+  border: 1px solid var(--spotlight-border);
+  border-radius: 999px;
+  padding: 0.16rem 0.62rem;
+}
+
+.series-pill {
+  margin-bottom: 0.75rem;
+}
+
+.series-column-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.series-column-count {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+}
+
+.series-column-desc {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  margin: 0 0 0.9rem;
+}
+
+.series-ep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.series-ep-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.65rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  transition: border-color 0.18s var(--ease-out), background-color 0.18s var(--ease-out), transform 0.2s var(--ease-spring);
+}
+
+.series-ep-item:hover {
+  border-color: var(--spotlight-border);
+  background: var(--bg-surface-hover);
+  transform: translateY(-1px);
+}
+
+.series-ep-num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--accent-amber);
+  background: rgba(216, 178, 99, 0.11);
+  border: 1px solid rgba(216, 178, 99, 0.28);
+  border-radius: 0.4rem;
+  padding: 0.14rem 0.42rem;
+  margin-top: 0.12rem;
+}
+
+:root[data-theme="light"] .series-ep-num {
+  background: rgba(154, 106, 18, 0.08);
+  border-color: rgba(154, 106, 18, 0.24);
+}
+
+.series-ep-body h4 {
+  margin: 0 0 0.22rem;
+  font-size: 0.94rem;
+  font-weight: 560;
+  line-height: 1.38;
+}
+
+.series-ep-body h4 a {
+  text-decoration: none;
+}
+
+.series-ep-body p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+
+.series-ep-date {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  padding-top: 0.14rem;
+}
+
+.blog-section-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0.25rem 0 0.75rem;
+}
+
+/* Textbook Callouts */
+.tb-callout {
+  margin: 1.4rem 0;
+  padding: 0.95rem 1.15rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  background: var(--bg-surface);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: var(--ink-secondary);
+}
+
+.tb-callout p:last-child,
+.tb-callout ul:last-child,
+.tb-callout ol:last-child {
+  margin-bottom: 0;
+}
+
+.tb-callout-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+}
+
+.tb-callout.is-intuition {
+  border-left-color: var(--accent-amber);
+  background: rgba(216, 178, 99, 0.06);
+}
+.tb-callout.is-intuition .tb-callout-label {
+  color: var(--accent-amber);
+}
+
+.tb-callout.is-calc {
+  border-left-color: var(--accent);
+  background: rgba(196, 181, 253, 0.06);
+}
+.tb-callout.is-calc .tb-callout-label {
+  color: var(--accent);
+}
+
+.tb-callout.is-warning {
+  border-left-color: var(--crimson);
+  background: rgba(248, 113, 113, 0.06);
+}
+.tb-callout.is-warning .tb-callout-label {
+  color: var(--crimson);
+}
+
+.tb-callout.is-note {
+  border-left-color: var(--accent-sage);
+  background: rgba(143, 179, 105, 0.06);
+}
+.tb-callout.is-note .tb-callout-label {
+  color: var(--accent-sage);
+}
+
+:root[data-theme="light"] .tb-callout.is-intuition {
+  background: rgba(154, 106, 18, 0.05);
+}
+:root[data-theme="light"] .tb-callout.is-calc {
+  background: rgba(91, 70, 168, 0.05);
+}
+:root[data-theme="light"] .tb-callout.is-warning {
+  background: rgba(190, 18, 60, 0.045);
+}
+:root[data-theme="light"] .tb-callout.is-note {
+  background: rgba(77, 124, 63, 0.05);
+}
+
+/* Inline Textbook Highlights */
+.hl-amber,
+.hl-violet,
+.hl-sage {
+  padding: 0.06em 0.34em;
+  border-radius: 0.28em;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.hl-amber {
+  background: rgba(216, 178, 99, 0.16);
+}
+.hl-violet {
+  background: rgba(196, 181, 253, 0.16);
+}
+.hl-sage {
+  background: rgba(143, 179, 105, 0.16);
+}
+
+:root[data-theme="light"] .hl-amber {
+  background: rgba(216, 178, 99, 0.24);
+}
+:root[data-theme="light"] .hl-violet {
+  background: rgba(91, 70, 168, 0.12);
+}
+:root[data-theme="light"] .hl-sage {
+  background: rgba(77, 124, 63, 0.14);
+}
+
+/* Textbook Figures & Diagrams */
+.tb-figure {
+  margin: 1.65rem 0;
+  padding: 1.15rem 1rem 0.9rem;
+  border-radius: 0.75rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+}
+
+.tb-figure svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--sans);
+}
+
+.tb-figure figcaption {
+  margin-top: 0.75rem;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+/* Textbook Tables */
+.tb-table-wrap {
+  margin: 1.35rem 0;
+  overflow-x: auto;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.tb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.tb-table th,
+.tb-table td {
+  padding: 0.62rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.tb-table thead th {
+  background: var(--bg-surface);
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tb-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tb-table tbody tr:hover td {
+  background: var(--bg-surface);
+}
+
+/* Code & Math inside .post-body */
+.post-body code {
+  font-family: var(--mono);
+  font-size: 0.84em;
+  padding: 0.1em 0.36em;
+  border-radius: 0.3rem;
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border);
+  color: var(--ink);
+}
+
+.post-body pre {
+  margin: 1.25rem 0;
+  padding: 0.95rem 1.05rem;
+  border-radius: 0.65rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.58;
+  color: var(--ink);
+}
+
+.post-body pre code {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: inherit;
+}
+
+.post-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.35rem 0;
+  margin: 0.85rem 0;
+}
+
+.post-body hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.25rem 0;
+}
+
+/* Chapter Index & Reading Roadmap */
+.ch-idx {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  font-weight: 500;
+  color: var(--accent-amber);
+  margin-right: 0.45rem;
+}
+
+.tb-roadmap {
+  margin: 1.4rem 0 1.85rem;
+  padding: 1rem 1.15rem;
+  border-radius: 0.75rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  font-family: var(--sans);
+}
+
+.tb-roadmap-head {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.7rem;
+}
+
+.tb-roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.48rem 0.9rem;
+}
+
+.tb-roadmap-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.36rem 0.52rem;
+  border-radius: 0.45rem;
+  text-decoration: none;
+  color: var(--ink-secondary);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  transition: background-color 0.16s var(--ease-out), color 0.16s var(--ease-out);
+}
+
+.tb-roadmap-item:hover {
+  background: var(--bg-surface-hover);
+  color: var(--ink);
+}
+
+.tb-roadmap-num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Interactive Textbook Lab (RoPE Clock) */
+.tb-lab {
+  margin: 1.65rem 0;
+  padding: 1.15rem 1.1rem 0.95rem;
+  border-radius: 0.85rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+}
+
+.tb-lab-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+
+.tb-lab-badge {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.tb-lab-modes {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tb-lab-btn {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.22rem 0.68rem;
+  cursor: pointer;
+  transition: background-color 0.16s var(--ease-out), color 0.16s var(--ease-out), border-color 0.16s var(--ease-out);
+}
+
+.tb-lab-btn:hover {
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+
+.tb-lab-btn[aria-pressed="true"] {
+  background: var(--spotlight);
+  border-color: var(--spotlight-border);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.tb-lab svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--sans);
+}
+
+.tb-lab-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--sans);
+}
+
+.tb-lab-pos-label {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--ink);
+  min-width: 7.5rem;
+}
+
+.tb-lab-slider {
+  flex: 1 1 11rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.tb-lab-readout {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+.tb-lab-readout.is-safe {
+  color: var(--accent-sage);
+  background: rgba(143, 179, 105, 0.1);
+  border-color: rgba(143, 179, 105, 0.35);
+}
+
+.tb-lab-readout.is-blur {
+  color: var(--accent-amber);
+  background: rgba(216, 178, 99, 0.1);
+  border-color: rgba(216, 178, 99, 0.35);
+}
+
+.tb-lab-readout.is-ood {
+  color: var(--crimson);
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.tb-lab figcaption {
+  margin-top: 0.7rem;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
    Responsive Breakpoints & Reduced Motion
    ========================================================================== */
 
@@ -3075,6 +3627,19 @@ p:last-child {
 
   .writing-actions {
     justify-content: flex-start;
+  }
+
+  .series-ep-item {
+    grid-template-columns: auto 1fr;
+  }
+
+  .series-ep-date {
+    grid-column: 2;
+    padding-top: 0;
+  }
+
+  .tb-roadmap-grid {
+    grid-template-columns: 1fr;
   }
 
   .news-list li,

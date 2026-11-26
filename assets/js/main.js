@@ -1300,6 +1300,15 @@
       },
       {
         group: 'Writing',
+        title: 'LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进',
+        hint: 'Nov 2026 · LLM 架构专栏',
+        keywords: 'llm transformer rope nope kda mha ffn rmsnorm swiglu gqa architecture',
+        run: function () {
+          location.href = 'blog/2026/llm-architecture-01/';
+        }
+      },
+      {
+        group: 'Writing',
         title: '0.6B模型能解决千禧年难题吗？',
         hint: 'Oct 2026 · Essay',
         keywords: 'millennium prize symbolic vision pixelbench',

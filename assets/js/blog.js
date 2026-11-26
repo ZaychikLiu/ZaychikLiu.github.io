@@ -110,6 +110,11 @@
       slug: 'millennium-prize',
       zh: '0.6B模型能解决千禧年难题吗？',
       en: 'Can a 0.6B Model Solve the Millennium Prize?'
+    },
+    {
+      slug: 'llm-architecture-01',
+      zh: 'LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进',
+      en: 'LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进'
     }
   ];
 

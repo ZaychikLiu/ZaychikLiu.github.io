@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+  <script src="../../../assets/js/theme.js" defer></script>
+  <script src="../../../assets/js/toc.js" defer></script>
+  <script src="../../../assets/js/blog.js" defer></script>
+  <title>LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进 · Feiyang Liu</title>
+  <meta name="description" content="面向初学者的 LLM 底层架构梳理：从 RNN 与 Transformer 的并行差异、标准 Transformer 的数学形式出发，结合手算数值例子拆解 MHA/FFN、RMSNorm、SwiGLU、GQA、RoPE 及其长上下文副作用，并延伸至 Kimi K3 的 NoPE 与 KDA 混合架构。">
+  <meta property="og:title" content="LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进">
+  <meta property="og:description" content="结合手算例子与图解梳理 Transformer 并行、MHA/FFN、RMSNorm、SwiGLU、GQA、RoPE 副作用及 NoPE + KDA 演进。">
+  <meta property="og:image" content="https://zaychikliu.github.io/assets/img/avatar.jpg">
+  <link rel="canonical" href="https://zaychikliu.github.io/blog/2026/llm-architecture-01/">
+  <link rel="icon" href="../../../assets/img/avatar.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+</head>
+<body>
+<main class="page">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="../../../">Feiyang Liu</a>
+    <span aria-hidden="true">/</span>
+    <a href="../../">Blog</a>
+    <span aria-hidden="true">/</span>
+    <span>LLM 架构专栏</span>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="true">Light mode</button>
+  </nav>
+
+  <header class="post-head">
+    <span class="series-pill">LLM 架构专栏 · 第 01 篇</span>
+    <h1 id="post-title">LLM 架构笔记（01）：Transformer 基础、现代组件与位置编码演进</h1>
+    <p class="post-meta"><time datetime="2026-11-26">26 November 2026</time></p>
+  </header>
+
+  <nav class="toc toc-side" aria-label="目录" data-lang-content="zh">
+    <ol>
+      <li><a href="#sec-1">一、Transformer 并行与数学形式</a></li>
+      <li><a href="#sec-2">二、Encoder 与 Decoder 演进</a></li>
+      <li><a href="#sec-3">三、MHA、FFN 与维度配比</a></li>
+      <li><a href="#sec-4">四、现代 LLM 四个核心组件</a></li>
+      <li><a href="#sec-4-1">4.1 RMSNorm</a></li>
+      <li><a href="#sec-4-2">4.2 SwiGLU</a></li>
+      <li><a href="#sec-4-3">4.3 GQA</a></li>
+      <li><a href="#sec-4-4">4.4 RoPE 完整拆解</a></li>
+      <li><a href="#sec-5">五、RoPE 副作用与 NoPE 兴起</a></li>
+      <li><a href="#sec-6">六、KDA 运行机制与代价</a></li>
+      <li><a href="#sec-summary">小结与对照表</a></li>
+    </ol>
+  </nav>
+
+  <details class="toc toc-inline" data-lang-content="zh">
+    <summary>目录</summary>
+    <ol>
+      <li><a href="#sec-1">一、Transformer 如何并行，以及它的数学形式</a></li>
+      <li><a href="#sec-2">二、Encoder 与 Decoder：分工、并行性与流派演进</a></li>
+      <li><a href="#sec-3">三、MHA、FFN 与模型维度配比</a></li>
+      <li><a href="#sec-4">四、现代 LLM 的四个核心组件（RMSNorm / SwiGLU / GQA / RoPE）</a></li>
+      <li><a href="#sec-5">五、RoPE 的四个副作用与 NoPE 的兴起</a></li>
+      <li><a href="#sec-6">六、KDA（Kimi Delta Attention）的运行机制与代价</a></li>
+      <li><a href="#sec-summary">小结与演进对照表</a></li>
+    </ol>
+  </details>
+
+  <article class="post-body" lang="zh-CN" data-lang-content="zh">
+    <p>学习大语言模型（LLM）的底层架构时，很容易被各种缩写和公式淹没：<code>MHA</code>、<code>FFN</code>、<code>RMSNorm</code>、<code>SwiGLU</code>、<code>GQA</code>、<code>RoPE</code>、<code>NoPE</code>、<code>KDA</code>……其实每一个组件都不是凭空发明的，它们各自对应着工程与数学上的某个具体痛点。</p>
+    <p>这篇笔记作为专栏第一篇，按<strong>“从经典到现代、从问题到解法”</strong>的顺序，把一条主线完整串起来，并尽量用小规模的<strong>手算数值例子</strong>与<strong>结构图解</strong>把每一步运行过程摊开。</p>
+
+    <div class="tb-roadmap" aria-label="本文阅读路线图">
+      <div class="tb-roadmap-head">READING MAP · 全文脉络导览</div>
+      <div class="tb-roadmap-grid">
+        <a class="tb-roadmap-item" href="#sec-1"><span class="tb-roadmap-num">01</span><span>Transformer 并行本质与数学递推形式</span></a>
+        <a class="tb-roadmap-item" href="#sec-2"><span class="tb-roadmap-num">02</span><span>Encoder 与 Decoder 分工及演进取舍</span></a>
+        <a class="tb-roadmap-item" href="#sec-3"><span class="tb-roadmap-num">03</span><span>MHA、FFN 角色分工与维度配比账本</span></a>
+        <a class="tb-roadmap-item" href="#sec-4"><span class="tb-roadmap-num">04</span><span>现代四大件：RMSNorm / SwiGLU / GQA / RoPE</span></a>
+        <a class="tb-roadmap-item" href="#sec-5"><span class="tb-roadmap-num">05</span><span>RoPE 副作用、Attention Sink 与 NoPE 崛起</span></a>
+        <a class="tb-roadmap-item" href="#sec-6"><span class="tb-roadmap-num">06</span><span>Kimi Delta Attention (KDA) 原理与代价</span></a>
+      </div>
+    </div>
+
+    <hr>
+
+    <h3 id="sec-1"><span class="ch-idx">01</span>Transformer 如何并行，以及它的数学形式</h3>
+
+    <h4 id="sec-1-1">1.1 RNN 与 Transformer 的并行差异（4 词例子）</h4>
+    <p>假设输入是一句只有 4 个词的句子：<code>["我", "喜欢", "深度", "学习"]</code>（对应 4 个词向量 $x_1, x_2, x_3, x_4$）。</p>
+    <p><strong>RNN 像接力赛，必须一个等一个</strong>：RNN 的核心递推公式是 $h_t = f(h_{t-1}, x_t)$，当前词的状态强依赖上一个词的输出。即使 GPU 有上万个核心，算第 2 个词时也只能等第 1 个词算完。如果句子长到 4096 个词，RNN 这一层就必须串行跑 4096 步。</p>
+    <p><strong>Transformer 像大合唱，把词拼成矩阵一次算完</strong>：Transformer 砍掉了序列方向的链式依赖，直接把 4 个词叠成一个 $4 \times d$ 的大矩阵 $X$，在序列维度上把串行步数压成了 $O(1)$：</p>
+    <ol>
+      <li><strong>同时算所有词的 $Q, K, V$</strong>：$Q = XW_Q,\; K = XW_K,\; V = XW_V$。三次大矩阵乘法，4 个词互不依赖，GPU 在同一拍全部算出。</li>
+      <li><strong>一次矩阵乘法算完所有两两关系</strong>：$S = \frac{QK^\top}{\sqrt{d_k}}$，直接算出一个 $4 \times 4$ 的注意力打分表（16 个格子同时算出）。在自回归语言模型训练时，只要加上 <strong>Causal Mask（因果掩码）</strong>，把右上角盖成 $-\infty$（Softmax 后权重为 $0$），就能在不偷看未来词的前提下，让 4 个位置的预测任务在同一拍并行完成。</li>
+      <li><strong>加权求和与 FFN 同样全并行</strong>：$\text{Out} = \text{Softmax}(S + \text{Mask})V$ 以及后续逐词独立运算的 FFN，在序列维度上完全互不等待。</li>
+    </ol>
+
+    <figure class="tb-figure">
+      <svg viewBox="0 0 760 250" role="img" aria-label="RNN 串行接力与 Transformer 矩阵并行对比图">
+        <defs>
+          <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,1 L9,5 L0,9 z" fill="var(--accent-amber)"/>
+          </marker>
+          <marker id="arr-violet" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,1 L9,5 L0,9 z" fill="var(--accent)"/>
+          </marker>
+        </defs>
+        <!-- Left panel: RNN -->
+        <rect x="12" y="12" width="340" height="226" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="28" y="36" fill="var(--accent-amber)" font-size="12" font-weight="600" font-family="var(--mono)">RNN · 序列串行 O(m)</text>
+        <text x="28" y="54" fill="var(--ink-muted)" font-size="11">必须等上一词算完 h_{t-1}，才能算下一词</text>
+
+        <rect x="34" y="88" width="58" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="63" y="110" text-anchor="middle" fill="var(--ink)" font-size="12">我</text>
+        <line x1="92" y1="106" x2="112" y2="106" stroke="var(--accent-amber)" stroke-width="1.6" marker-end="url(#arr-amber)"/>
+
+        <rect x="115" y="88" width="58" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="144" y="110" text-anchor="middle" fill="var(--ink)" font-size="12">喜欢</text>
+        <line x1="173" y1="106" x2="193" y2="106" stroke="var(--accent-amber)" stroke-width="1.6" marker-end="url(#arr-amber)"/>
+
+        <rect x="196" y="88" width="58" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="225" y="110" text-anchor="middle" fill="var(--ink)" font-size="12">深度</text>
+        <line x1="254" y1="106" x2="274" y2="106" stroke="var(--accent-amber)" stroke-width="1.6" marker-end="url(#arr-amber)"/>
+
+        <rect x="277" y="88" width="58" height="36" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="306" y="110" text-anchor="middle" fill="var(--ink)" font-size="12">学习</text>
+
+        <text x="63" y="145" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">t=1</text>
+        <text x="144" y="145" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">t=2</text>
+        <text x="225" y="145" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">t=3</text>
+        <text x="306" y="145" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">t=4</text>
+
+        <rect x="34" y="172" width="301" height="44" rx="6" fill="rgba(216,178,99,0.08)" stroke="rgba(216,178,99,0.28)"/>
+        <text x="184" y="191" text-anchor="middle" fill="var(--ink-secondary)" font-size="11">句子长 4096 词 → 串行等待 4096 步</text>
+        <text x="184" y="207" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">h_t = f(h_{t-1}, x_t)</text>
+
+        <!-- Right panel: Transformer -->
+        <rect x="372" y="12" width="376" height="226" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="388" y="36" fill="var(--accent)" font-size="12" font-weight="600" font-family="var(--mono)">Transformer · 矩阵全并行 O(1)</text>
+        <text x="388" y="54" fill="var(--ink-muted)" font-size="11">4 个词叠成矩阵 X，一次算出 4×4 注意力打分表</text>
+
+        <!-- 4x4 matrix -->
+        <text x="456" y="78" text-anchor="middle" fill="var(--ink-muted)" font-size="10">我</text>
+        <text x="502" y="78" text-anchor="middle" fill="var(--ink-muted)" font-size="10">喜欢</text>
+        <text x="548" y="78" text-anchor="middle" fill="var(--ink-muted)" font-size="10">深度</text>
+        <text x="594" y="78" text-anchor="middle" fill="var(--ink-muted)" font-size="10">学习</text>
+
+        <text x="424" y="102" text-anchor="end" fill="var(--ink-muted)" font-size="10">我</text>
+        <text x="424" y="132" text-anchor="end" fill="var(--ink-muted)" font-size="10">喜欢</text>
+        <text x="424" y="162" text-anchor="end" fill="var(--ink-muted)" font-size="10">深度</text>
+        <text x="424" y="192" text-anchor="end" fill="var(--ink-muted)" font-size="10">学习</text>
+
+        <!-- Row 1 -->
+        <rect x="435" y="85" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="456" y="102" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₁₁</text>
+        <rect x="481" y="85" width="42" height="26" rx="4" fill="var(--bg-elevated)" stroke="var(--border)"/>
+        <text x="502" y="102" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">-∞</text>
+        <rect x="527" y="85" width="42" height="26" rx="4" fill="var(--bg-elevated)" stroke="var(--border)"/>
+        <text x="548" y="102" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">-∞</text>
+        <rect x="573" y="85" width="42" height="26" rx="4" fill="var(--bg-elevated)" stroke="var(--border)"/>
+        <text x="594" y="102" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">-∞</text>
+
+        <!-- Row 2 -->
+        <rect x="435" y="115" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="456" y="132" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₂₁</text>
+        <rect x="481" y="115" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="502" y="132" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₂₂</text>
+        <rect x="527" y="115" width="42" height="26" rx="4" fill="var(--bg-elevated)" stroke="var(--border)"/>
+        <text x="548" y="132" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">-∞</text>
+        <rect x="573" y="115" width="42" height="26" rx="4" fill="var(--bg-elevated)" stroke="var(--border)"/>
+        <text x="594" y="132" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">-∞</text>
+
+        <!-- Row 3 -->
+        <rect x="435" y="145" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="456" y="162" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₃₁</text>
+        <rect x="481" y="145" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="502" y="162" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₃₂</text>
+        <rect x="527" y="145" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="548" y="162" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₃₃</text>
+        <rect x="573" y="145" width="42" height="26" rx="4" fill="var(--bg-elevated)" stroke="var(--border)"/>
+        <text x="594" y="162" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">-∞</text>
+
+        <!-- Row 4 -->
+        <rect x="435" y="175" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="456" y="192" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₄₁</text>
+        <rect x="481" y="175" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="502" y="192" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₄₂</text>
+        <rect x="527" y="175" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="548" y="192" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₄₃</text>
+        <rect x="573" y="175" width="42" height="26" rx="4" fill="rgba(196,181,253,0.22)" stroke="var(--accent)"/>
+        <text x="594" y="192" text-anchor="middle" fill="var(--ink)" font-size="10" font-family="var(--mono)">s₄₄</text>
+
+        <rect x="630" y="96" width="104" height="92" rx="6" fill="rgba(196,181,253,0.08)" stroke="rgba(196,181,253,0.28)"/>
+        <text x="682" y="122" text-anchor="middle" fill="var(--ink)" font-size="11" font-weight="600">Causal Mask</text>
+        <text x="682" y="141" text-anchor="middle" fill="var(--ink-secondary)" font-size="10">右上角置 -∞</text>
+        <text x="682" y="157" text-anchor="middle" fill="var(--ink-secondary)" font-size="10">禁止偷看未来</text>
+        <text x="682" y="175" text-anchor="middle" fill="var(--accent)" font-size="10" font-family="var(--mono)">4 位置同时预测</text>
+
+        <text x="560" y="224" text-anchor="middle" fill="var(--ink-muted)" font-size="10.5">16 个注意力格子在一拍矩阵乘法中全部完成</text>
+      </svg>
+      <figcaption>图 1：RNN 沿时间轴逐词串行接力，而 Transformer 将整句拼成矩阵后配合 Causal Mask 一次并行算出全部位置的预测。</figcaption>
+    </figure>
+
+    <div class="tb-callout is-intuition">
+      <div class="tb-callout-label">KEY INTUITION · 区分训练并行与生成串行</div>
+      <p><span class="hl-amber">训练与推理 Prefill（读入提示词）</span>时所有输入词都在手里，<strong>完全并行</strong>；但在<span class="hl-amber">推理 Decode（逐字生成回答）</span>时，必须先吐出第 5 个词才能计算第 6 个词，因此生成阶段本身仍是<strong>逐 token 串行</strong>的（工程上借助 KV Cache 避免重复计算前面已读过的历史）。</p>
+    </div>
+
+    <h4 id="sec-1-2">1.2 标准 Transformer 的数学形式</h4>
+    <p>设输入词嵌入加位置编码为初始状态 $H^{(0)} \in \mathbb{R}^{m \times d}$（$m$ 为序列长度，$d$ 为隐藏维度），模型共有 $L$ 层，第 $l = 1, 2, \dots, L$ 层拥有自己独立的一套参数 $\theta^{(l)}$：</p>
+    <ul>
+      <li><strong>原始论文版（Post-LN，2017）</strong>：
+        $$A^{(l)} = \text{LayerNorm}\Big(H^{(l-1)} + \text{MHA}^{(l)}\big(H^{(l-1)}\big)\Big)$$
+        $$H^{(l)} = \text{LayerNorm}\Big(A^{(l)} + \text{FFN}^{(l)}\big(A^{(l)}\big)\Big)$$
+      </li>
+      <li><strong>现代 LLM 标配版（Pre-LN，如 GPT / LLaMA / Qwen）</strong>：把归一化移到子层输入端，让深层梯度回传更稳定：
+        $$A^{(l)} = H^{(l-1)} + \text{MHA}^{(l)}\big(\text{Norm}(H^{(l-1)})\big)$$
+        $$H^{(l)} = A^{(l)} + \text{FFN}^{(l)}\big(\text{Norm}(A^{(l)})\big)$$
+      </li>
+    </ul>
+    <p>若把单层打包记为算子 $F_{\theta^{(l)}}$，标准 Transformer 就是<strong>固定 $L$ 步的复合递推</strong>，最后经归一化与词表头投影输出概率分布：</p>
+    $$H^{(l)} = F_{\theta^{(l)}}\big(H^{(l-1)}\big), \quad l = 1, \dots, L \qquad \Longrightarrow \qquad Y = \text{Softmax}\big(\text{Norm}(H^{(L)}) W_{\text{vocab}}\big)$$
+    <p>从动力学视角来看，Pre-LN 不断往同一条“残差流（Residual Stream）”做增量更新 $H^{(l)} = H^{(l-1)} + \Delta H^{(l)}$，很像用一个时变算子对隐状态做 $L$ 步离散演化（类似神经 ODE 的 Euler 离散化）。写成极简伪代码，一个 $L$ 层的标准 Transformer 前向过程如下：</p>
+
+    <pre><code># 标准 Transformer：L 个独立层，参数不共享
+h = embed(tokens) + pos_emb
+for layer in self.layers:
+    h = h + layer.attn(norm(h))
+    h = h + layer.ffn(norm(h))
+logits = lm_head(norm(h))</code></pre>
+
+    <hr>
+
+    <h3 id="sec-2"><span class="ch-idx">02</span>Encoder 与 Decoder：分工、并行性与流派演进</h3>
+    <p>最初的 Transformer（2017）是为机器翻译设计的，模型分为 <strong>Encoder（编码器）</strong> 和 <strong>Decoder（解码器）</strong> 两半。</p>
+
+    <h4 id="sec-2-1">2.1 分工与三流派对照</h4>
+    <p>以将 <code>"I love deep learning"</code> 翻译为 <code>"我喜欢深度学习"</code> 为例：Encoder 像“阅读理解员”，双向全看一次性读通整句英文并产出语义笔记；Decoder 像“逐字写手”，只能看已写出的中文字，同时通过 Cross-Attention 随时翻阅 Encoder 的笔记，一个词一个词往外生成。</p>
+
+    <figure class="tb-figure">
+      <svg viewBox="0 0 760 175" role="img" aria-label="Encoder 与 Decoder 英译中分工示意图">
+        <defs>
+          <marker id="arr-enc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,1 L9,5 L0,9 z" fill="var(--ink-secondary)"/>
+          </marker>
+        </defs>
+        <!-- Encoder -->
+        <rect x="16" y="20" width="248" height="132" rx="10" fill="var(--bg-surface)" stroke="var(--accent-sage)" stroke-width="1.5"/>
+        <text x="140" y="44" text-anchor="middle" fill="var(--accent-sage)" font-size="12" font-weight="600" font-family="var(--mono)">Encoder · 阅读理解员</text>
+        <rect x="34" y="58" width="212" height="32" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="140" y="78" text-anchor="middle" fill="var(--ink)" font-size="11.5" font-family="var(--mono)">"I love deep learning"</text>
+        <text x="140" y="112" text-anchor="middle" fill="var(--ink-secondary)" font-size="11">双向全注意力：整句互看</text>
+        <text x="140" y="132" text-anchor="middle" fill="var(--ink-muted)" font-size="10.5">一次并行产出语义特征</text>
+
+        <!-- Bridge -->
+        <line x1="266" y1="86" x2="348" y2="86" stroke="var(--ink-secondary)" stroke-width="1.6" marker-end="url(#arr-enc)"/>
+        <rect x="274" y="54" width="68" height="22" rx="999" fill="var(--spotlight)" stroke="var(--spotlight-border)"/>
+        <text x="308" y="69" text-anchor="middle" fill="var(--accent)" font-size="9.5" font-family="var(--mono)">Cross-Attn</text>
+        <text x="307" y="106" text-anchor="middle" fill="var(--ink-muted)" font-size="10">语义笔记</text>
+
+        <!-- Decoder -->
+        <rect x="352" y="20" width="392" height="132" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="548" y="44" text-anchor="middle" fill="var(--accent)" font-size="12" font-weight="600" font-family="var(--mono)">Decoder · 逐字写手（因果掩码）</text>
+        <rect x="372" y="60" width="66" height="30" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="405" y="79" text-anchor="middle" fill="var(--ink)" font-size="12">我</text>
+        <line x1="438" y1="75" x2="458" y2="75" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arr-enc)"/>
+        <rect x="461" y="60" width="66" height="30" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="494" y="79" text-anchor="middle" fill="var(--ink)" font-size="12">喜欢</text>
+        <line x1="527" y1="75" x2="547" y2="75" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arr-enc)"/>
+        <rect x="550" y="60" width="66" height="30" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="583" y="79" text-anchor="middle" fill="var(--ink)" font-size="12">深度</text>
+        <line x1="616" y1="75" x2="636" y2="75" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arr-enc)"/>
+        <rect x="639" y="60" width="84" height="30" rx="6" fill="rgba(196,181,253,0.16)" stroke="var(--accent)"/>
+        <text x="681" y="79" text-anchor="middle" fill="var(--ink)" font-size="12">学习</text>
+        <text x="548" y="114" text-anchor="middle" fill="var(--ink-secondary)" font-size="11">仅能看左侧已生成词 + 抬头查阅语义笔记</text>
+        <text x="548" y="133" text-anchor="middle" fill="var(--ink-muted)" font-size="10.5">现代通用 LLM 砍掉了左半边，统一用 Decoder-only 既读又写</text>
+      </svg>
+      <figcaption>图 2：早期 Seq2Seq 翻译中的 Encoder-Decoder 分工；现代通用 LLM 将读写统一收拢到单栈 Decoder-only。</figcaption>
+    </figure>
+
+    <div class="tb-table-wrap">
+      <table class="tb-table">
+        <thead>
+          <tr>
+            <th>架构流派</th>
+            <th>单层内部子模块</th>
+            <th>注意力视角</th>
+            <th>代表模型与现状</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Encoder-Decoder</strong></td>
+            <td>Enc: <code>Self-Attn + FFN</code><br>Dec: <code>Masked Self-Attn + Cross-Attn + FFN</code></td>
+            <td>编码端双向全看；解码端单向因果 + 跨注意力</td>
+            <td>原始 Transformer、T5、BART</td>
+          </tr>
+          <tr>
+            <td><strong>Encoder-only</strong></td>
+            <td><code>Self-Attn + FFN</code></td>
+            <td>双向全看</td>
+            <td>BERT、RoBERTa、BGE Embedding（擅长理解、分类、向量检索）</td>
+          </tr>
+          <tr>
+            <td><strong>Decoder-only</strong></td>
+            <td><code>Masked Self-Attn + FFN</code></td>
+            <td>单向因果</td>
+            <td>GPT、LLaMA、Qwen、DeepSeek 及现代 Loop 模型（<strong>现代通用 LLM 主流</strong>）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 id="sec-2-2">2.2 有 Encoder 也能并行吗？为什么现代通用 LLM 砍掉了它？</h4>
+    <p><span class="hl-sage">Encoder 完全可以并行，而且比 Decoder 更纯粹</span>——Encoder 读输入序列时不需要 Causal Mask，所有词双向互看，在训练和推理读入阶段都可以一次性拼成大矩阵全并行算完。真正不能并行的只是自回归“逐字吐出回答”的解码阶段。</p>
+    <p>现代通用大语言模型砍掉 Encoder 并非因为它不能并行，而是出于 4 个很现实的工程与效果考量：</p>
+    <ol>
+      <li><strong>参数利用率被劈成两半</strong>：同样 10B 参数，一半放 Encoder、一半放 Decoder，面对“输入 10 万字只答 10 个字”或“输入 10 个字写 5000 字代码”的极端任务比例时，总有一半参数负荷不均；Decoder-only 让 100% 的参数既能读又能写。</li>
+      <li><strong>多轮对话的 KV Cache 复用别扭</strong>：Decoder-only 把历史对话与新问题拼成一条序列，前缀缓存（Prefix Caching）天然复用；Encoder-Decoder 下一轮必须把上一轮 Decoder 吐出的回答重新塞回 Encoder 双向重算。</li>
+      <li><strong>预训练效率与涌现规律</strong>：Decoder-only 用“预测下一个词”，每个 token 都贡献梯度（100% 样本利用率），在超大规模无标注语料上扩展上下文学习（In-Context Learning）能力更顺畅。</li>
+      <li><strong>系统与算子极简</strong>：全网只有一种对称的 Block，万卡分布式切分与推理引擎（如 vLLM、FlashAttention）优化最干净。</li>
+    </ol>
+
+    <div class="tb-callout is-note">
+      <div class="tb-callout-label">NOTE · Encoder 并没有消失</div>
+      <p>Encoder 退出了纯文本通用 LLM 主干后，在两个专职岗位上依然是绝对主力：<strong>向量检索 / Embedding 模型</strong>（只需要把文本压成高质量向量，不需要生成）以及<strong>多模态大模型的视觉 / 音频前端编码器</strong>（Vision / Audio Encoder）。</p>
+    </div>
+
+    <hr>
+
+    <h3 id="sec-3"><span class="ch-idx">03</span>MHA、FFN 与模型维度配比</h3>
+
+    <h4 id="sec-3-1">3.1 MHA 与 FFN 的分工</h4>
+    <p>在每一层 Transformer 中，MHA 和 FFN 构成了互补的黄金分工：</p>
+    <ul>
+      <li><strong>MHA（Multi-Head Attention，横向搬运 / Token Mixing）</strong>：每个词生成 Query（想找什么）、Key（有什么标签）和 Value（具体内容），通过多头机制让不同注意力头分别盯住指代消解、主谓宾语法或长距离呼应，把上下文其他位置的信息按动态权重搬运过来。但它本质上只是对 Value 做<strong>加权平均</strong>，如果只堆 MHA 不加 FFN，模型缺乏非线性变换能力，特征会越平均越模糊（Rank Collapse）。</li>
+      <li><strong>FFN（Feed-Forward Network，纵向深加工 / Channel Mixing）</strong>：对<strong>每个词自己</strong>独立做一次“升维 → 非线性激活 → 降维”，完全不看其他词。它不仅提供核心非线性语义融合（例如把搬到一起的 <code>"苹果"</code> 与 <code>"发布会"</code> 消歧为科技公司），更被可解释性研究证实充当了大模型的<strong>内置 Key-Value 参数化知识库</strong>——因此典型稠密 LLM 中 FFN 占约 $2/3$ 的参数量，MoE（混合专家）架构也几乎只把 FFN 拆成多专家。</li>
+    </ul>
+
+    <div class="tb-callout is-intuition">
+      <div class="tb-callout-label">KEY INTUITION · 搬运线索 + 查库推理</div>
+      <p>预测 <code>"埃菲尔铁塔位于 [__]"</code> 时，<strong>MHA</strong> 先把前文的 <code>"埃菲尔铁塔"</code> 与 <code>"位于"</code> 搬运到末尾位置；随后的 <strong>FFN</strong> 在独立通道里命中内部记忆条目，把指向 <code>"巴黎"</code> 的特征写回残差流。多层堆叠就是不断重复“横向收集线索 → 纵向查库推理”。</p>
+    </div>
+
+    <h4 id="sec-3-2">3.2 隐藏维度 $d_{\text{model}}$ 与 FFN 宽度 $d_{\text{ff}}$</h4>
+    <p><span class="hl-violet">$d_{\text{model}}$</span> 是贯穿全网残差流主干道的“标准包裹尺寸”；<span class="hl-amber">$d_{\text{ff}}$</span>（代码配置里常叫 <code>intermediate_size</code>）则是仅存在于 FFN 内部的“临时大工作台尺寸”。</p>
+
+    <figure class="tb-figure">
+      <svg viewBox="0 0 760 205" role="img" aria-label="Transformer 单层残差流与 FFN 升维工作台示意图">
+        <defs>
+          <marker id="arr-flow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,1 L9,5 L0,9 z" fill="var(--ink-secondary)"/>
+          </marker>
+        </defs>
+        <!-- Residual highway -->
+        <line x1="22" y1="54" x2="732" y2="54" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#arr-flow)"/>
+        <text x="26" y="34" fill="var(--accent)" font-size="11.5" font-weight="600" font-family="var(--mono)">Residual Stream 主干道（全程保持 d_model = 4096）</text>
+
+        <!-- MHA branch -->
+        <path d="M 110 54 L 110 112 L 152 112" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"/>
+        <rect x="154" y="88" width="136" height="48" rx="8" fill="var(--bg-surface)" stroke="var(--accent-sage)" stroke-width="1.5"/>
+        <text x="222" y="109" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600">Norm + MHA</text>
+        <text x="222" y="126" text-anchor="middle" fill="var(--accent-sage)" font-size="10.5">跨 Token 横向搬运</text>
+        <path d="M 290 112 L 320 112 L 320 59" fill="none" stroke="var(--ink-muted)" stroke-width="1.5" marker-end="url(#arr-flow)"/>
+        <circle cx="320" cy="54" r="9" fill="var(--bg-elevated)" stroke="var(--accent)"/>
+        <text x="320" y="58" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600">+</text>
+
+        <!-- FFN branch -->
+        <path d="M 380 54 L 380 124 L 414 124" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"/>
+        <rect x="416" y="80" width="234" height="88" rx="9" fill="var(--bg-surface)" stroke="var(--accent-amber)" stroke-width="1.5"/>
+        <text x="533" y="99" text-anchor="middle" fill="var(--accent-amber)" font-size="11" font-weight="600" font-family="var(--mono)">FFN 内部工作台（不占 KV Cache）</text>
+
+        <rect x="428" y="110" width="56" height="42" rx="5" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="456" y="129" text-anchor="middle" fill="var(--ink)" font-size="10.5" font-family="var(--mono)">d_model</text>
+        <text x="456" y="143" text-anchor="middle" fill="var(--ink-muted)" font-size="9.5" font-family="var(--mono)">4096</text>
+
+        <line x1="484" y1="131" x2="500" y2="131" stroke="var(--ink-secondary)" stroke-width="1.3" marker-end="url(#arr-flow)"/>
+
+        <rect x="503" y="106" width="64" height="50" rx="5" fill="rgba(216,178,99,0.14)" stroke="var(--accent-amber)"/>
+        <text x="535" y="127" text-anchor="middle" fill="var(--ink)" font-size="11" font-weight="600" font-family="var(--mono)">d_ff</text>
+        <text x="535" y="143" text-anchor="middle" fill="var(--accent-amber)" font-size="9.5" font-family="var(--mono)">14336 (3.5×)</text>
+
+        <line x1="567" y1="131" x2="583" y2="131" stroke="var(--ink-secondary)" stroke-width="1.3" marker-end="url(#arr-flow)"/>
+
+        <rect x="586" y="110" width="52" height="42" rx="5" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="612" y="129" text-anchor="middle" fill="var(--ink)" font-size="10.5" font-family="var(--mono)">d_model</text>
+        <text x="612" y="143" text-anchor="middle" fill="var(--ink-muted)" font-size="9.5" font-family="var(--mono)">4096</text>
+
+        <path d="M 650 124 L 680 124 L 680 59" fill="none" stroke="var(--ink-muted)" stroke-width="1.5" marker-end="url(#arr-flow)"/>
+        <circle cx="680" cy="54" r="9" fill="var(--bg-elevated)" stroke="var(--accent)"/>
+        <text x="680" y="58" text-anchor="middle" fill="var(--ink)" font-size="12" font-weight="600">+</text>
+
+        <text x="380" y="191" text-anchor="middle" fill="var(--ink-muted)" font-size="10.5">先升维展开以拆解叠加特征与扩充记忆槽位，算完立刻压回 d_model 归还主干</text>
+      </svg>
+      <figcaption>图 3：Transformer 单层结构。MHA 负责跨位置沟通，FFN 在局部临时升维至 d_ff 加工后再压回 d_model。</figcaption>
+    </figure>
+
+    <p>拉大 $d_{\text{model}}$ 会让 MHA、FFN 和 KV Cache 显存全部一起涨；而<strong>只拉大 $d_{\text{ff}}$ 完全不增加推理时的 KV Cache 显存</strong>，这也是 MoE 只扩展 FFN 而不动主干维度的根本原因。</p>
+
+    <h4 id="sec-3-3">3.3 具体网络层数与规格参考</h4>
+    <div class="tb-table-wrap">
+      <table class="tb-table">
+        <thead>
+          <tr>
+            <th>模型 / 量级</th>
+            <th>物理层数（与有效深度）</th>
+            <th>隐藏维度 $d_{\text{model}}$</th>
+            <th>Q 头 / KV 头</th>
+            <th>FFN 宽度 $d_{\text{ff}}$</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Transformer Base / Big</strong> (2017)</td>
+            <td>6 Enc + 6 Dec</td>
+            <td>512 / 1024</td>
+            <td>8 / 16（MHA）</td>
+            <td>2048 / 4096 ($4\times$)</td>
+          </tr>
+          <tr>
+            <td><strong>1B–2B 小模型</strong>（如 LLaMA-3.2 1B）</td>
+            <td>16 – 28 层</td>
+            <td>1536 – 2048</td>
+            <td>12–32 / 2–8</td>
+            <td>~8192 – 8960</td>
+          </tr>
+          <tr>
+            <td><strong>LLaMA-3 8B</strong></td>
+            <td>32 层</td>
+            <td>4096</td>
+            <td>32 / 8（GQA）</td>
+            <td>14336 ($3.5\times$)</td>
+          </tr>
+          <tr>
+            <td><strong>Qwen2.5-32B</strong></td>
+            <td>64 层</td>
+            <td>5120</td>
+            <td>40 / 8（GQA）</td>
+            <td>27648</td>
+          </tr>
+          <tr>
+            <td><strong>LLaMA-3 70B / 405B</strong></td>
+            <td>80 层 / 126 层</td>
+            <td>8192 / 16384</td>
+            <td>64 / 8，128 / 8</td>
+            <td>28672 / 53248</td>
+          </tr>
+          <tr>
+            <td><strong>Huginn (3.5B, Loop)</strong></td>
+            <td>2+4(循环)+2 = <strong>8 物理层</strong></td>
+            <td>—</td>
+            <td>—</td>
+            <td>循环 32 轮 → <strong>132 有效层</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Inkling 2 Mini (26.4B / 3.4B 激活)</strong></td>
+            <td>6+12(循环3轮)+7 = <strong>25 物理层</strong></td>
+            <td>—</td>
+            <td>—</td>
+            <td>有效深度 <strong>49 层</strong></td>
+          </tr>
+          <tr>
+            <td><strong>NVIDIA Dory 1.0-4B</strong></td>
+            <td>8+20(循环)+8 = <strong>36 物理层</strong></td>
+            <td>—</td>
+            <td>—</td>
+            <td>1/2/4 轮 → <strong>36 / 56 / 96 层</strong></td>
+          </tr>
+          <tr>
+            <td><strong>GLM-5.4 (~750B)</strong></td>
+            <td>28 层循环 2 轮</td>
+            <td>—</td>
+            <td>—</td>
+            <td>共享权重翻倍计算深度</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tb-callout is-note">
+      <div class="tb-callout-label">RULE OF THUMB · 三条配参速算口诀</div>
+      <ol>
+        <li>单头维度 $d_{\text{head}}$ 几乎固定在 $64$ 或 $128$（如 $32\text{ 头} \times 128 = 4096$）。</li>
+        <li>老式 ReLU / GELU 的 $d_{\text{ff}} = 4 d_{\text{model}}$；现代 SwiGLU 通常为 $\frac{8}{3}\times \sim 3.5\times d_{\text{model}}$。</li>
+        <li>单层标准稠密 Transformer 参数量约为 $12 d_{\text{model}}^2$（MHA 约 $4d^2$ + FFN 约 $8d^2$）。</li>
+      </ol>
+    </div>
+
+    <hr>
+
+    <h3 id="sec-4"><span class="ch-idx">04</span>现代 LLM 的四个核心组件（附手算例子）</h3>
+    <p>现代 Decoder-only 模型普遍用 <strong>RMSNorm + SwiGLU + GQA + RoPE</strong> 替换了 2017 年版的对应零件。</p>
+
+    <h4 id="sec-4-1">4.1 RMSNorm（均方根归一化）</h4>
+    <p>LayerNorm 要先减均值（平移居中）再除标准差（缩放）；RMSNorm 直接删掉减均值和偏置项 $\beta$，只做均方根缩放：</p>
+    $$\text{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^d x_i^2 + \epsilon}, \qquad \text{RMSNorm}(x) = \frac{x}{\text{RMS}(x)} \odot g$$
+
+    <div class="tb-callout is-calc">
+      <div class="tb-callout-label">WORKED EXAMPLE · RMSNorm 手算对照</div>
+      <p>设输入 $x = [3, 4]$，缩放参数 $g = [1, 1]$，忽略 $\epsilon$：</p>
+      <ul>
+        <li><strong>LayerNorm</strong>：先算均值 $\mu = (3+4)/2 = 3.5$，减均值成 $[-0.5, +0.5]$，再除以标准差 $0.5$ 得 $[-1, +1]$。</li>
+        <li><strong>RMSNorm</strong>：不算均值，直接算均方根 $\text{RMS} = \sqrt{(3^2 + 4^2)/2} = \sqrt{12.5} \approx 3.536$，相除得 $[0.849,\; 1.131]$。</li>
+      </ul>
+    </div>
+
+    <p><strong>为什么去掉“减均值”训练一样稳，且速度更快？</strong></p>
+    <ul>
+      <li><strong>训练一样稳</strong>：深层网络防崩溃主要靠<span class="hl-sage">缩放不变性（Re-scaling）</span>把向量幅度锁死在固定尺度上，避免梯度爆炸或消失；“平移居中”实测贡献极微，微小的均值偏移很容易被后续线性层和残差流吸收。</li>
+      <li><strong>速度更快</strong>：Norm 属于<strong>显存带宽受限（Memory-bound）</strong>算子。RMSNorm 只需做 1 次全局平方和归约（LayerNorm 要算均值和方差 2 个统计量），砍掉了 $\beta$ 参数的读写以及反向传播里均值通路的梯度计算。一个 80 层模型每次前向要做 160 次 Norm、反向再做 160 次，算子层面通常快 10%–40%。</li>
+    </ul>
+
+    <h4 id="sec-4-2">4.2 SwiGLU（门控激活 FFN）</h4>
+    <p>传统 FFN 只有一条路：<code>ReLU(x W_up) W_down</code>。SwiGLU 把升维拆成<strong>候选特征路</strong>与<strong>门控开关路</strong>：</p>
+    $$\text{SwiGLU}(x) = \Big(\text{SiLU}(x W_{\text{gate}}) \odot (x W_{\text{up}})\Big) W_{\text{down}}, \qquad \text{SiLU}(z) = \frac{z}{1 + e^{-z}}$$
+
+    <p><strong>为什么 $d_{\text{ff}}$ 不变会多 50% 参数？工程上怎么打平？</strong><br>
+    设每个矩阵参数量为 $A = d_{\text{model}} \times d_{\text{ff}}$：老式 FFN 有 2 个矩阵（<code>W_up</code>, <code>W_down</code>），总参数 $= 2A$；SwiGLU 多了 <code>W_gate</code>，共 3 个矩阵，若 $d_{\text{ff}}$ 不变则总参数 $= 3A$，正好比 $2A$ 多出 $(3A-2A)/2A = \mathbf{+50\%}$。因此工程上会把 $d_{\text{ff}}$ 缩成原来的 $\frac{2}{3}$（从 $4d$ 降到 $\frac{8}{3}d \approx 2.67d$），使总参数 $3 \times \frac{2}{3}A = 2A$ 严丝合缝打平（例如 $d_{\text{model}}=3072$ 时，ReLU 宽 $12288$ 与 SwiGLU 宽 $8192$ 总参数同为 <strong>75.5M</strong>）。</p>
+
+    <p><strong>缩窄 $\frac{1}{3}$ 宽度，不会降低表达能力吗？</strong><br>
+    不会，反而更强。因为总参数预算一分没少，且单个 SwiGLU 神经元拥有<span class="hl-violet">两路相乘的软逻辑 AND 门</span>能力（例如同时检测“是苹果” $\times$ “科技语境”）；老式 ReLU 只有单路分段线性叠加，需要多个神经元凑阈值才能拟合二次交叉特征，还常存在 Dead ReLU（负半轴归零闲置）问题。</p>
+
+    <div class="tb-callout is-calc">
+      <div class="tb-callout-label">WORKED EXAMPLE · SwiGLU 三矩阵完整手算（d=2 → 3 → 2）</div>
+      <p>设输入向量 $x = [1, 2]$：</p>
+      <ol>
+        <li><strong>候选特征路</strong>：$u = [1, 2] \begin{pmatrix} 1 &amp; 0 &amp; 2 \\ 0 &amp; 1 &amp; 1 \end{pmatrix} = [1,\; 2,\; 4]$。</li>
+        <li><strong>门控开关路</strong>：先算 $x W_{\text{gate}} = [1, 2] \begin{pmatrix} 2 &amp; -2 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix} = [2, -2, 2]$，再过 $\text{SiLU}$ 得 $g \approx [1.76,\; -0.24,\; 1.76]$。</li>
+        <li><strong>逐元素相乘过滤</strong>：$h = g \odot u = [1.76,\; -0.48,\; 7.04]$（第 2 个特征被压扁，第 3 个被放大）。</li>
+        <li><strong>降维回主干</strong>：$y = [1.76,\; -0.48,\; 7.04] \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 1 \\ 0.5 &amp; 0.5 \end{pmatrix} = [5.28,\; 3.04]$。</li>
+      </ol>
+    </div>
+
+    <pre><code>u = x @ W_up                   # (1, 2) -> (1, 3)
+g = F.silu(x @ W_gate)         # (1, 2) -> (1, 3)
+y = (g * u) @ W_down           # (1, 3) -> (1, 2)</code></pre>
+
+    <h4 id="sec-4-3">4.3 GQA（分组查询注意力）</h4>
+    <p>推理生成时必须把历史 token 的 $K, V$ 缓存在显存里（KV Cache）。GQA 让多个 Query 头分组共享同一套 Key / Value 头，在几乎不损失理解力的前提下大幅砍掉显存搬运量。</p>
+
+    <figure class="tb-figure">
+      <svg viewBox="0 0 760 210" role="img" aria-label="MHA、GQA 与 MQA 的 KV 头数与显存占比对比图">
+        <!-- Row 1: MHA -->
+        <text x="20" y="42" fill="var(--ink)" font-size="12" font-weight="600" font-family="var(--mono)">MHA (32 Q : 32 KV)</text>
+        <text x="20" y="58" fill="var(--ink-muted)" font-size="10.5">1 对 1 专属资料库</text>
+        <rect x="210" y="30" width="380" height="28" rx="6" fill="rgba(248,113,113,0.22)" stroke="var(--crimson)"/>
+        <text x="400" y="49" text-anchor="middle" fill="var(--ink)" font-size="11" font-family="var(--mono)">3200 MB (100% 基准 · 最贵)</text>
+
+        <!-- Row 2: GQA -->
+        <text x="20" y="108" fill="var(--accent)" font-size="12" font-weight="600" font-family="var(--mono)">GQA (32 Q : 8 KV)</text>
+        <text x="20" y="124" fill="var(--ink-muted)" font-size="10.5">每 4 个 Q 共享 1 套 KV</text>
+        <rect x="210" y="96" width="95" height="28" rx="6" fill="rgba(196,181,253,0.26)" stroke="var(--accent)"/>
+        <rect x="305" y="96" width="285" height="28" rx="6" fill="none" stroke="var(--border)" stroke-dasharray="4 3"/>
+        <text x="318" y="115" fill="var(--accent)" font-size="11" font-weight="600" font-family="var(--mono)">800 MB（省 75%，效果几乎持平 MHA）</text>
+
+        <!-- Row 3: MQA -->
+        <text x="20" y="174" fill="var(--ink-secondary)" font-size="12" font-weight="600" font-family="var(--mono)">MQA (32 Q : 1 KV)</text>
+        <text x="20" y="190" fill="var(--ink-muted)" font-size="10.5">32 个 Q 全共用 1 套 KV</text>
+        <rect x="210" y="162" width="14" height="28" rx="4" fill="rgba(216,178,99,0.28)" stroke="var(--accent-amber)"/>
+        <rect x="224" y="162" width="366" height="28" rx="6" fill="none" stroke="var(--border)" stroke-dasharray="4 3"/>
+        <text x="236" y="181" fill="var(--ink-secondary)" font-size="11" font-family="var(--mono)">100 MB（省 97%，但易掉点、训练易不稳）</text>
+      </svg>
+      <figcaption>图 4：以 LLaMA-3 8B（32 个 Q 头，假设单层单 KV 头占 100 MB）为例，GQA 是效果与显存之间的甜点折中。</figcaption>
+    </figure>
+
+    <h4 id="sec-4-4">4.4 RoPE（旋转位置编码）完整拆解</h4>
+    <p><strong>1. 为什么偏好“只看相对位置”？</strong><br>
+    因为语言具有平移不变性：<code>"黑猫跳上了桌子"</code> 不管出现在文章第 10 字还是第 10,000 字，词与词的相对修饰关系不变。把绝对位置编号直接加到词向量上容易让位置与语义混淆，超过训练长度就会分布外崩溃。</p>
+
+    <p><strong>2. RoPE 插在哪里？怎么起作用？</strong><br>
+    RoPE <strong>不加在最开始的词嵌入里，也不修改 Value（$V$）</strong>，只插在算完 $Q, K$ 之后、算注意力点积之前：</p>
+
+    <figure class="tb-figure">
+      <svg viewBox="0 0 760 154" role="img" aria-label="RoPE 在注意力头中的插入位置示意图">
+        <defs>
+          <marker id="arr-rope" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,1 L9,5 L0,9 z" fill="var(--ink-secondary)"/>
+          </marker>
+        </defs>
+        <!-- Input x -->
+        <rect x="20" y="54" width="68" height="44" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+        <text x="54" y="81" text-anchor="middle" fill="var(--ink)" font-size="13" font-weight="600" font-family="var(--mono)">x</text>
+
+        <!-- Branches to Q, K, V -->
+        <path d="M 88 68 L 138 30" fill="none" stroke="var(--ink-muted)" stroke-width="1.5" marker-end="url(#arr-rope)"/>
+        <path d="M 88 76 L 138 76" fill="none" stroke="var(--ink-muted)" stroke-width="1.5" marker-end="url(#arr-rope)"/>
+        <path d="M 88 84 L 138 122" fill="none" stroke="var(--ink-muted)" stroke-width="1.5" marker-end="url(#arr-rope)"/>
+
+        <rect x="142" y="16" width="84" height="30" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="184" y="35" text-anchor="middle" fill="var(--ink)" font-size="11.5" font-family="var(--mono)">× W_Q → q</text>
+        <rect x="142" y="61" width="84" height="30" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="184" y="80" text-anchor="middle" fill="var(--ink)" font-size="11.5" font-family="var(--mono)">× W_K → k</text>
+        <rect x="142" y="107" width="84" height="30" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="184" y="126" text-anchor="middle" fill="var(--ink)" font-size="11.5" font-family="var(--mono)">× W_V → v</text>
+
+        <!-- RoPE blocks -->
+        <line x1="226" y1="31" x2="264" y2="31" stroke="var(--ink-secondary)" stroke-width="1.4" marker-end="url(#arr-rope)"/>
+        <line x1="226" y1="76" x2="264" y2="76" stroke="var(--ink-secondary)" stroke-width="1.4" marker-end="url(#arr-rope)"/>
+        <rect x="268" y="14" width="140" height="34" rx="7" fill="rgba(196,181,253,0.16)" stroke="var(--accent)"/>
+        <text x="338" y="35" text-anchor="middle" fill="var(--accent)" font-size="11.5" font-weight="600" font-family="var(--mono)">RoPE(m) → q_rot</text>
+        <rect x="268" y="59" width="140" height="34" rx="7" fill="rgba(196,181,253,0.16)" stroke="var(--accent)"/>
+        <text x="338" y="80" text-anchor="middle" fill="var(--accent)" font-size="11.5" font-weight="600" font-family="var(--mono)">RoPE(n) → k_rot</text>
+
+        <!-- V bypass -->
+        <line x1="226" y1="122" x2="564" y2="122" stroke="var(--accent-sage)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-rope)"/>
+        <text x="395" y="114" text-anchor="middle" fill="var(--accent-sage)" font-size="10.5">V 不做任何旋转，原样送入加权求和</text>
+
+        <!-- Dot product -->
+        <path d="M 408 31 L 456 50" fill="none" stroke="var(--ink-secondary)" stroke-width="1.4" marker-end="url(#arr-rope)"/>
+        <path d="M 408 76 L 456 58" fill="none" stroke="var(--ink-secondary)" stroke-width="1.4" marker-end="url(#arr-rope)"/>
+        <rect x="460" y="34" width="136" height="40" rx="8" fill="rgba(216,178,99,0.14)" stroke="var(--accent-amber)"/>
+        <text x="528" y="52" text-anchor="middle" fill="var(--ink)" font-size="11" font-weight="600" font-family="var(--mono)">q_rot · k_rot</text>
+        <text x="528" y="67" text-anchor="middle" fill="var(--accent-amber)" font-size="10">仅余相对距离 (m - n)</text>
+
+        <!-- Output -->
+        <path d="M 596 54 L 632 82" fill="none" stroke="var(--ink-secondary)" stroke-width="1.4" marker-end="url(#arr-rope)"/>
+        <path d="M 566 122 L 632 94" fill="none" stroke="var(--accent-sage)" stroke-width="1.4" marker-end="url(#arr-rope)"/>
+        <rect x="636" y="66" width="106" height="44" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+        <text x="689" y="85" text-anchor="middle" fill="var(--ink)" font-size="11" font-weight="600">Attention</text>
+        <text x="689" y="100" text-anchor="middle" fill="var(--ink-muted)" font-size="10" font-family="var(--mono)">Output</text>
+      </svg>
+      <figcaption>图 5：RoPE 只旋转 Query 与 Key，不改动 Value；做点积时绝对位置角相减，仅保留相对距离。</figcaption>
+    </figure>
+
+    <div class="tb-callout is-calc">
+      <div class="tb-callout-label">WORKED EXAMPLE · RoPE 4 维向量旋转手算</div>
+      <p>设位置 $n=1$ 的词和位置 $m=3$ 的词，原始向量恰为 $k_1 = [1, 0, 1, 0]$、$q_3 = [1, 0, 1, 0]$。4 维分成两组，转速分别为 $\theta_0 = 30^\circ/\text{词}$、$\theta_1 = 5^\circ/\text{词}$：</p>
+      <ul>
+        <li>旋转 $k_1$（乘 $n=1$）：前 2 维转 $30^\circ \to [0.866, 0.5]$，后 2 维转 $5^\circ \to [0.996, 0.087]$。</li>
+        <li>旋转 $q_3$（乘 $m=3$）：前 2 维转 $90^\circ \to [0, 1]$，后 2 维转 $15^\circ \to [0.966, 0.259]$。</li>
+        <li>点积 $q_3^{\text{rot}} \cdot k_1^{\text{rot}}$：前 2 维贡献 $0.5 = \cos(60^\circ)$，后 2 维贡献 $0.985 \approx \cos(10^\circ)$，总分 $= \mathbf{1.485}$。</li>
+      </ul>
+      <p>如果把这两个词同时平移到第 101 位和第 103 位，它们的角度差依然是 $(103-101)\times 30^\circ = 60^\circ$ 和 $10^\circ$，点积结果一分不差还是 <strong>1.485</strong>！代码实现也只需逐组做两次乘加：</p>
+    </div>
+
+    <pre><code>x1_rot = x1 * cos(m * theta) - x2 * sin(m * theta)
+x2_rot = x1 * sin(m * theta) + x2 * cos(m * theta)</code></pre>
+
+    <p><strong>3. 为什么要有多个角度参数？怎么分配？固定还是可变？</strong></p>
+    <ul>
+      <li><strong>为什么不能只有一个转速</strong>：全用快转速（每 10 词一圈），第 1 词和第 11 词会撞车；全用慢转速（10 万词一圈），相邻两词角度差小到挤在一起，局部语法会糊掉。所以必须像时钟一样同时配秒针、分针和时针。</li>
+      <li><strong>怎么分配转速</strong>：以 $d=128$ 为例，分成 $i = 0, 1, \dots, 63$ 共 64 组，按等比数列指数递减分配：
+        $$\theta_i = \text{base}^{-\frac{2i}{d}} \qquad (\text{经典 } \text{base} = 10000)$$
+        第 0 组 $\theta_0 = 1.0$ 弧度/词（最快秒针），第 32 组 $\theta_{32} = 0.01$，第 63 组 $\theta_{63} \approx 0.000115$（约 5.4 万词转一圈，最慢时针）。</li>
+      <li><strong>固定还是可变</strong>：在正常训练和未超长推理时，<span class="hl-amber">转速表 $\theta_i$ 是写死固定的</span>，随位置 $m$ 线性增大的是实际旋转角 $m \cdot \theta_i$；只有在强行外推超长上下文时，工程上才不得已去改 $\theta_i$ 或 <code>base</code>。</li>
+    </ul>
+
+    <p><strong>4. 长上下文补丁：PI、NTK 与 YaRN（3 指针数值例）</strong><br>
+    当 4K 训出的模型遇到 16K（拉长 4 倍）文本时，高频秒针已转过几百圈而失去圈数区分，而低频时针在训练时只走过很小角度（如 $14.4^\circ$），到 16K 时却转到 $57.6^\circ$——<strong>闯入训练从未见过的角度盲区</strong>导致崩溃。</p>
+
+    <figure class="tb-lab" id="rope-lab">
+      <div class="tb-lab-head">
+        <span class="tb-lab-badge">INTERACTIVE · ROPE CLOCK LAB</span>
+        <div class="tb-lab-modes" role="group" aria-label="RoPE 上下文扩展模式">
+          <button type="button" class="tb-lab-btn" data-rope-mode="orig" aria-pressed="true">Original (4K)</button>
+          <button type="button" class="tb-lab-btn" data-rope-mode="pi" aria-pressed="false">PI (全部÷4)</button>
+          <button type="button" class="tb-lab-btn" data-rope-mode="ntk" aria-pressed="false">NTK (base×8)</button>
+        </div>
+      </div>
+
+      <svg viewBox="0 0 760 220" role="img" aria-label="交互式 RoPE 秒针与时针角度演示图">
+        <!-- Left Clock: Fast Second Hand -->
+        <rect x="14" y="10" width="352" height="198" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="190" y="34" text-anchor="middle" fill="var(--accent-sage)" font-size="12" font-weight="600" font-family="var(--mono)">高频组（秒针）· 相邻词分辨</text>
+        <circle cx="110" cy="116" r="54" fill="var(--bg-elevated)" stroke="var(--border-strong)" stroke-width="1.5"/>
+        <!-- Token m reference hand (top, 0 deg) -->
+        <line x1="110" y1="116" x2="110" y2="66" stroke="var(--ink-muted)" stroke-width="1.6" stroke-dasharray="3 2"/>
+        <!-- Token m+1 hand (rotated by fast step angle) -->
+        <line id="rope-fast-hand" x1="110" y1="116" x2="139" y2="75" stroke="var(--accent-sage)" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="110" cy="116" r="3.5" fill="var(--ink)"/>
+        <text x="110" y="190" text-anchor="middle" fill="var(--ink-muted)" font-size="10">虚线: 词 m | 实线: 词 m+1</text>
+        <text id="rope-fast-deg" x="190" y="96" fill="var(--accent-sage)" font-size="11.5" font-weight="600" font-family="var(--mono)">每词夹角：36.0°</text>
+        <text id="rope-fast-note" x="190" y="118" fill="var(--ink-secondary)" font-size="11">相邻两词分得清清楚楚</text>
+        <text x="190" y="140" fill="var(--ink-muted)" font-size="10.5">0°~360° 在 4K 内已转数百圈</text>
+
+        <!-- Right Clock: Slow Hour Hand -->
+        <rect x="394" y="10" width="352" height="198" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="570" y="34" text-anchor="middle" fill="var(--accent)" font-size="12" font-weight="600" font-family="var(--mono)">低频组（时针）· 全局跨度</text>
+        <circle cx="490" cy="116" r="54" fill="var(--bg-elevated)" stroke="var(--border-strong)" stroke-width="1.5"/>
+        <!-- 4K safe arc (0 to 14.4 deg scaled x2 -> 28.8 deg visually for clarity) -->
+        <path d="M 490 62 A 54 54 0 0 1 516 69" fill="none" stroke="var(--accent-sage)" stroke-width="4.5" stroke-linecap="round"/>
+        <!-- 16K OOD arc (28.8 to 115.2 deg visually) -->
+        <path d="M 516 69 A 54 54 0 0 1 539 139" fill="none" stroke="var(--crimson)" stroke-width="4.5" stroke-linecap="round" opacity="0.75"/>
+        <line id="rope-slow-hand" x1="490" y1="116" x2="535" y2="137" stroke="var(--crimson)" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="490" cy="116" r="3.5" fill="var(--ink)"/>
+        <text x="490" y="190" text-anchor="middle" fill="var(--ink-muted)" font-size="10">绿弧: 4K 安全区 | 红弧: 盲区</text>
+        <text id="rope-slow-deg" x="570" y="96" fill="var(--crimson)" font-size="11.5" font-weight="600" font-family="var(--mono)">累计角度：57.6°</text>
+        <text x="570" y="118" fill="var(--ink-secondary)" font-size="11">4K 训练上限：14.4°</text>
+        <text id="rope-slow-note" x="570" y="140" fill="var(--ink-muted)" font-size="10.5">当前已闯入未训练盲区</text>
+      </svg>
+
+      <div class="tb-lab-controls">
+        <label class="tb-lab-pos-label" for="rope-pos">位置 m = <span id="rope-pos-val">16000</span></label>
+        <input id="rope-pos" class="tb-lab-slider" type="range" min="0" max="16000" step="200" value="16000" aria-label="测试序列位置 m">
+        <button type="button" class="tb-lab-btn" data-rope-jump="1000">1K</button>
+        <button type="button" class="tb-lab-btn" data-rope-jump="4000">4K</button>
+        <button type="button" class="tb-lab-btn" data-rope-jump="16000">16K</button>
+        <span id="rope-status" class="tb-lab-readout is-ood">时针越界：闯入 4K 未见盲区</span>
+      </div>
+      <figcaption>图 6（可交互）：拖动位置滑块并切换 Original / PI / NTK，观察秒针相邻夹角与时针安全区如何变化。</figcaption>
+    </figure>
+
+    <div class="tb-table-wrap">
+      <table class="tb-table">
+        <thead>
+          <tr>
+            <th>指针（$d=6$，原始 <code>base=10000</code>）</th>
+            <th>原始转速 (4K)</th>
+            <th>PI（全部除以 4）</th>
+            <th>NTK（<code>base</code> 改 $8\times \to 80000$）</th>
+            <th>YaRN（分段精细处理）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>秒针</strong>（$i=0,\; \text{base}^0$）</td>
+            <td>$1.0$</td>
+            <td>$0.25$（相邻词挤糊）</td>
+            <td><strong>$1.0$（0 次方不变，保住）</strong></td>
+            <td><strong>$1.0$（高频区完全不动）</strong></td>
+          </tr>
+          <tr>
+            <td><strong>分针</strong>（$i=1,\; \text{base}^{-1/3}$）</td>
+            <td>$0.0464$</td>
+            <td>$0.0116$</td>
+            <td>$0.0232$（慢 2 倍）</td>
+            <td>$1 \to 1/4$ 线性平滑过渡</td>
+          </tr>
+          <tr>
+            <td><strong>时针</strong>（$i=2,\; \text{base}^{-2/3}$）</td>
+            <td>$0.00215$</td>
+            <td>$0.00054$（不越界）</td>
+            <td><strong>$0.00054$（正好慢 4 倍）</strong></td>
+            <td><strong>$0.00054$（低频区按 PI 拉回）</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>YaRN 在此基础上还额外增加了注意力温度缩放（把超长上下文中被摊平的 Softmax 分布重新拉尖），虽然效果最稳，但超参数多、每次扩窗通常仍需少量微调。</p>
+
+    <hr>
+
+    <h3 id="sec-5"><span class="ch-idx">05</span>RoPE 的四个副作用与 NoPE 的兴起</h3>
+    <p>上下文迈向几十万乃至百万 token，或结合新型低秩注意力架构时，RoPE 暴露出了四个明显的副作用：</p>
+
+    <h4 id="sec-5-1">5.1 远程衰减（Long-Term Decay）</h4>
+    <p>设 3 组维度语义完全匹配，点积正比于 $\cos(\Delta\theta_1) + \cos(\Delta\theta_2) + \cos(\Delta\theta_3)$：当距离很近（$\Delta \approx 0$）时三组余弦全在 $0^\circ$ 附近，同向叠加得 $1 + 1 + 1 = \mathbf{+3}$；当距离很远（如 $\Delta = 500$）时各组指针早就散开，假设分别落到 $60^\circ, 180^\circ, 300^\circ$，求和变成 $+0.5 - 1.0 + 0.5 = \mathbf{0}$，<strong>正负互相抵消</strong>。RoPE 因此天然偏爱近距离词、压低远距离分数。</p>
+
+    <h4 id="sec-5-2">5.2 Attention Sink 霸占低频维度与“中间迷失”</h4>
+    <p>很多人容易误以为 RoPE 是贴在向量旁边的独立位置标记，其实<span class="hl-amber">RoPE 直接旋转的是 $Q$ 和 $K$ 语义向量本身——128 维里既没有专门的“位置位”，也没有专门的“垃圾桶位”</span>。</p>
+    <p>同时，Softmax 规定所有词的权重之和必须等于 100%。当模型遇到不需要从前文搬运信息的虚词（如 <code>"的"</code>）时，它自发学会了把多余注意力（经常 60%–90%）全倒给句首第 1 个词 <code>&lt;BOS&gt;</code>（<strong>Attention Sink</strong>）。</p>
+
+    <div class="tb-callout is-warning">
+      <div class="tb-callout-label">TRADE-OFF · 4 维磁铁例：为什么垃圾桶一定要抢低频通道？</div>
+      <p>设前 2 维 <code>(d0, d1)</code> 每词转 $90^\circ$（高频），后 2 维 <code>(d2, d3)</code> 走 1000 词才转 $1^\circ$（低频）。读到第 1001 个词 <code>"的"</code> 时，若把锚点常数写进高频前 2 维，走几步就从 $+100$ 翻成 $-100$，彻底脱靶；只有塞进几乎不转的低频后 2 维，才能跨万字稳稳对齐：</p>
+      $$k_{\text{BOS}} = [0, 0,\; \mathbf{10, 0}], \qquad q_{\text{的}} = [0, 0,\; \mathbf{10, 0}] \implies q_{\text{的}}^\top k_{\text{BOS}} = \mathbf{+100}$$
+      <p><strong>后果</strong>：第 1002 个词 <code>"他"</code> 想用稀缺的低频维度跨越 1000 词去捞第 5 个词 <code>"张三"</code>（$k_{\text{张三}} = [1, 0,\; 2, 0]$）时，只要在 <code>d2</code> 上带一点正数，就会被 <code>&lt;BOS&gt;</code> 这块 <code>[10, 0]</code> 大磁铁抢走权重，严重挤占长距离语义检索空间。</p>
+    </div>
+
+    <p>5.1 与 5.2 共同造就了超长文档中的 <strong>Lost in the Middle（中间迷失）</strong>：开头因 Sink 权重高，末尾因无远程衰减权重高，夹在中间的几万字最容易被忽略。（后续有些架构会在 Softmax 分母中额外引入独立可学习标量 <code>sink_bias</code>，把垃圾桶从低频语义维度中解放出来。）</p>
+
+    <h4 id="sec-5-3">5.3 与 MLA（低秩 KV 压缩）打架</h4>
+    <p>DeepSeek 的 <strong>MLA</strong> 把历史 Key 压成一个小向量 $c_n$（需要时再乘解压矩阵 $W_{UK}$ 还原）。若没有 RoPE，推理时可利用结合律直接把 $W_{UK}$ <strong>吸收</strong>进 Query 矩阵中，根本不用解压历史缓存：</p>
+    $$q_m^\top k_n = (W_Q x_m)^\top (W_{UK} c_n) = x_m^\top (W_Q^\top W_{UK}) c_n$$
+    <p>但插进 RoPE 后，中间硬生生卡了一个随距离 $(n-m)$ 变化的旋转矩阵 $R_{n-m}$：</p>
+    $$q_m^\top k_n = x_m^\top W_Q^\top R_{n-m} W_{UK} c_n$$
+    <p>$W_Q^\top$ 与 $W_{UK}$ 碰不到一起，<strong>线性吸收失效</strong>。MLA 被迫做出妥协（Decoupled RoPE），把 Key 劈成“可压缩的语义部分 + 一份单独存且不压缩的 RoPE 旁路”。</p>
+
+    <h4 id="sec-5-4">5.4 缺乏全局坐标感</h4>
+    <p>就像一条打了 1000 个结、每个结只知道自己与邻居相对距离的绳子，纯相对位置本身无法直接回答“我现在是第 3 个结还是第 800 个结”，只能依赖 Causal Mask 左边界（<code>&lt;BOS&gt;</code>）间接推算。</p>
+
+    <h4 id="sec-5-5">5.5 NoPE 必须配合 decay（衰减）才能用吗？</h4>
+    <p>既然 RoPE 有这么多麻烦，能不能干脆用 <strong>NoPE（No Positional Embeddings，零位置编码）</strong>？<strong>NoPE 并非必须配合 decay 才能用</strong>，它只需要某种能够打破位置对称性的搭档机制。Decoder 架构里有三种常见用法：</p>
+    <ol>
+      <li><strong>纯 Decoder-only + NoPE（不用 decay，也不用 RoPE）</strong>：依靠 <strong>Causal Mask</strong> 本身的三角不对称性（第 1 词只能看 1 个词，第 2 词能看 2 个词……），模型过完第 1 层后自己就能硬算出位置，但收敛慢、局部语序弱。</li>
+      <li><strong>局部 RoPE + 全局 NoPE（如 Llama 4 的 iRoPE）</strong>：不用 decay，而是每几层带 RoPE 的局部滑窗注意力搭配 1 层 NoPE 全局注意力。</li>
+      <li><strong>带 decay 的线性注意力 + 全局 NoPE（如 Kimi K3）</strong>：每 3 层 KDA（Kimi Delta Attention）搭配 1 层 NoPE 的 Gated MLA 全局注意力。</li>
+    </ol>
+    <p>唯一<strong>绝对不能用 NoPE</strong> 的场景是<strong>双向 Encoder（无 Causal Mask 也无 decay）</strong>——所有词完全对称互看，去掉位置编码后 <code>"猫咬狗"</code> 和 <code>"狗咬猫"</code> 输出完全相同，彻底退化成无序词袋。</p>
+
+    <hr>
+
+    <h3 id="sec-6"><span class="ch-idx">06</span>KDA（Kimi Delta Attention）的运行机制与代价</h3>
+    <p>在 Kimi K3 的 <code>3 层 KDA + 1 层 NoPE Gated MLA</code> 架构中，KDA 把历史压缩进固定大小的状态矩阵，并同时接管了“记录词序与相对距离”的工作。</p>
+
+    <h4 id="sec-6-1">6.1 衰减因子如何隐式记住词序？（褪色黑板与双通道例子）</h4>
+    <p>把衰减更新简化成 $S_t = \alpha \cdot S_{t-1} + x_t$（每来一个新词，先把旧记忆乘以 $\alpha$ 变淡）。设 $\alpha = 0.8$，依次读入 <code>["我", "喜欢", "深度", "学习"]</code>，最终状态变为：</p>
+    $$S_4 = \mathbf{0.512}\,\text{"我"} + \mathbf{0.64}\,\text{"喜欢"} + \mathbf{0.8}\,\text{"深度"} + \mathbf{1.0}\,\text{"学习"}$$
+    <p>不用任何 RoPE 编号，<code>"猫 咬 狗"</code> 与 <code>"狗 咬 猫"</code> 算出的状态完全不同——褪色的程度本身就是天然的距离尺子。</p>
+    <p><strong>逐通道衰减 + NoPE 全局层如何配合？</strong><br>
+    假设一篇 500 句的长文，开头写 <code>"张三住在北京"</code>，第 502 句写 <code>"猫追着狗跑，它很害怕"</code>，第 503 句问 <code>"张三住在哪里？"</code>。经过前 3 层 KDA 时，<strong>快衰减通道</strong>（如 $\alpha_1=0.5$）只管最近 2–3 个词的精细语序并快速忘掉前文干扰；<strong>慢衰减通道</strong>（如 $\alpha_2=0.999$）在 500 句后仍保留 $0.999^{500} \approx 0.61$ 的长线背景。等流到第 4 层（<strong>NoPE 全局 MLA</strong>）时，<code>"北京"</code> 早已带上上下文角色印记，NoPE 层只需跨 500 句做纯语义检索即可精准命中，且 MLA 低秩矩阵吸收畅通无阻。</p>
+
+    <h4 id="sec-6-2">6.2 KDA 完整公式与 $2\times 2$ 手算例子</h4>
+    <p>KDA 在 Gated DeltaNet（GDN）的标量衰减基础上改成了<strong>逐通道向量衰减</strong>，核心公式为：</p>
+    $$S_t = S_{t-1}\,\mathrm{Diag}(\alpha_t)\big(I - \beta_t k_t k_t^\top\big) + \beta_t v_t k_t^\top, \qquad o_t = S_t q_t, \qquad \alpha_t \in (0, 1)^{d_k}$$
+    <p>它可以被看作一本固定大小的“可擦写记忆本”：$S_{t-1}\,\mathrm{Diag}(\alpha_t)$ 负责按通道整体淡化旧记忆，$(I - \beta_t k_t k_t^\top)$ 是只擦除 $k_t$ 方向的<strong>定点橡皮擦</strong>，最后加上 $\beta_t v_t k_t^\top$ 写入新值。</p>
+
+    <figure class="tb-figure">
+      <svg viewBox="0 0 760 198" role="img" aria-label="KDA 2x2 状态矩阵三步更新流程示意图">
+        <defs>
+          <marker id="arr-kda" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,1 L9,5 L0,9 z" fill="var(--ink-secondary)"/>
+          </marker>
+        </defs>
+        <!-- S0 -->
+        <rect x="14" y="26" width="144" height="142" rx="9" fill="var(--bg-surface)" stroke="var(--border)"/>
+        <text x="86" y="48" text-anchor="middle" fill="var(--ink)" font-size="11.5" font-weight="600" font-family="var(--mono)">初始 S₀</text>
+        <text x="86" y="64" text-anchor="middle" fill="var(--ink-muted)" font-size="10">列1:地点 | 列2:职业</text>
+        <rect x="34" y="76" width="104" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="64" y="100" text-anchor="middle" fill="var(--ink)" font-size="13" font-family="var(--mono)">10</text>
+        <text x="108" y="100" text-anchor="middle" fill="var(--ink-muted)" font-size="13" font-family="var(--mono)">0</text>
+        <text x="64" y="122" text-anchor="middle" fill="var(--ink-muted)" font-size="13" font-family="var(--mono)">0</text>
+        <text x="108" y="122" text-anchor="middle" fill="var(--accent-sage)" font-size="13" font-family="var(--mono)">8</text>
+        <text x="86" y="154" text-anchor="middle" fill="var(--ink-muted)" font-size="10">北京[10,0] / 医生[0,8]</text>
+
+        <line x1="160" y1="98" x2="188" y2="98" stroke="var(--ink-secondary)" stroke-width="1.5" marker-end="url(#arr-kda)"/>
+        <text x="174" y="88" text-anchor="middle" fill="var(--accent-amber)" font-size="9.5" font-family="var(--mono)">×α</text>
+
+        <!-- Step 1: Decay -->
+        <rect x="192" y="26" width="150" height="142" rx="9" fill="var(--bg-surface)" stroke="var(--accent-amber)"/>
+        <text x="267" y="48" text-anchor="middle" fill="var(--accent-amber)" font-size="11.5" font-weight="600" font-family="var(--mono)">① 逐通道衰减</text>
+        <text x="267" y="64" text-anchor="middle" fill="var(--ink-muted)" font-size="10">α = [0.5, 0.9]</text>
+        <rect x="215" y="76" width="104" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="245" y="100" text-anchor="middle" fill="var(--accent-amber)" font-size="13" font-family="var(--mono)">5</text>
+        <text x="289" y="100" text-anchor="middle" fill="var(--ink-muted)" font-size="13" font-family="var(--mono)">0</text>
+        <text x="245" y="122" text-anchor="middle" fill="var(--ink-muted)" font-size="13" font-family="var(--mono)">0</text>
+        <text x="289" y="122" text-anchor="middle" fill="var(--accent-sage)" font-size="13" font-family="var(--mono)">7.2</text>
+        <text x="267" y="154" text-anchor="middle" fill="var(--ink-muted)" font-size="10">各通道按不同速度淡化</text>
+
+        <line x1="344" y1="98" x2="372" y2="98" stroke="var(--ink-secondary)" stroke-width="1.5" marker-end="url(#arr-kda)"/>
+        <text x="358" y="88" text-anchor="middle" fill="var(--crimson)" font-size="9.5" font-family="var(--mono)">擦k₁</text>
+
+        <!-- Step 2: Erase -->
+        <rect x="376" y="26" width="166" height="142" rx="9" fill="var(--bg-surface)" stroke="var(--crimson)"/>
+        <text x="459" y="48" text-anchor="middle" fill="var(--crimson)" font-size="11.5" font-weight="600" font-family="var(--mono)">② 定点擦除旧地点</text>
+        <text x="459" y="64" text-anchor="middle" fill="var(--ink-muted)" font-size="10">乘 (I - k₁k₁ᵀ), k₁=[1,0]ᵀ</text>
+        <rect x="407" y="76" width="104" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--border-strong)"/>
+        <text x="437" y="100" text-anchor="middle" fill="var(--crimson)" font-size="13" font-weight="600" font-family="var(--mono)">0</text>
+        <text x="481" y="100" text-anchor="middle" fill="var(--ink-muted)" font-size="13" font-family="var(--mono)">0</text>
+        <text x="437" y="122" text-anchor="middle" fill="var(--crimson)" font-size="13" font-weight="600" font-family="var(--mono)">0</text>
+        <text x="481" y="122" text-anchor="middle" fill="var(--accent-sage)" font-size="13" font-family="var(--mono)">7.2</text>
+        <text x="459" y="154" text-anchor="middle" fill="var(--ink-muted)" font-size="10">旧地点清零，职业 7.2 完好</text>
+
+        <line x1="544" y1="98" x2="572" y2="98" stroke="var(--ink-secondary)" stroke-width="1.5" marker-end="url(#arr-kda)"/>
+        <text x="558" y="88" text-anchor="middle" fill="var(--accent)" font-size="9.5" font-family="var(--mono)">+vk₁ᵀ</text>
+
+        <!-- Step 3: Write -->
+        <rect x="576" y="26" width="170" height="142" rx="9" fill="var(--bg-surface)" stroke="var(--accent)"/>
+        <text x="661" y="48" text-anchor="middle" fill="var(--accent)" font-size="11.5" font-weight="600" font-family="var(--mono)">③ 写入新地点 S₁</text>
+        <text x="661" y="64" text-anchor="middle" fill="var(--ink-muted)" font-size="10">新值 v=[2, 6]ᵀ → 上海</text>
+        <rect x="609" y="76" width="104" height="58" rx="6" fill="var(--bg-elevated)" stroke="var(--accent)"/>
+        <text x="639" y="100" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="600" font-family="var(--mono)">2</text>
+        <text x="683" y="100" text-anchor="middle" fill="var(--ink-muted)" font-size="13" font-family="var(--mono)">0</text>
+        <text x="639" y="122" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="600" font-family="var(--mono)">6</text>
+        <text x="683" y="122" text-anchor="middle" fill="var(--accent-sage)" font-size="13" font-family="var(--mono)">7.2</text>
+        <text x="661" y="154" text-anchor="middle" fill="var(--ink-muted)" font-size="10">读 q=[1,0]ᵀ → 精确得 [2,6]ᵀ</text>
+      </svg>
+      <figcaption>图 7：KDA 的 2×2 手算更新流。“张三搬去了上海”精准替换掉第 1 列的旧地点“北京”，而第 2 列的“医生”记忆毫发无伤。</figcaption>
+    </figure>
+
+    <div class="tb-callout is-calc">
+      <div class="tb-callout-label">WORKED EXAMPLE · KDA 2×2 矩阵逐行验算</div>
+      <p>新输入“张三搬去了上海”：$v_t = [2, 6]^\top$，指向地点 $k_t = [1, 0]^\top$，$\beta_t = 1$，$\alpha_t = [0.5, 0.9]^\top$：</p>
+      <ol>
+        <li><strong>逐通道衰减</strong>：$S' = \begin{pmatrix} 10 &amp; 0 \\ 0 &amp; 8 \end{pmatrix}\begin{pmatrix} 0.5 &amp; 0 \\ 0 &amp; 0.9 \end{pmatrix} = \begin{pmatrix} 5 &amp; 0 \\ 0 &amp; 7.2 \end{pmatrix}$。</li>
+        <li><strong>定点擦除旧地点</strong>：$S_{\text{erased}} = \begin{pmatrix} 5 &amp; 0 \\ 0 &amp; 7.2 \end{pmatrix}\begin{pmatrix} 0 &amp; 0 \\ 0 &amp; 1 \end{pmatrix} = \begin{pmatrix} \mathbf{0} &amp; 0 \\ \mathbf{0} &amp; 7.2 \end{pmatrix}$。</li>
+        <li><strong>写入新地点</strong>：$S_1 = \begin{pmatrix} 0 &amp; 0 \\ 0 &amp; 7.2 \end{pmatrix} + \begin{pmatrix} 2 &amp; 0 \\ 6 &amp; 0 \end{pmatrix} = \begin{pmatrix} \mathbf{2} &amp; 0 \\ \mathbf{6} &amp; 7.2 \end{pmatrix}$。</li>
+        <li><strong>读出验证</strong>：查地点 $q=[1,0]^\top \implies S_1 q = [2, 6]^\top$（干净读出“上海”，无“北京”残留）；查职业 $q=[0,1]^\top \implies [0, 7.2]^\top$（“医生”仍在）。</li>
+      </ol>
+    </div>
+
+    <h4 id="sec-6-3">6.3 方向 $k_t$ 怎么决定？可以更新吗？</h4>
+    <p>$k_t$ 既不是人工写死的，也不是固定坐标轴，而是通过可学习线性层加 $L_2$ 归一化动态算出来的（$L_2$ 归一化能防止转移矩阵特征值过大导致状态爆炸）：</p>
+    $$k_t = \frac{W_K x_t}{\|W_K x_t\|_2}$$
+    <ul>
+      <li><strong>推理时动态变化且可覆盖</strong>：第 $t$ 词讲“地点”，$W_K$ 把它映射到“地点方向”；第 $t+1$ 词讲“职业”，$k_{t+1}$ 切到“职业方向”；500 步后再提“搬家”，$W_K$ 再次指向“地点方向”并覆盖旧记忆。</li>
+      <li><strong>训练时持续学习寻址规则</strong>：$W_K$（以及算 $\alpha_t, \beta_t, q_t, v_t$ 的投影层）都会通过反向传播更新，逐步学会把不同类别的信息尽量映射到彼此接近正交的方向上以减少串台。（在更近期的 GDN2、EDA 等探索中，研究者甚至尝试把“擦除方向”和“写入方向”拆成两个向量，但也带来了谱范数可能大于 1 的新稳定性难题。）</li>
+    </ul>
+
+    <h4 id="sec-6-4">6.4 KDA 的四个现实代价</h4>
+    <div class="tb-callout is-warning">
+      <div class="tb-callout-label">TRADE-OFF · O(1) 解码成本背后的四笔账</div>
+      <ol>
+        <li><strong>固定状态的容量天花板</strong>：$S_t$ 尺寸是固定的（例如 $128 \times 128$），最多互不干扰地容纳有限个正交键值对。一旦遇到超长序列中的密集精确检索（如大海捞针 / 长电话簿），不同 Key 会互相覆盖——这正是 Kimi K3 必须以 <code>3:1</code> 保留全局 MLA 层的原因。</li>
+        <li><strong>并行训练与算子工程难度大</strong>：KDA 的转移矩阵 $\mathrm{Diag}(\alpha_t)(I - \beta_t k_t k_t^\top)$ 属于<strong>对角加秩一（DPLR）</strong>结构，在 GPU 上做并行训练必须分块（Chunkwise）并执行<strong>块内下三角矩阵求逆</strong>，编写高效 CUDA / Triton Kernel 的门槛显著高于标准注意力。</li>
+        <li><strong>低精度数值更脆弱</strong>：块内求逆、$k_t$ 归一化以及衰减门控在 <code>bf16/fp16</code> 下比 Softmax 注意力更容易出现数值漂移或梯度爆炸，工程中常需把关键衰减项或归一化保留在 <code>fp32</code> 精度。</li>
+        <li><strong>推理前缀缓存（Prefix Caching）粒度变粗</strong>：标准 KV Cache 按 token 线性追加，切片复用非常灵活；KDA 将历史揉进滚动矩阵 $S_t$，若要复用前缀缓存，只能按固定块边界保存状态矩阵快照。</li>
+      </ol>
+    </div>
+
+    <hr>
+
+    <h3 id="sec-summary"><span class="ch-idx">∑</span>小结：现代 LLM 架构的“问题—组件”脉络</h3>
+    <div class="tb-table-wrap">
+      <table class="tb-table">
+        <thead>
+          <tr>
+            <th>演进节点</th>
+            <th>解决什么问题</th>
+            <th>付出的主要代价 / 边界</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Transformer 并行</strong></td>
+            <td>打破 RNN 序列串行限制</td>
+            <td>注意力计算随长度 $O(m^2)$、KV Cache 随长度 $O(m)$</td>
+          </tr>
+          <tr>
+            <td><strong>Decoder-only 胜出</strong></td>
+            <td>统一读写参数、提高样本与 Prefix Cache 利用率</td>
+            <td>失去双向编码能力（需靠掩码单向推理）</td>
+          </tr>
+          <tr>
+            <td><strong>RMSNorm / SwiGLU / GQA</strong></td>
+            <td>加速归一化、提升 FFN 非线性交互、砍掉 75% KV Cache</td>
+            <td>SwiGLU 需按 $\frac{2}{3}$ 缩宽以对齐参数预算</td>
+          </tr>
+          <tr>
+            <td><strong>RoPE</strong></td>
+            <td>相对位置编码，天然具备平移不变性</td>
+            <td>超长需调频打补丁；远程衰减、Sink 抢占低频、与 MLA 吸收冲突</td>
+          </tr>
+          <tr>
+            <td><strong>KDA + NoPE（混合架构）</strong></td>
+            <td>线性层隐式记序 + 擦写记忆，解放全局 MLA 专注跨百万字语义检索</td>
+            <td>线性层受限于固定状态容量，且 Chunkwise 求逆与缓存工程更复杂</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>后续专栏笔记将在此基础上继续拆解 <strong>Loop Model 现代三段式与隐式推理</strong>、<strong>MoE 与 MLA 压缩细节</strong>，以及 <strong>KV Cache 与推理系统账本</strong>。</p>
+  </article>
+
+  <footer class="foot">
+    <p><a href="../../">← Back to Blog</a> · <a href="../../../#blog">Homepage</a></p>
+  </footer>
+</main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (typeof renderMathInElement === "function") {
+      renderMathInElement(document.querySelector(".post-body"), {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+
+    var lab = document.getElementById("rope-lab");
+    if (!lab) return;
+    var mode = "orig";
+    var posSlider = document.getElementById("rope-pos");
+    var posVal = document.getElementById("rope-pos-val");
+    var fastHand = document.getElementById("rope-fast-hand");
+    var slowHand = document.getElementById("rope-slow-hand");
+    var fastDegEl = document.getElementById("rope-fast-deg");
+    var fastNoteEl = document.getElementById("rope-fast-note");
+    var slowDegEl = document.getElementById("rope-slow-deg");
+    var slowNoteEl = document.getElementById("rope-slow-note");
+    var statusEl = document.getElementById("rope-status");
+
+    function updateRopeLab() {
+      var m = Number(posSlider.value);
+      posVal.textContent = String(m);
+
+      var fastStep = mode === "pi" ? 9.0 : 36.0;
+      var slowPerToken = mode === "orig" ? 0.0036 : 0.0009;
+      var slowDeg = m * slowPerToken;
+      var isOod = slowDeg > 14.4001;
+
+      var fastRad = (fastStep * Math.PI) / 180;
+      var fastX = 110 + 48 * Math.sin(fastRad);
+      var fastY = 116 - 48 * Math.cos(fastRad);
+      fastHand.setAttribute("x2", fastX.toFixed(1));
+      fastHand.setAttribute("y2", fastY.toFixed(1));
+      fastHand.setAttribute("stroke", mode === "pi" ? "var(--accent-amber)" : "var(--accent-sage)");
+
+      var visualSlowRad = (slowDeg * 2 * Math.PI) / 180;
+      var slowX = 490 + 48 * Math.sin(visualSlowRad);
+      var slowY = 116 - 48 * Math.cos(visualSlowRad);
+      slowHand.setAttribute("x2", slowX.toFixed(1));
+      slowHand.setAttribute("y2", slowY.toFixed(1));
+      slowHand.setAttribute("stroke", isOod ? "var(--crimson)" : "var(--accent-sage)");
+
+      fastDegEl.textContent = "每词夹角：" + fastStep.toFixed(1) + "°";
+      fastDegEl.setAttribute("fill", mode === "pi" ? "var(--accent-amber)" : "var(--accent-sage)");
+      fastNoteEl.textContent = mode === "pi" ? "夹角缩窄 4 倍，近邻语法变糊" : "相邻两词分得清清楚楚";
+
+      slowDegEl.textContent = "累计角度：" + slowDeg.toFixed(1) + "°";
+      slowDegEl.setAttribute("fill", isOod ? "var(--crimson)" : "var(--accent-sage)");
+      slowNoteEl.textContent = isOod ? "当前已闯入未训练盲区" : "仍在 0°~14.4° 已知弧段内";
+
+      statusEl.className = "tb-lab-readout";
+      if (isOod) {
+        statusEl.classList.add("is-ood");
+        statusEl.textContent = "时针越界：闯入 4K 未见盲区";
+      } else if (mode === "pi") {
+        statusEl.classList.add("is-blur");
+        statusEl.textContent = "时针安全，但秒针夹角压缩 4 倍（近邻变糊）";
+      } else if (mode === "ntk") {
+        statusEl.classList.add("is-safe");
+        statusEl.textContent = "秒针原速保真 + 时针拉回 4K 安全区";
+      } else {
+        statusEl.classList.add("is-safe");
+        statusEl.textContent = "4K 训练安全区内";
+      }
+    }
+
+    lab.querySelectorAll("[data-rope-mode]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        mode = btn.getAttribute("data-rope-mode");
+        lab.querySelectorAll("[data-rope-mode]").forEach(function (b) {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+        updateRopeLab();
+      });
+    });
+
+    lab.querySelectorAll("[data-rope-jump]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        posSlider.value = btn.getAttribute("data-rope-jump");
+        updateRopeLab();
+      });
+    });
+
+    posSlider.addEventListener("input", updateRopeLab);
+    updateRopeLab();
+  });
+</script>
+</body>
+</html>
